@@ -1,0 +1,27 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:f="http://java.sun.com/jsf/core"
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:comp="http://java.sun.com/jsf/composite"
+              xmlns:h="http://java.sun.com/jsf/html">
+
+    <comp:interface shortDescription="Dialogo para controlar accesos sin Logeo y sin permiso a pagina">
+        <comp:attribute name="idPagina"
+                        type="java.lang.String" 
+                        default=""
+                        required="true"/>    
+                               
+    </comp:interface>
+
+    <comp:implementation>
+    <p:dialog header="#{txt.msg127}" widgetVar="dlgControlNav" draggable="false"
+				modal="true" resizable="false" closable="false" responsive="true"
+				style="font-size: 10px;" visible="#{!ses.accesoAMenu(cc.attrs.idPagina)}"
+				onShow="rcCerrarSesion();" >
+				<h:panelGrid style="margin:0 auto;">
+				NO PERMISO PARA VER ESTA PÁGINA
+				</h:panelGrid>
+			</p:dialog>
+    
+    </comp:implementation>
+</ui:component>

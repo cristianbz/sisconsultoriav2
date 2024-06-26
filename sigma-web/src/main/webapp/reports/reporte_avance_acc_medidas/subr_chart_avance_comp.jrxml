@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="subr_chart_avance_comp" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="bcad9168-1e02-4c4d-b15f-4ddc21802dd6">
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="POSTGRESQL LOCALHOST"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="param_acpl_id" class="java.lang.Integer"/>
+	<parameter name="param_trac_year" class="java.lang.Integer"/>
+	<parameter name="param_cata_idsemestre" class="java.lang.Integer"/>
+	<parameter name="param_trac_ids" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select comp_code, comp_name, 
+CAST (avg(porc_avance) AS INTEGER) as avance
+ from sigma.v_reporte_acciones_paredd_1
+WHERE 
+CAST(trac_id as text) in ( $P!{param_trac_ids} )
+ and COMP_CODE LIKE 'CE%'
+group by comp_code, comp_name
+ORDER BY 1]]>
+	</queryString>
+	<field name="comp_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="comp_code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_paredd_1"/>
+	</field>
+	<field name="comp_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="comp_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_paredd_1"/>
+	</field>
+	<field name="avance" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="avance"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="500" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<bar3DChart>
+				<chart evaluationTime="Report">
+					<reportElement x="0" y="0" width="400" height="500" uuid="462a841c-f5e9-4fb3-a031-e8122b224757">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{comp_name}]]></seriesExpression>
+						<categoryExpression><![CDATA[".... "+$F{comp_name}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{avance}]]></valueExpression>
+						<labelExpression><![CDATA[$F{comp_code}+" "+$F{comp_name}]]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<bar3DPlot>
+					<plot/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</valueAxisFormat>
+				</bar3DPlot>
+			</bar3DChart>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</summary>
+</jasperReport>

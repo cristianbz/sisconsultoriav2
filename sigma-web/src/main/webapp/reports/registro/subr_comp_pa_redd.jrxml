@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="subr_comp_pa_redd" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="c2251c0b-0a4f-4a0c-a0bc-1f124bf4c2e2">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="param_proj_id" class="java.lang.Integer"/>
+	<parameter name="param_prac_id" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[select com.prac_id,1 as orden,'COMPONENTE' as tipo,comp_code from sigma.projects_actions_compatibility com, sigma.projects_actions acc, sigma.projects_specific_objectives obs,
+sigma.components c
+where c.comp_id=com.comp_id and obs.psob_id=acc.psob_id and com.prac_id=acc.prac_id and com.comp_id is not null and 
+obs.psob_status=true and acc.prac_status=true and com.paco_status=true and
+obs.proj_id= $P{param_proj_id}  and com.prac_id= $P{param_prac_id} 
+union
+select com.prac_id,2,'MEDIDA' as tipo,meas_code from sigma.projects_actions_compatibility com, sigma.projects_actions acc, sigma.projects_specific_objectives obs,
+sigma.measures m
+where m.meas_id=com.meas_id and m.meas_type='M' and obs.psob_id=acc.psob_id and com.prac_id=acc.prac_id and com.meas_id is not null and 
+obs.psob_status=true and acc.prac_status=true and com.paco_status=true and
+obs.proj_id= $P{param_proj_id}  and com.prac_id= $P{param_prac_id} 
+union
+select com.prac_id,4,'INDICADOR' as tipo,meas_code from sigma.projects_actions_compatibility com, sigma.projects_actions acc, sigma.projects_specific_objectives obs,
+sigma.measures m
+where m.meas_id=com.meas_id and m.meas_type='I' and obs.psob_id=acc.psob_id and com.prac_id=acc.prac_id and com.meas_id is not null and 
+obs.psob_status=true and acc.prac_status=true and com.paco_status=true and
+obs.proj_id= $P{param_proj_id}  and com.prac_id= $P{param_prac_id} 
+union
+select com.prac_id,3,'ACCIÓN' as tipo,CONCAT(m.meas_code,'A',acti_order) from sigma.projects_actions_compatibility com, sigma.projects_actions acc, sigma.projects_specific_objectives obs,
+sigma.actions a,sigma.measures m
+where m.meas_id=a.meas_id and a.acti_id=com.acti_id and obs.psob_id=acc.psob_id and com.prac_id=acc.prac_id and com.acti_id is not null and 
+obs.psob_status=true and acc.prac_status=true and com.paco_status=true and
+obs.proj_id= $P{param_proj_id}  and com.prac_id= $P{param_prac_id} 
+order by 2,4]]>
+	</queryString>
+	<field name="prac_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="prac_id"/>
+	</field>
+	<field name="orden" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="orden"/>
+	</field>
+	<field name="tipo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="tipo"/>
+	</field>
+	<field name="comp_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="comp_code"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="26" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField>
+				<reportElement mode="Opaque" x="1" y="1" width="65" height="12" forecolor="#006633" uuid="4a3477ad-834d-4833-91df-32d2490fe648">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipo}+ ":"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="14" width="52" height="12" uuid="eff733b9-4721-4eb9-aeda-ba630681b72b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{comp_code}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</summary>
+</jasperReport>

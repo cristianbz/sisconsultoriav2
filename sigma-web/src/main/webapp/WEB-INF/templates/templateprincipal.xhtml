@@ -1,0 +1,77 @@
+<?xml version = "1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns = "http://www.w3.org/1999/xhtml"   
+   xmlns:ui = "http://java.sun.com/jsf/facelets"
+   xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+   <h:head>
+   <h:outputStylesheet name="suia-layout.css" library="css" />
+	<h:outputStylesheet name="suia-styles.css" library="css" />
+	<h:outputStylesheet name="suia-pf-custom.css" library="css" />
+	<link rel="stylesheet" type="text/css"
+		href="${facesContext.externalContext.requestContextPath}/resources/css/estilos.css" />
+	<link rel="stylesheet" type="text/css"
+		href="${facesContext.externalContext.requestContextPath}/resources/css/primeflex/primeflex.css" />
+	
+	
+	<script type="text/javascript" src="../../resources/js/atras.js"></script>
+	<script type="text/javascript"
+		src="#{request.contextPath}/resources/js/calendario/calendar_es.js"></script>
+	<script>	
+	function goToAnchor(nombre) {
+		
+		window.location.hash = "";
+		window.location.hash = nombre;
+	}
+	</script>
+	<link rel="shortcut icon"
+		href="#{request.contextPath}/resources/images/favicon.ico" />
+</h:head>
+   <body>
+
+         <h:form id="frm">
+		<p:growl id="msgs" showDetail="true" />
+
+		<center>
+			<div class="header-left-part"></div>
+		<div id="header" class="containerHeader">
+			<div class="header-right-part"></div>
+			<div class="clear"></div>
+			<div class="header-right-part-bar"></div>
+			<div class="clear"></div>
+		</div>
+			<h:panelGrid columns="1" rendered="#{ses.usuarioLogeado!=null}">
+				<p:menubar  model="#{ses.menuModel}" style="width:1022px !important;" >
+				</p:menubar>
+				<p:toolbar>
+				<f:facet name="left">
+				<h:outputText styleClass="fa fa-user"/>
+				<p:commandLink action="#{ses.redireccionarAPagina('admin','datos_usuario')}"
+                                process="@this" partialSubmit="true"
+                                async="true" global="false">
+                    <span>#{txt.lbl418}: #{ses.usuarioLogeado.userName}</span>    
+                </p:commandLink>
+				</f:facet>
+				<f:facet name="right">
+				<p:commandLink action="#{ses.cerrarSesion()}"
+                                process="@this" partialSubmit="true"
+                                async="true" global="false">
+                     <i class="fa fa-power-off"></i>
+                     <span>#{txt.btn65}</span>  
+                </p:commandLink>
+				</f:facet>
+				</p:toolbar>
+			</h:panelGrid>
+		</center>		
+	</h:form>
+	<ui:insert name="contenido">
+					Contenido por defecto para que no quede en blanco...    
+	</ui:insert>
+	<center>
+		<p:graphicImage  value="/resources/images/sis/pie_maate.png"  style="max-width:1000px;"/>
+	</center>
+   </body>
+</html>

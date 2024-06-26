@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sigma_components="http://java.sun.com/jsf/composite/sigma_components">
+<body>
+	<!-- Lo que escribamos aquí NO aquí se va a renderizar. -->
+	Esto seguro que no lo ves.
+
+	<ui:composition template="/resources/plantilla_sigma1.xhtml">
+		<ui:define name="contenido">
+			<center>
+	<p:panel style="width:1022px;">
+		
+			<h:panelGrid styleClass="fondoColorSigma" width="995">
+						<h:outputText value="#{txt.lbl407}"
+							style="font-size:16px;font-weight:bold;" />
+					</h:panelGrid>
+			<h:panelGrid id="pnlContenido" style="font-size:12px;margin:0 auto;" width="800">
+			    
+				<h:panelGrid id="pnlCriteriosDeBusqueda" columns="4" width="500" style="margin:0 auto;">
+				<p:outputLabel value="*#{txt.lbl116}:" styleClass="etiquetaFormulario"
+								style="height:35px;line-height:35px;width:150px;font-weight:bold;"/>
+				<p:selectOneMenu id="acplId" value="#{report.actionPlanActual.acplId}"
+				style="width:400px;">
+				<f:selectItem itemLabel="Seleccione.." itemValue="#{0}"/>
+				<f:selectItems value="#{app.lstPlanesAccion}" var="ap" itemLabel="#{ap.acplName}" itemValue="#{ap.acplId}"/>
+				<p:ajax event="change" listener="#{report.validarPaSeleccionado}"
+				process="@this" partialSubmit="true" async="true" global="false"
+				update=":frm:msgs,:frm:pnlBotonesDescRep"/>
+				</p:selectOneMenu>
+				<p:message for="acplId"/>
+				<f:verbatim/>
+				
+				<p:outputLabel value="#{txt.lbl192}:" styleClass="etiquetaFormulario"
+								style="height:35px;line-height:35px;width:150px;font-weight:bold;"/>
+				<p:selectOneMenu id="anioRep" value="#{report.anioReporte}" style="width:100px;">
+				<f:selectItem itemLabel="" itemValue="#{0}"/>
+				<f:selectItem itemLabel="2016" itemValue="#{2016}"/>
+				<f:selectItem itemLabel="2017" itemValue="#{2017}"/>
+				<f:selectItem itemLabel="2018" itemValue="#{2018}"/>
+				<f:selectItem itemLabel="2019" itemValue="#{2019}"/>
+				<f:selectItem itemLabel="2020" itemValue="#{2020}"/>
+				<f:selectItem itemLabel="2021" itemValue="#{2021}"/>
+				<f:selectItem itemLabel="2022" itemValue="#{2022}"/>
+				<f:selectItem itemLabel="2023" itemValue="#{2023}"/>
+				<f:selectItem itemLabel="2024" itemValue="#{2024}"/>
+				<f:selectItem itemLabel="2025" itemValue="#{2025}"/>
+				</p:selectOneMenu>
+				<p:message for="anioRep"/>
+				<sigma_components:ayuda texto="Si desea obtener información solo de un período específico, seleccione año y semestre:" />
+				<p:outputLabel value="#{txt.lbl193}:" styleClass="etiquetaFormulario"
+								style="height:35px;line-height:35px;width:150px;font-weight:bold;"/>
+				<p:selectOneMenu id="codCatSem" value="#{report.codCatSemestre}">
+				<f:selectItems value="#{app.lstCatTiposPeriodosReporte}" var="cat" itemLabel="#{cat.cataText1}" itemValue="#{cat.cataId}"/>
+				</p:selectOneMenu>
+				<p:message for="codCatSem"/>
+				<f:verbatim/>
+				<f:verbatim/>
+				
+			    
+										
+									
+								
+				</h:panelGrid>
+				<h:panelGrid id="pnlBotonesDescRep" columns="1"  style="margin: 0 auto;">
+				<h:panelGrid columns="2" width="650" style="margin: 0 auto;">
+				<p:outputLabel value="#{txt.lbl408}" />
+				<p:commandButton value="#{txt.btn13}" action="#{report.generarReportePDF1}"
+										icon="fa fa-download" ajax="false" onclick="PF('dlgEnProc2').show()"
+								/>
+			    
+			    
+				<p:outputLabel value="#{txt.lbl413}" />
+					<p:commandButton value="#{txt.btn13}" action="#{report.generarReportePDF2}"
+										icon="fa fa-download" ajax="false" onclick="PF('dlgEnProc2').show()"
+								disabled="#{!report.paTieneCompatibilidad}"/>
+			   
+			    
+				
+			    
+				<p:outputLabel value="#{txt.lbl410}" />
+					<p:commandButton value="#{txt.btn13}" action="#{report.generarReportePDF3}"
+										icon="fa fa-download" ajax="false" onclick="PF('dlgEnProc2').show()"
+								disabled="#{!report.paTieneCompatibilidad}"/>
+			    
+				<p:outputLabel value="#{txt.lbl411}" />
+					<p:commandButton value="#{txt.btn13}" action="#{report.generarReportePDF4}"
+										icon="fa fa-download" ajax="false" onclick="PF('dlgEnProc2').show()"
+								disabled="#{!report.paTieneCompatibilidadIndicadores}"/>
+			    
+				<p:outputLabel value="#{txt.lbl412}" />
+					<p:commandButton value="#{txt.btn13}" action="#{report.generarReportePDF5}"
+										icon="fa fa-download" ajax="false" onclick="PF('dlgEnProc2').show()"
+								disabled="#{!report.paTieneCompatibilidadIndicadores}"/>
+			    
+				<p:outputLabel value="#{txt.lbl425}" />
+					<p:commandButton value="#{txt.btn13}" action="#{report.generarReportePDF6}"
+										icon="fa fa-download" ajax="false" onclick="PF('dlgEnProc2').show()"
+								/>
+			   
+				</h:panelGrid>
+				</h:panelGrid>
+				
+			</h:panelGrid>
+
+			
+			<sigma_components:controlLogeo idPagina="SIGMA_CONS_REP1"/>
+			
+			<sigma_components:dlgConfirmacion/>
+			
+			
+		
+		</p:panel>
+		</center>
+		</ui:define>
+		</ui:composition>
+		</body>
+		
+</html>

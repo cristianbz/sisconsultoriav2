@@ -1,0 +1,239 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sigma_components="http://java.sun.com/jsf/composite/sigma_components">
+
+<body>       
+	<!-- Lo que escribamos aquí NO aquí se va a renderizar. -->
+	Esto seguro que no lo ves.
+	
+	<ui:composition template="/resources/plantilla_sigma1.xhtml">
+		<ui:define name="contenido">
+		<center>
+			<h:panelGrid>
+				<h:panelGrid columns="3" styleClass="fondoColorSigma">
+					<h:outputText value="#{txt.lbl089}" style="font-weight:bold;"/>
+					<h:panelGrid width="600" rendered="#{!fina.flagSoloCrear}"/>
+					<h:panelGrid width="687" rendered="#{fina.flagSoloCrear}"/>
+					<p:commandButton id="btnNuevo" value="#{txt.btn26}"
+						action="#{fina.prepararNuevaFuente()}" icon="fa fa-plus"
+						process="@this" partialSubmit="true" async="true" global="false"
+						update=":frm:pnlFuente" style="font-size:12px;"
+						onclick="PF('dlgEnProc').show()"
+						oncomplete="PF('dlgEnProc').hide()"
+						rendered="#{!fina.flagSoloCrear}" />
+					<p:commandButton id="btnVolverProy" value="#{txt.btn37}"
+						action="#{fina.volverARegistroProyecto()}" icon="fa fa-mail-reply"
+						process="@this" partialSubmit="true" async="true" global="false"
+						update=":frm:pnlFuente" style="font-size:12px;"
+						onclick="PF('dlgEnProc').show()"
+						oncomplete="PF('dlgEnProc').hide()"
+						rendered="#{fina.flagSoloCrear}" />
+				</h:panelGrid>
+				<br />
+				<h:panelGrid id="pnlFuente" columns="3" style="margin:0 auto;">
+					<p:outputLabel value="*#{txt.lbl090}: " for="ffCode"
+						styleClass="etiquetaFormulario"
+						style="height:40px;line-height:40px;width:200px;" />
+					<p:inputText id="ffCode" value="#{fina.fuenteFinanActual.fusoCode}"
+						maxlength="5" size="6" />
+					<p:message for="ffCode" />
+
+					<p:outputLabel value="*#{txt.lbl018}: " for="ffName"
+						styleClass="etiquetaFormulario"
+						style="height:40px;line-height:40px;width:200px;" />
+					<p:inputText id="ffName" value="#{fina.fuenteFinanActual.fusoName}"
+						maxlength="100" size="40" />
+					<p:message for="ffName" />
+
+					<p:outputLabel value="#{txt.lbl051}: " for="ffWebPage"
+						styleClass="etiquetaFormulario"
+						style="height:40px;line-height:40px;width:200px;" />
+					<p:inputText id="ffWebPage"
+						value="#{fina.fuenteFinanActual.fusoWebsite}" maxlength="100"
+						size="40" />
+					<p:message for="ffWebPage" />
+
+					<p:outputLabel value="*#{txt.lbl052}: " for="ffContactPerson"
+						styleClass="etiquetaFormulario"
+						style="height:40px;line-height:40px;width:200px;" />
+					<p:inputText id="ffContactPerson"
+						value="#{fina.fuenteFinanActual.fusoContactPerson}"
+						maxlength="100" size="50" />
+					<p:message for="ffContactPerson" />
+
+					<p:outputLabel value="#{txt.lbl053}: " for="ffContactPersonPos"
+						styleClass="etiquetaFormulario"
+						style="height:40px;line-height:20px;width:200px;" />
+					<p:inputText id="ffContactPersonPos"
+						value="#{fina.fuenteFinanActual.fusoContactPersonPosition}"
+						maxlength="100" size="50" />
+					<p:message for="ffContactPersonPos" />
+
+					<p:outputLabel value="*#{txt.lbl054}: " for="ffContactPersonEmail"
+						styleClass="etiquetaFormulario"
+						style="height:40px;line-height:20px;width:200px;" />
+					<p:inputText id="ffContactPersonEmail"
+						value="#{fina.fuenteFinanActual.fusoContactPersonEmail}"
+						maxlength="100" size="50" />
+					<p:message for="ffContactPersonEmail" />
+
+					<p:outputLabel value="*#{txt.lbl096}:" for="ffPhones"
+						styleClass="etiquetaFormulario"
+						style="height:40px;line-height:40px;width:200px;" />
+					<p:inputText id="ffPhones"
+						value="#{fina.fuenteFinanActual.fusoPhones}" maxlength="20"
+						size="20" />
+					<p:message for="ffPhones" />
+
+					<p:outputLabel value="*#{txt.lbl091}: " for="lstOpTFI"
+						styleClass="etiquetaFormulario"
+						style="height:140px;line-height:40px;width:200px;" />
+					<h:panelGrid width="400" style="font-size:10px;">
+						<p:dataTable id="lstOpTFI" value="#{fina.listaOpcionesTFI}"
+							var="tfi">
+							<p:column>
+								<p:outputLabel value="#{tfi.cataId.cataText1}" />
+							</p:column>
+							<p:column width="25">
+								<p:selectBooleanCheckbox value="#{tfi.selected}" />
+							</p:column>
+						</p:dataTable>
+					</h:panelGrid>
+					<p:message for="lstOpTFI" />
+
+					<p:outputLabel value="*#{txt.lbl092}: " for="lstOpTFO"
+						styleClass="etiquetaFormulario"
+						style="height:130px;line-height:40px;width:200px;" />
+					<h:panelGrid width="400" style="font-size:10px;">
+						<p:dataTable id="lstOpTFO" value="#{fina.listaOpcionesTFO}"
+							var="tfo">
+							<p:column>
+								<p:outputLabel value="#{tfo.cataId.cataText1}" />
+							</p:column>
+							<p:column width="25">
+								<p:selectBooleanCheckbox value="#{tfo.selected}" >
+								<p:ajax listener="#{fina.seleccionarTipoFinanciamiento(tfo.cataId)}" process="@this" async="true" global="false"
+								/>
+								</p:selectBooleanCheckbox>
+							</p:column>
+						</p:dataTable>
+						<p:inputText id="ffOtherFund"
+							value="#{fina.fuenteFinanActual.fusoOtherFund}" maxlength="20"
+							size="20" disabled="#{!fina.flagOtroTipo}"/>
+						<p:message for="ffOtherFund" />
+					</h:panelGrid>
+					<p:message for="lstOpTFO" />
+
+					<p:outputLabel value="*#{txt.lbl093}: " for="lstOpCAT"
+						styleClass="etiquetaFormulario"
+						style="height:120px;line-height:40px;width:200px;" />
+					<h:panelGrid width="400" style="font-size:10px;">
+						<p:dataTable id="lstOpCAT" value="#{fina.listaOpcionesCAT}"
+							var="cat">
+							<p:column>
+								<p:outputLabel value="#{cat.cataId.cataText1}" />
+							</p:column>
+							<p:column width="25">
+								<p:selectBooleanCheckbox value="#{cat.selected}" >
+								<p:ajax listener="#{fina.actualizarListaSectores()}"
+								process="@this" async="true" global="false" partialSubmit="true"
+								update=":frm:pnlOpSec"/>
+								</p:selectBooleanCheckbox>
+							</p:column>
+						</p:dataTable>
+					</h:panelGrid>
+					<p:message for="lstOpCAT" />
+
+					<p:outputLabel value="#{txt.lbl094}: " for="lstOpSEC"
+						styleClass="etiquetaFormulario"
+						style="height:170px;line-height:40px;width:200px;" />
+					<h:panelGrid id="pnlOpSec" width="400" style="font-size:10px;">
+						<p:dataTable id="lstOpSEC" value="#{fina.listaOpcionesSEC}"
+							var="sec" rendered="#{fina.listaOpcionesSEC.size()>0}">
+							<p:column>
+								<p:outputLabel value="#{sec.cataId.cataText1}" />
+							</p:column>
+							<p:column width="25">
+								<p:selectBooleanCheckbox value="#{sec.selected}" />
+							</p:column>
+						</p:dataTable>
+						
+					</h:panelGrid>
+					<p:message for="lstOpSEC" />
+
+					<p:outputLabel value="*#{txt.lbl095}: " for="ffType1"
+						styleClass="etiquetaFormulario"
+						style="height:40px;line-height:20px;width:200px;" />
+					<p:selectOneMenu id="ffType1"
+						value="#{fina.fuenteFinanActual.cataId.cataId}">
+						<f:selectItem itemLabel="#{txt.lbl025} ..." itemValue="#{null}" />
+						<f:selectItems value="#{app.lstCatTipFueFin}" var="tipo"
+							itemLabel="#{tipo.cataText1}" itemValue="#{tipo.cataId}">
+						</f:selectItems>
+					</p:selectOneMenu>
+					<p:message for="ffType1" />
+					 
+					
+
+
+
+
+				</h:panelGrid>
+				<h:panelGrid style="margin:0 auto;">
+					<p:commandButton value="#{txt.btn02}" icon="fa fa-save"
+						action="#{fina.guardarFuenteFinanciamiento()}" partialSubmit="true"
+						process="@this,pnlFuente" async="true" global="false"
+						update="pnlFuente,pnlListaFuentes,msgs"
+						onclick="PF('dlgEnProc').show()"
+						oncomplete="PF('dlgEnProc').hide()" />
+				</h:panelGrid>
+				<h:panelGrid id="pnlListaFuentes" width="1022"
+					style="font-size:10px;">
+					<p:dataTable id="lstFuentes" value="#{fina.listaFuentesFinan}"
+						var="fuente" emptyMessage="#{txt.lbl047}">
+						<p:column headerText="#{txt.lbl090}" width="100">
+							<p:outputLabel value="#{fuente.fusoCode}" />
+						</p:column>
+						<p:column headerText="#{txt.lbl018}" width="400">
+							<p:outputLabel value="#{fuente.fusoName}" />
+						</p:column>
+						<p:column headerText="#{txt.lbl052}">
+							<p:outputLabel value="#{fuente.fusoContactPerson}" />
+						</p:column>
+						<p:column width="60" headerText="#{txt.lbl024}">
+							<p:commandButton id="btnEditFuente"
+								action="#{fina.seleccionarFuenteAEditar(fuente)}"
+								icon="fa fa-pencil" title="#{txt.btn15}" process="@this"
+								partialSubmit="true" async="true" global="false"
+								update=":frm:pnlFuente" onclick="PF('dlgEnProc').show()"
+								oncomplete="PF('dlgEnProc').hide()" />
+
+							<p:commandButton icon="fa fa-trash"
+								action="#{fina.eliminarFuenteDeFinanciamiento(fuente)}" process="@this"
+								async="true" global="false" partialSubmit="true"
+								title="#{txt.btn14}"
+								update=":frm:pnlFuente,:frm:pnlListaFuentes,:frm:msgs"
+								onclick="PF('dlgEnProc').show()"
+								oncomplete="PF('dlgEnProc').hide()">
+								<p:confirm header="#{txt.lbl030}" message="#{txt.lbl361}"
+									icon="pi pi-exclamation-triangle" />
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
+				</h:panelGrid>
+
+				
+				
+			</h:panelGrid>
+			<sigma_components:controlLogeo idPagina="SIGMA_ADM_FF"/>
+			
+			<sigma_components:dlgConfirmacion/>
+		</center>
+		</ui:define>
+		</ui:composition>
+		</body>
+</html>

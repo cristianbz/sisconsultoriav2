@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rep_main" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c5bdcd1f-1640-44f8-8a2a-287208f394bb">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="POSTGRESQL LOCALHOST"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="param_acpl_id" class="java.lang.Integer"/>
+	<parameter name="param_trac_year" class="java.lang.Integer"/>
+	<parameter name="param_cata_idsemestre" class="java.lang.Integer"/>
+	<parameter name="img1_path" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="img2_path" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="param_trac_ids" class="java.lang.String"/>
+	<parameter name="img3_path" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select * from sigma.v_reporte_acciones_indicadores_paredd
+where CAST(trac_id as text) in ( $P!{param_trac_ids} )
+order by 5,12,17]]>
+	</queryString>
+	<field name="acpl_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="acpl_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="acpl_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="acpl_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="comp_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="comp_code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="comp_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="comp_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="meas_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="meas_code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="meas_description" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="meas_description"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="meas_goal" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="meas_goal"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="meas_goal_value" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="meas_goal_value"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="acti_description" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="acti_description"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="nivel_comp" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nivel_comp"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="part_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="part_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="proj_title" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="proj_title"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="proj_short_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="proj_short_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="proj_style_color" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="proj_style_color"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="proj_implementer_project" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="proj_implementer_project"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="obj_comp" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="obj_comp"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="gelo_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="gelo_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="gelo_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="gelo_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="accion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="accion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="indicador" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="indicador"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="meta" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="meta"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="valor_meta" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="valor_meta"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="trac_year" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="trac_year"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="cata_id_semestre" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="cata_id_semestre"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="semestre" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="semestre"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="valor_alcanzado" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="valor_alcanzado"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="porc_avance" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="porc_avance"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="detalles" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="detalles"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<variable name="valor_acumulado_indicador" class="java.lang.Double" resetType="Group" resetGroup="indicador" calculation="Sum">
+		<variableExpression><![CDATA[$F{valor_alcanzado}]]></variableExpression>
+	</variable>
+	<group name="indicador">
+		<groupExpression><![CDATA[$F{meas_description}]]></groupExpression>
+		<groupHeader>
+			<band height="150">
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<textField>
+					<reportElement x="80" y="35" width="310" height="15" uuid="4f219092-8e00-4455-ab1e-1f4666bcf308">
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Justified"/>
+					<textFieldExpression><![CDATA[$F{comp_name}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="80" y="50" width="330" height="100" forecolor="#3559C4" uuid="3129f3b6-c706-4df6-8dec-33615dfda9b9">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Justified">
+						<font size="13" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{meas_description}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="indicador" pattern="#,##0.00#">
+					<reportElement mode="Opaque" x="425" y="25" width="110" height="100" forecolor="#103278" backcolor="#B4D3FA" uuid="81357d0d-a668-4565-b80e-cf3998d91ef6">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="14" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{valor_acumulado_indicador}]]></textFieldExpression>
+				</textField>
+				<xyBarChart>
+					<chart isShowLegend="false" evaluationTime="Group" evaluationGroup="indicador">
+						<reportElement x="5" y="25" width="65" height="120" uuid="c41437a1-6e55-4de7-a500-2d69d31ef600">
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</reportElement>
+						<chartTitle/>
+						<chartSubtitle/>
+						<chartLegend/>
+					</chart>
+					<xyDataset>
+						<dataset resetType="Group" resetGroup="indicador"/>
+						<xySeries autoSort="true">
+							<seriesExpression><![CDATA["avance"]]></seriesExpression>
+							<xValueExpression><![CDATA[0]]></xValueExpression>
+							<yValueExpression><![CDATA[(($V{valor_acumulado_indicador}/$F{meas_goal_value})*100)]]></yValueExpression>
+							<labelExpression><![CDATA["avance"]]></labelExpression>
+						</xySeries>
+						<xySeries autoSort="true">
+							<seriesExpression><![CDATA["pendiente"]]></seriesExpression>
+							<xValueExpression><![CDATA[0]]></xValueExpression>
+							<yValueExpression><![CDATA[150-(($V{valor_acumulado_indicador}/$F{meas_goal_value})*100)]]></yValueExpression>
+							<labelExpression><![CDATA["avance"]]></labelExpression>
+						</xySeries>
+					</xyDataset>
+					<barPlot isShowLabels="false" isShowTickLabels="false" isShowTickMarks="false">
+						<plot/>
+						<itemLabel/>
+						<categoryAxisFormat>
+							<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000">
+								<labelFont>
+									<font size="8"/>
+								</labelFont>
+								<tickLabelFont>
+									<font size="8"/>
+								</tickLabelFont>
+							</axisFormat>
+						</categoryAxisFormat>
+						<valueAxisFormat>
+							<axisFormat labelColor="#000000" tickLabelColor="#000000" verticalTickLabels="false" axisLineColor="#000000">
+								<labelFont>
+									<font size="8"/>
+								</labelFont>
+								<tickLabelFont>
+									<font size="8"/>
+								</tickLabelFont>
+							</axisFormat>
+						</valueAxisFormat>
+						<rangeAxisMinValueExpression><![CDATA[0]]></rangeAxisMinValueExpression>
+						<rangeAxisMaxValueExpression><![CDATA[100]]></rangeAxisMaxValueExpression>
+					</barPlot>
+				</xyBarChart>
+				<textField evaluationTime="Group" evaluationGroup="indicador">
+					<reportElement x="25" y="5" width="50" height="20" uuid="136545ee-a5cb-49ac-9b12-33b8bb2bf640">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[String.format("%.2f", (($V{valor_acumulado_indicador}/$F{meas_goal_value})*100))+ " %"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="425" y="125" width="110" height="15" uuid="7f500deb-08e0-4bb0-84f6-0f4318af8ad1">
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Meta: "+$F{meas_goal_value}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="proyecto">
+		<groupExpression><![CDATA[$F{proj_title}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement mode="Opaque" x="5" y="5" width="550" height="15" backcolor="#FCBB88" uuid="200b13a4-1c02-4aeb-9efe-8a62fd6383ba">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
+					<textFieldExpression><![CDATA[$F{proj_short_name}+ "  (Período de Corte:"+$F{trac_year}+ " "+$F{semestre}+")"]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="accion_proyecto">
+		<groupExpression><![CDATA[$F{accion}]]></groupExpression>
+		<groupHeader>
+			<band height="21">
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="20" y="5" width="535" height="15" uuid="0c58973f-8b86-4bb2-b63d-852d6baa9076">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Justified"/>
+					<textFieldExpression><![CDATA["Acción: "+$F{accion}+ "("+ $F{obj_comp}+" "+($F{gelo_id}==null?"":$F{gelo_name})+ ")"]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="150" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<image hAlign="Center">
+				<reportElement x="0" y="0" width="150" height="70" uuid="37daed96-e4ec-46f5-95a2-3d2ce54e0719">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{img1_path}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement mode="Opaque" x="400" y="23" width="150" height="25" backcolor="#00AAC3" uuid="e587dad4-f135-475e-ae33-37a7c72675e1">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[SIGMA REDD+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="400" y="50" width="150" height="19" backcolor="#00AAC3" uuid="9a0b4c80-8a88-41b2-ab5f-6284c8d4f4dd">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reporte de Avance de Indicadores del PA REDD+]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="5" y="75" width="370" height="50" uuid="2c0e907e-386b-4805-91d5-7a1da6595bc1">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{acpl_name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="50" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="30" y="5" width="460" height="40" uuid="5ee545af-39b9-4ef9-abe8-c0fc053e5984">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Justified"/>
+				<textFieldExpression><![CDATA["- El indicador de Avance de la acción es: "+$F{indicador}+ " Meta: "+$F{meta}+ " ("+$F{valor_meta}+") \nAvance:"+($F{detalles}==null?" Ninguno.":" "+$F{detalles})]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="30" y="1" width="525" height="1" uuid="d066dd0f-55a1-4ac4-b2f5-f42f202b3eaf">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineStyle="Dotted" lineColor="#C2BEBE"/>
+				</graphicElement>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Opaque" x="500" y="28" width="40" height="20" forecolor="#FFFFFF" backcolor="#131645" uuid="2cb19236-e114-41c7-bc8f-3e04f1df7b0a">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{porc_avance}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="500" y="18" width="40" height="10" forecolor="#FFFFFF" backcolor="#131645" uuid="f72679d7-4c58-4d1e-8d25-a7b83f3ae4a6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[AVANCE (%):]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="490" y="2" width="60" height="15" uuid="46481ae7-5153-4289-85e5-d42bdf30c15c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor_alcanzado}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="85" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<image>
+				<reportElement x="-20" y="0" width="400" height="70" uuid="ab5f7499-d932-4b9f-8618-a6b28cbac6e3">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{img2_path}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="240" y="70" width="30" height="14" uuid="abf17824-14a4-4274-8fb7-bd60c5f9f958">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="280" y="70" width="50" height="14" uuid="15f7ec2c-48f9-4ccb-a2b8-9821ed86fb2e">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[" de " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<image hAlign="Center" vAlign="Middle">
+				<reportElement x="440" y="0" width="115" height="70" uuid="5ac15020-40cf-4edc-afd7-a9d3a13e1c97">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{img3_path}]]></imageExpression>
+			</image>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</summary>
+</jasperReport>

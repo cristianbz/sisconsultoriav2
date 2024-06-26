@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="subr_chart_ejecpres_comp" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="e9f350a4-1dec-4b26-a157-e169d7f254e4">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="param_trac_id" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[ select obj.psob_code, CONCAT(obj.psob_code,' ',obj.psob_description) as objetivo, am.tram_executed_percent as avance
+from sigma.tracings tra, sigma.projects pro, sigma.tracings_amounts am,
+sigma.projects_specific_objectives obj
+left join public.geographical_locations geo on obj.gelo_id=geo.gelo_id
+where pro.proj_id=tra.proj_id and tra.trac_id=am.trac_id and
+am.psob_id=obj.psob_id and am.tram_status=true and am.cata_id is null and am.trac_id=   $P{param_trac_id} 
+order by 1]]>
+	</queryString>
+	<field name="psob_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="psob_code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="projects_specific_objectives"/>
+	</field>
+	<field name="objetivo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="objetivo"/>
+	</field>
+	<field name="avance" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="avance"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tracings_amounts"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="225" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<bar3DChart>
+				<chart evaluationTime="Report">
+					<reportElement x="0" y="15" width="270" height="200" uuid="39b8d3a4-8180-4db8-bfa5-8c82c2cf8d46">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend>
+						<font size="8"/>
+					</chartLegend>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{objetivo}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{objetivo}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{avance}]]></valueExpression>
+						<labelExpression><![CDATA[$F{objetivo}]]></labelExpression>
+					</categorySeries>
+				</categoryDataset>
+				<bar3DPlot>
+					<plot/>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+					</valueAxisFormat>
+				</bar3DPlot>
+			</bar3DChart>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</summary>
+</jasperReport>

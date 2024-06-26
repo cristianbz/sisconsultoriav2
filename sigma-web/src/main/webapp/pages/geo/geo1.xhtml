@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sigma_components="http://java.sun.com/jsf/composite/sigma_components">
+<h:head>
+	<link
+		href="${facesContext.externalContext.requestContextPath}/css/sigma.css"
+		rel="stylesheet" type="text/css" />
+	<script type="text/javascript"
+		src="${facesContext.externalContext.requestContextPath}/js/sigma.js" />
+		
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+   crossorigin=""/>
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+   crossorigin=""></script>
+        <link rel="shortcut icon"
+		href="#{request.contextPath}/resources/images/favicon.ico" />
+	<title>SIGMA REDD+</title>
+        <meta name="viewport" content="initial-scale=1"/>
+
+        <script type="text/javascript" src="#{request.contextPath}/js/geo.js"/>
+</h:head>
+<h:body>
+	<h:form id="frm" enctype="multipart/form-data">
+		<ui:include src="/resources/status_gif.xhtml" />
+		<p:growl id="msgs" showDetail="true" />
+		<center>
+			<h:inputHidden id="data" value="#{geo.listDataGeoJson}" />
+			<h:inputHidden id="metadataNombreCapas" value="#{geo.listMetadataNombreCapas}" />
+			<h:inputHidden id="metadataDescripcionFeatures" value="#{geo.listMetadataDescripcionFeatures}" />
+			<h:panelGrid styleClass="fondoColorSigma" width="840">
+				<p:outputLabel value=" - #{txt.lbl294} #{txt.lbl295}" style="font-size:20px;font-weight:bold;" />
+			</h:panelGrid>
+			<br/><br/>
+			<h:panelGrid id="pnlTotal" style="font-size:12px;">
+			<h:panelGrid columns="4" style="margin:0 auto;">
+			<p:commandButton value="Ver Mapa" 
+						action="#{geo.cargarInformacionProyecto()}"
+								 process="@this" partialSubmit="true" update=":frm:data,:frm:metadataNombreCapas,:frm:metadataDescripcionFeatures"
+								async="true" global="false" 
+								style="font-size:12px;" onclick="PF('dlgEnProc').show()"
+								oncomplete="PF('dlgEnProc').hide();cargarMapa();" 
+								rendered="#{geo.tipoGeoVisor==1}"
+								 icon="fa fa-globe"/>
+			<h:panelGrid width="100" rendered="#{geo.tipoGeoVisor==1}"/>
+			<p:commandButton id="btnVolverProy" value="#{txt.btn37}"
+								action="#{geo.volverARegistroProyecto()}"
+								icon="fa fa-mail-reply" process="@this" partialSubmit="true"
+								async="true" global="false"
+								style="font-size:12px;" onclick="PF('dlgEnProc').show()"
+								oncomplete="PF('dlgEnProc').hide()" 
+								rendered="#{geo.tipoGeoVisor==1}"/>
+			<p:commandButton id="btnCargarProys" value="Ver Proyectos"
+								action="#{geo.cargarInformacionProyectos()}"
+								 process="@this" partialSubmit="true"
+								async="true" global="false" update=":frm:data,:frm:metadataNombreCapas,:frm:metadataDescripcionFeatures"
+								style="font-size:12px;" onclick="PF('dlgEnProc').show()"
+								oncomplete="PF('dlgEnProc').hide();cargarMapa();" 
+								rendered="#{geo.tipoGeoVisor!=1}"
+								 icon="fa fa-globe"/>
+			
+			
+								 
+								 
+			</h:panelGrid>
+			
+				<p:panel header="" style="height: 550px; width: 800px;"
+                             >
+                        <div id = "mapa1"
+                             style="height: 550px; width: 780px;">
+                        </div>
+                    </p:panel>
+			</h:panelGrid>
+			
+			
+			<br/><br/><br/><br/>
+                          <br/><br/><br/><br/>  
+			<h:panelGrid style="margin:0 auto;">
+						<p:commandButton id="btnVolverInicio" value="#{txt.btn24}"
+							icon="fa fa-home"
+							action="#{ses.redireccionarAPagina('','inicio')}" process="@this"
+							rendered="#{geo.tipoGeoVisor!=1}" />
+					</h:panelGrid>
+			<sigma_components:controlLogeo idPagina="SIGMA_REG_GEO"/>
+			
+			<sigma_components:dlgConfirmacion/>
+		</center>
+	</h:form>
+</h:body>
+</html>

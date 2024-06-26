@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes"
+	xmlns:val="http://java.sun.com/jsf/composite/componentes">
+
+<ui:composition template="/WEB-INF/templates/templateprincipal.xhtml">
+
+	<ui:define name="contenido">
+		<body>
+			<f:event listener="#{loginController.validarSesion()}"
+				type="preRenderView" />
+			<h:form prependId="true" id="form">
+			
+				<p:growl id="growl" life="3000" showDetail="true" />
+
+
+				<p:dialog widgetVar="dlgEnProc" draggable="false" modal="true"
+					resizable="false" closable="false" responsive="true"
+					style="font-size: 10px;">
+					<h:graphicImage value="/resources/images/loading3.gif" width="150"
+						height="150" />
+				</p:dialog>
+
+
+				<div class="ui-fluid p-formgrid p-grid">
+
+					
+					<div class="p-field p-col-12 p-md-12" style="max-width:1005px;margin:0 auto;padding:0;">
+						<div class="ui-fluid p-formgrid p-grid">
+						
+						
+							<div class="p-field p-col-12 p-md-11"
+								style="background: #00AAC3; color: #FFFFFF; display: block; text-align: left;">
+								<h:outputText value="#{titulos['registroSalvaguardas']}"
+									style="font-size:18px;font-weight:bold;" />
+							</div>
+							<div class="p-field p-col-12 p-md-1" style="text-align:right !important;">
+																
+									<comp:ayuda texto="#{tooltip['desplazamientoTabs']}" />								
+									
+							</div>
+						</div>
+						<comp:buscaProyectos id="buscaProyectos"
+							componenteBuscaProyectos="#{registroSalvaguardasController.componenteBuscarProyectos}" />
+						<br />
+
+					</div>
+					
+				</div>
+
+				<div class="ui-fluid p-formgrid p-grid">
+					<div class="p-field p-col-12 p-md-3"></div>
+					<div class="p-field p-col-12 p-md-6"></div>
+					<div class="p-field p-col-12 p-md-3"></div>
+				</div>
+
+
+
+				<div class="goup">
+					<i class="fas fa-angle-double-up fa-2x" style="color: white"></i>
+				</div>
+			</h:form>
+
+		</body>
+	</ui:define>
+</ui:composition>
+</html>

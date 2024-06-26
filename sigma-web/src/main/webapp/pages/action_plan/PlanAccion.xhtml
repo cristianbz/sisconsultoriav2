@@ -1,0 +1,1012 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sigma_components="http://java.sun.com/jsf/composite/sigma_components">
+
+<body>       
+	<!-- Lo que escribamos aquí NO aquí se va a renderizar. -->
+	Esto seguro que no lo ves.
+	
+	<ui:composition template="/resources/plantilla_sigma1.xhtml">
+		<ui:define name="contenido">
+		<center>
+			<h:panelGrid columns="3" styleClass="fondoColorSigma" width="1022">
+				<h:outputText value=" #{txt.lbl001}" style="font-weight:bold !important;"/>
+				<h:panelGrid width="640"></h:panelGrid>
+				<p:commandButton id="btnNuevo" value="#{txt.btn01}"
+					icon="fa fa-plus" action="#{plac.llamarVentanaInfoGeneralNuevo()}"
+					process="@this" partialSubmit="true"
+					update="pnlDialogos,pnlContenidoPlan" async="true" global="false"
+					style="font-size:12px;" onclick="PF('dlgEnProc').show()"
+					oncomplete="PF('dlgEnProc').hide()" />
+			</h:panelGrid>
+			<h:panelGrid id="pnlListaPlanes" style="font-size:12px;" width="1030">
+				<p:dataTable id="acplList" value="#{plac.listActionPlan}" var="ap"
+					emptyMessage="#{txt.lbl047}" styleClass="alineadoCentroTd">
+					<p:column headerText="#{txt.lbl002}">
+						<p:outputLabel value="#{ap.acplName}" />
+					</p:column>
+					<p:column headerText="#{txt.lbl003}" width="150">
+						<p:outputLabel value="#{ap.acplStartDate}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</p:outputLabel>
+					</p:column>
+					<p:column headerText="#{txt.lbl004}" width="150">
+						<p:outputLabel value="#{ap.acplFinishDate}"
+							rendered="#{ap.acplNewFinishDate==null}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</p:outputLabel>
+						<p:outputLabel value="#{ap.acplNewFinishDate}"
+							rendered="#{ap.acplNewFinishDate!=null}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</p:outputLabel>
+					</p:column>
+					<p:column headerText="#{txt.lbl005}" width="100">
+						<p:selectBooleanCheckbox value="#{ap.acplIscurrent}"
+							disabled="true" />
+					</p:column>
+					<p:column  headerText="#{txt.lbl024}" width="100">
+
+						<p:commandButton icon="fa fa-pencil"
+							action="#{plac.seleccionarPlanAccionVer(ap)}" process="@this"
+							partialSubmit="true" async="true" global="false"
+							update=":frm:pnlContenidoPlan" title="#{txt.btn16}"
+							onclick="PF('dlgEnProc').show()"
+							oncomplete="PF('dlgEnProc').hide()" />
+						<p:commandButton icon="fa fa-trash"
+							action="#{plac.eliminarPlanAccion(ap)}" process="@this"
+							async="true" global="false" partialSubmit="true"
+							title="#{txt.btn14}"
+							update=":frm:pnlListaPlanes,:frm:pnlContenidoPlan,:frm:msgs"
+							onclick="PF('dlgEnProc').show()"
+							oncomplete="PF('dlgEnProc').hide()">
+							<p:confirm header="#{txt.lbl030}" message="#{txt.lbl031}"
+								icon="pi pi-exclamation-triangle" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+			</h:panelGrid>
+
+			<h:panelGrid id="pnlContenidoPlan" style="font-size:12px;">
+				<h:panelGrid rendered="#{plac.actionPlanCurrent.acplId!=null}">
+					<h:panelGrid columns="2">
+						<p:outputLabel id="lblAcplName"
+							value="#{plac.actionPlanCurrent.acplName}"
+							styleClass="etiquetaTitulo"
+							style="height:30px;line-height:30px;width:990px;" />
+						<p:commandButton icon="fa fa-close" action="#{plac.inicializar()}"
+							process="@this" partialSubmit="true" async="true" global="false"
+							update=":frm:pnlContenidoPlan" title="#{txt.btn17}"
+							onclick="PF('dlgEnProc').show()"
+							oncomplete="PF('dlgEnProc').hide()" />
+					</h:panelGrid>
+					<p:tabView id="tvContenido" activeIndex="#{plac.tabIndex}">
+						<p:tab title="#{txt.lbl008}">
+							<h:panelGrid id="pnlInfoGeneral2">
+								<p:outputLabel value="#{txt.lbl006}"
+									styleClass="etiquetaSubtitulo" />
+								<h:panelGrid columns="3">
+									<p:outputLabel value="*#{txt.lbl002}: " for="acplName2"
+										styleClass="etiquetaFormulario"
+										style="height:30px;line-height:30px;width:250px;" />
+									<p:inputText id="acplName2"
+										value="#{plac.actionPlanCurrent.acplName}" size="80"
+										maxlength="100" />
+									<p:message for="acplName2" />
+								</h:panelGrid>
+								<h:panelGrid columns="4">
+									<p:outputLabel value="*#{txt.lbl003}: " for="acplStartDate2"
+										styleClass="etiquetaFormulario"
+										style="height:30px;line-height:30px;width:250px;" />
+									<p:calendar id="acplStartDate2"
+										value="#{plac.actionPlanCurrent.acplStartDate}"
+										showOn="button" pattern="dd/MM/yyyy" navigator="true" locale="es" />
+									<p:message for="acplStartDate2" />
+									<f:verbatim />
+									<p:outputLabel value="*#{txt.lbl004}: " for="acplFinishDate2"
+										styleClass="etiquetaFormulario"
+										style="height:30px;line-height:30px;width:250px;" />
+									<p:calendar id="acplFinishDate2"
+										value="#{plac.actionPlanCurrent.acplFinishDate}"
+										showOn="button" pattern="dd/MM/yyyy" navigator="true" locale="es" />
+									<p:message for="acplFinishDate2" />
+									<f:verbatim />
+									<p:outputLabel value="#{txt.lbl011}: " for="acplNewFinishDate"
+										styleClass="etiquetaFormulario"
+										style="height:30px;line-height:30px;width:250px;" />
+									<p:calendar id="acplNewFinishDate"
+										value="#{plac.actionPlanCurrent.acplNewFinishDate}"
+										showOn="button" pattern="dd/MM/yyyy" navigator="true" locale="es"/>
+									<p:message for="acplNewFinishDate" />
+									<h:panelGrid columns="3">
+										<p:outputLabel value="#{txt.lbl005}: " for="acplIscurrent2"
+											styleClass="etiquetaFormulario"
+											style="height:30px;line-height:30px;width:100px;" />
+										<p:selectBooleanCheckbox id="acplIscurrent2"
+											value="#{plac.actionPlanCurrent.acplIscurrent}" />
+										<p:message for="acplIscurrent2" />
+									</h:panelGrid>
+
+								</h:panelGrid>
+								<p:outputLabel value="#{txt.lbl012}"
+									styleClass="etiquetaSubtitulo" />
+								<h:panelGrid columns="3">
+									<p:outputLabel value="*#{txt.lbl007}: "
+										for="acplGeneralObjective2" styleClass="etiquetaFormulario"
+										style="height:60px;line-height:60px;width:150px;" />
+									<p:inputTextarea id="acplGeneralObjective2"
+										value="#{plac.actionPlanCurrent.acplGeneralObjective}"
+										cols="120" maxlength="500" style="text-align:justify;"/>
+									<p:message for="acplGeneralObjective2" />
+								</h:panelGrid>
+								<h:panelGrid style="margin:0 auto;">
+									<p:commandButton id="btnGuardar2" value="#{txt.btn09}"
+										icon="fa fa-save" action="#{plac.guardarPlanAccion()}"
+										process="@this,:frm:tvContenido:acplName2,:frm:tvContenido:acplStartDate2,:frm:tvContenido:acplFinishDate2,:frm:tvContenido:acplNewFinishDate,:frm:tvContenido:acplIscurrent2,:frm:tvContenido:acplGeneralObjective2"
+										partialSubmit="true"
+										update=":frm:pnlListaPlanes,:frm:lblAcplName,:frm:msgs,:frm:tvContenido:pnlInfoGeneral2"
+										async="true" global="false" onclick="PF('dlgEnProc').show()"
+										oncomplete="PF('dlgEnProc').hide()" />
+								</h:panelGrid>
+							</h:panelGrid>
+							<br />
+							<h:panelGrid columns="3">
+								<p:outputLabel value="#{txt.lbl013}: "
+									styleClass="etiquetaFormulario"
+									style="height:60px;line-height:60px;width:150px;" />
+								<h:panelGrid width="800">
+									<p:commandButton id="btnNuevoObjEsp" icon="fa fa-plus"
+										value="#{txt.btn03}"
+										action="#{plac.llamarVentanaObjetivoEspecificoNuevo()}"
+										process="@this" partialSubmit="true" update=":frm:pnlDialogos"
+										async="true" global="false" onclick="PF('dlgEnProc').show()"
+										oncomplete="PF('dlgEnProc').hide()" />
+									<p:dataTable id="lstObjEsp" var="oe"
+										value="#{plac.listSpecificObjective}"
+										emptyMessage="#{txt.lbl047}">
+										<p:column headerText="#{txt.lbl244}">
+										
+										<p:outputLabel value="#{oe.spobDescription}" styleClass="textoJustificado"  />
+										
+									</p:column>
+										<p:column width="70" headerText="#{txt.lbl024}">
+											<p:commandButton icon="fa fa-pencil"
+												action="#{plac.seleccionarObjetivoEspecificoEditar(oe)}"
+												process="@this" partialSubmit="true" async="true"
+												global="false" update=":frm:pnlDialogos"
+												title="#{txt.btn15}" onclick="PF('dlgEnProc').show()"
+												oncomplete="PF('dlgEnProc').hide()" />
+											<p:commandButton icon="fa fa-trash"
+												action="#{plac.eliminarObjetivoEspecifico(oe)}"
+												process="@this" partialSubmit="true" async="true"
+												title="#{txt.btn14}" global="false"
+												update=":frm:tvContenido:lstObjEsp,:frm:msgs"
+												onclick="PF('dlgEnProc').show()"
+												oncomplete="PF('dlgEnProc').hide()">
+												<p:confirm header="#{txt.lbl030}" message="#{txt.lbl032}"
+													icon="pi pi-exclamation-triangle" />
+											</p:commandButton>
+										</p:column>
+									</p:dataTable>
+								</h:panelGrid>
+							</h:panelGrid>
+							<br />
+							<p:outputLabel value="#{txt.lbl015}"
+								styleClass="etiquetaSubtitulo" />
+							<h:panelGrid columns="3">
+								<p:outputLabel value="#{txt.lbl015}: "
+									styleClass="etiquetaFormulario"
+									style="height:60px;line-height:60px;width:150px;" />
+								<h:panelGrid width="800">
+									<p:commandButton id="btnNuevaMeta" icon="fa fa-plus"
+										value="#{txt.btn04}" action="#{plac.llamarVentanaMetaNuevo()}"
+										process="@this" partialSubmit="true" update=":frm:pnlDialogos"
+										async="true" global="false" onclick="PF('dlgEnProc').show()"
+										oncomplete="PF('dlgEnProc').hide()" />
+									<p:dataTable id="lstMetas" var="me" value="#{plac.listGoal}"
+										emptyMessage="#{txt.lbl047}">
+										<p:column headerText="#{txt.lbl244}">
+										
+										<p:outputLabel value="#{me.goalDescription}" styleClass="textoJustificado" />
+									</p:column>
+										<p:column width="70"  headerText="#{txt.lbl024}">
+											<p:commandButton icon="fa fa-pencil"
+												action="#{plac.seleccionarMetaEditar(me)}" process="@this"
+												partialSubmit="true" async="true" global="false"
+												update=":frm:pnlDialogos" title="#{txt.btn15}" />
+											<p:commandButton icon="fa fa-trash"
+												action="#{plac.eliminarMeta(me)}" process="@this"
+												partialSubmit="true" async="true" global="false"
+												update=":frm:tvContenido:lstMetas,:frm:msgs"
+												title="#{txt.btn14}">
+												<p:confirm header="#{txt.lbl030}" message="#{txt.lbl033}"
+													icon="pi pi-exclamation-triangle" />
+											</p:commandButton>
+										</p:column>
+									</p:dataTable>
+								</h:panelGrid>
+							</h:panelGrid>
+							<h:panelGrid style="margin:0 auto;">
+								<p:commandButton value="#{txt.btn30}"
+									action="#{plac.cambiarTab(1)}" icon="fa fa-fw fa-arrow-right"
+									process="@this" partialSubmit="true" async="true"
+									global="false" update=":frm:pnlContenidoPlan"
+									styleClass="botonRegistroProyecto" />
+							</h:panelGrid>
+						</p:tab>
+						<p:tab title="#{txt.lbl009}">
+							<p:outputLabel value="#{txt.lbl009}"
+								styleClass="etiquetaSubtitulo" />
+							<h:panelGrid width="980">
+								<p:commandButton id="btnNuevoComp" icon="fa fa-plus"
+									value="#{txt.btn05}"
+									action="#{plac.llamarVentanaComponenteNuevo()}" process="@this"
+									partialSubmit="true" update=":frm:pnlDialogos" async="true"
+									global="false" onclick="PF('dlgEnProc').show()"
+									oncomplete="PF('dlgEnProc').hide()" />
+								<p:dataTable id="lstComp" var="co" value="#{plac.listComponent}"
+									emptyMessage="#{txt.lbl047}">
+									<p:column width="598" headerText="#{txt.lbl022}">
+										<p:outputLabel value="#{txt.lbl017}: "
+											style="font-weight:bold;" />
+									#{co.compCode}<br />
+										<p:outputLabel value="#{txt.lbl018}: "
+											style="font-weight:bold;" />
+									#{co.compName}<br />
+										<p:outputLabel value="#{txt.lbl019}: "
+											style="font-weight:bold;" />
+									#{co.cataId.cataText1}<br />
+										<p:outputLabel value="#{txt.lbl020}: "
+											style="font-weight:bold;" />
+									<h:outputText value="#{co.compObjective}" style="text-align:justify;display:block;" />
+									</p:column>
+
+									<p:column width="100" headerText="#{txt.lbl024}">
+										<p:commandButton value="M"
+											action="#{plac.prepararNuevaMedidaDesdeComponente(co)}"
+											process="@this" partialSubmit="true" async="true"
+											global="false" update=":frm:pnlDialogos"
+											onclick="PF('dlgEnProc').show()"
+											oncomplete="PF('dlgEnProc').hide()" title="#{txt.btn06}" />
+										<p:commandButton value="A"
+											action="#{plac.prepararNuevaAccionDesdeComponente(co)}"
+											process="@this" partialSubmit="true" async="true"
+											global="false" update=":frm:pnlDialogos"
+											onclick="PF('dlgEnProc').show()"
+											oncomplete="PF('dlgEnProc').hide()" title="#{txt.btn07}"/>
+										<p:commandButton icon="fa fa-pencil"
+											action="#{plac.seleccionarComponenteEditar(co)}"
+											process="@this" partialSubmit="true" async="true"
+											global="false" update=":frm:pnlDialogos" title="#{txt.btn15}"
+											onclick="PF('dlgEnProc').show()"
+											oncomplete="PF('dlgEnProc').hide()" />
+										<p:commandButton icon="fa fa-trash"
+											action="#{plac.eliminarComponente(co)}" process="@this"
+											partialSubmit="true" async="true" global="false"
+											title="#{txt.btn14}" onclick="PF('dlgEnProc').show()"
+											oncomplete="PF('dlgEnProc').hide()"
+											update=":frm:tvContenido:lstComp,:frm:tvContenido:lstMedAcc,:frm:tvContenido:lstCobeneficios,:frm:msgs">
+											<p:confirm header="#{txt.lbl030}" message="#{txt.lbl034}"
+												icon="pi pi-exclamation-triangle" />
+										</p:commandButton>
+									</p:column>
+								</p:dataTable>
+							</h:panelGrid>
+							<br />
+							<p:outputLabel value="#{txt.lbl021}"
+								styleClass="etiquetaSubtitulo" />
+							<h:panelGrid width="980">
+								<h:panelGrid columns="2">
+									<p:commandButton id="btnNuevaMed" icon="fa fa-plus"
+										value="#{txt.btn06}"
+										action="#{plac.llamarVentanaMedidaNuevo()}" process="@this"
+										partialSubmit="true" update=":frm:pnlDialogos" async="true"
+										global="false" onclick="PF('dlgEnProc').show()"
+										oncomplete="PF('dlgEnProc').hide()" />
+									<p:commandButton id="btnNuevaAcc" icon="fa fa-plus"
+										value="#{txt.btn07}"
+										action="#{plac.llamarVentanaAccionNuevo()}" process="@this"
+										partialSubmit="true" update=":frm:pnlDialogos" async="true"
+										global="false" onclick="PF('dlgEnProc').show()"
+										oncomplete="PF('dlgEnProc').hide()" />
+								</h:panelGrid>
+								<p:dataTable id="lstMedAcc" var="medAcc"
+									value="#{plac.listMeasureAction}" emptyMessage="#{txt.lbl047}"
+									styleClass="alineadoCentroTd">
+
+
+
+									<p:column headerText="#{txt.lbl022} y #{txt.lbl023}" groupRow="true" width="200">
+										<p:outputLabel value="#{txt.lbl022}:"
+											style="font-size:10px;font-weight:bold;" />
+										<br />
+										<p:outputLabel value="#{medAcc[1]}" style="font-size:10px;" styleClass="textoJustificado" />
+										<br />
+										<p:outputLabel value="#{txt.lbl023}:"
+											style="font-size:10px;font-weight:bold;" 
+											rendered="#{medAcc[2]!=null}"/>
+										<br />
+										<p:outputLabel value="#{medAcc[2]} #{medAcc[3]}"
+											style="font-size:10px;"  styleClass="textoJustificado"/>
+
+										<h:panelGrid columns="2" styleClass="sinBordesAncho100"
+											rendered="#{medAcc[5]!=null}" style="margin:0 auto;">
+											<p:commandButton icon="fa fa-pencil"
+												action="#{plac.seleccionarMedidaEditar(medAcc[5])}"
+												process="@this" partialSubmit="true" async="true"
+												global="false" update=":frm:pnlDialogos"
+												title="#{txt.btn15}" onclick="PF('dlgEnProc').show()"
+												oncomplete="PF('dlgEnProc').hide()" />
+											<p:commandButton icon="fa fa-trash"
+												action="#{plac.eliminarMedida(medAcc[5])}" process="@this"
+												partialSubmit="true" async="true" global="false"
+												update=":frm:tvContenido:lstMedAcc,:frm:msgs"
+												title="#{txt.btn14}" onclick="PF('dlgEnProc').show()"
+												oncomplete="PF('dlgEnProc').hide()">
+												<p:confirm header="#{txt.lbl030}" message="#{txt.lbl035}"
+													icon="pi pi-exclamation-triangle" />
+											</p:commandButton>
+										</h:panelGrid>
+									</p:column>
+									<p:column width="600" headerText="#{txt.lbl024}">
+									<p:outputLabel value="#{medAcc[4]}"  styleClass="textoJustificado"/>
+									</p:column>
+									<p:column width="70">
+										<p:commandButton icon="fa fa-pencil"
+											action="#{plac.seleccionarAccionEditar(medAcc[6])}"
+											process="@this" partialSubmit="true" async="true"
+											global="false" update=":frm:pnlDialogos"
+											rendered="#{medAcc[6]!=null}" title="#{txt.btn15}"
+											onclick="PF('dlgEnProc').show()"
+											oncomplete="PF('dlgEnProc').hide()" />
+										<p:commandButton icon="fa fa-trash"
+											action="#{plac.eliminarAccion(medAcc[6])}" process="@this"
+											partialSubmit="true" async="true" global="false"
+											update=":frm:tvContenido:lstMedAcc,:frm:msgs"
+											rendered="#{medAcc[6]!=null}" title="#{txt.btn14}"
+											onclick="PF('dlgEnProc').show()"
+											oncomplete="PF('dlgEnProc').hide()">
+											<p:confirm header="#{txt.lbl030}" message="#{txt.lbl036}"
+												icon="pi pi-exclamation-triangle" />
+										</p:commandButton>
+									</p:column>
+								</p:dataTable>
+							</h:panelGrid>
+							<br />
+							<p:outputLabel value="#{txt.lbl099}"
+								styleClass="etiquetaSubtitulo" />
+							<h:panelGrid width="980">
+								<h:panelGrid columns="2">
+									<p:commandButton id="btnNuevaInd" icon="fa fa-plus"
+										value="#{txt.btn27}"
+										action="#{plac.llamarVentanaIndicadorNuevo()}" process="@this"
+										partialSubmit="true" update=":frm:pnlDialogos" async="true"
+										global="false" onclick="PF('dlgEnProc').show()"
+										oncomplete="PF('dlgEnProc').hide()" />
+								</h:panelGrid>
+								<p:dataTable id="lstIndicadores" var="ind"
+									value="#{plac.listIndicator}" emptyMessage="#{txt.lbl047}"
+									styleClass="alineadoCentroTd">
+
+									<p:column headerText="#{txt.lbl022}" groupRow="true"
+										width="150">
+									<p:outputLabel value="#{ind[5]} #{ind[6]}" styleClass="textoJustificado"/> 
+									</p:column>
+									<p:column headerText="#{txt.lbl097}" width="290">
+										<p:outputLabel value="#{txt.lbl017}: #{ind[0]} "
+											style="font-size:10px;" />
+										<br />
+									<p:outputLabel value="#{ind[1]}" styleClass="textoJustificado"/>
+									</p:column>
+									<p:column headerText="#{txt.lbl016}" width="250">
+									<p:outputLabel value="#{ind[2]} = #{ind[7]}" styleClass="textoJustificado"/>
+									</p:column>
+									<p:column width="70" headerText="#{txt.lbl024}">
+										<p:commandButton icon="fa fa-pencil"
+											action="#{plac.seleccionarIndicadorEditar(ind[3])}"
+											process="@this" partialSubmit="true" async="true"
+											global="false" update=":frm:pnlDialogos" title="#{txt.btn15}"
+											onclick="PF('dlgEnProc').show()"
+											oncomplete="PF('dlgEnProc').hide()" />
+										<p:commandButton icon="fa fa-trash"
+											action="#{plac.eliminarIndicador(ind[3])}" process="@this"
+											partialSubmit="true" async="true" global="false"
+											update=":frm:tvContenido:lstIndicadores,:frm:msgs"
+											title="#{txt.btn14}" onclick="PF('dlgEnProc').show()"
+											oncomplete="PF('dlgEnProc').hide()">
+											<p:confirm header="#{txt.lbl030}" message="#{txt.lbl098}"
+												icon="pi pi-exclamation-triangle" />
+										</p:commandButton>
+
+									</p:column>
+
+								</p:dataTable>
+							</h:panelGrid>
+							<br />
+							<p:outputLabel value="#{txt.lbl027}"
+								styleClass="etiquetaSubtitulo" />
+							<h:panelGrid width="980">
+								<p:commandButton id="btnNuevoCob" icon="fa fa-plus"
+									value="#{txt.btn08}"
+									action="#{plac.llamarVentanaCobeneficioNuevo()}"
+									process="@this" partialSubmit="true" update=":frm:pnlDialogos"
+									async="true" global="false" onclick="PF('dlgEnProc').show()"
+									oncomplete="PF('dlgEnProc').hide()" />
+								<p:dataTable id="lstCobeneficios" var="co"
+									value="#{plac.listCobenefit}" emptyMessage="#{txt.lbl047}"
+									styleClass="alineadoCentroTd">
+									<p:column headerText="#{txt.lbl022}" groupRow="true"
+										width="150">
+									<p:outputLabel value="#{co.compId.compCode} #{co.compId.compName}" styleClass="textoJustificado"/>
+									</p:column>
+									<p:column headerText="#{txt.lbl026}">
+									<p:outputLabel value="#{co.cobeDescription}" styleClass="textoJustificado"/>
+									</p:column>
+									<p:column width="70" headerText="#{txt.lbl024}">
+										<p:commandButton icon="fa fa-pencil"
+											action="#{plac.seleccionarCobeneficioEditar(co)}"
+											process="@this" partialSubmit="true" async="true"
+											global="false" update=":frm:pnlDialogos" title="#{txt.btn15}"
+											onclick="PF('dlgEnProc').show()"
+											oncomplete="PF('dlgEnProc').hide()" />
+										<p:commandButton icon="fa fa-trash"
+											action="#{plac.eliminarCobeneficio(co)}" process="@this"
+											partialSubmit="true" async="true" global="false"
+											update=":frm:tvContenido:lstCobeneficios,:frm:msgs"
+											title="#{txt.btn14}" onclick="PF('dlgEnProc').show()"
+											oncomplete="PF('dlgEnProc').hide()">
+											<p:confirm header="#{txt.lbl030}" message="#{txt.lbl037}"
+												icon="pi pi-exclamation-triangle" />
+										</p:commandButton>
+									</p:column>
+								</p:dataTable>
+							</h:panelGrid>
+							<h:panelGrid columns="2" style="margin:0 auto;">
+								<p:commandButton value="#{txt.btn38}"
+									action="#{plac.cambiarTab(0)}" icon="fa fa-fw fa-mail-reply"
+									process="@this" partialSubmit="true" async="true"
+									global="false" update=":frm:pnlContenidoPlan"
+									styleClass="botonRegistroProyecto" />
+								<p:commandButton value="#{txt.btn30}"
+									action="#{plac.cambiarTab(2)}" icon="fa fa-fw fa-arrow-right"
+									process="@this" partialSubmit="true" async="true"
+									global="false" update=":frm:pnlContenidoPlan"
+									styleClass="botonRegistroProyecto" />
+							</h:panelGrid>
+
+
+						</p:tab>
+						<p:tab title="#{txt.lbl010}">
+							<p:outputLabel value="#{txt.lbl038}"
+								styleClass="etiquetaSubtitulo" />
+							<h:panelGrid width="980">
+								<p:commandButton id="btnNuevoDoc" icon="fa fa-plus"
+									value="#{txt.btn10}"
+									action="#{plac.llamarVentanaMarcoLegalNuevo()}" process="@this"
+									partialSubmit="true" update=":frm:pnlDialogos" async="true"
+									global="false" onclick="PF('dlgEnProc').show()"
+									oncomplete="PF('dlgEnProc').hide()" />
+								<p:dataTable id="lstDocumentos" var="doc"
+									value="#{plac.listLegalFrameworkDoc}"
+									emptyMessage="#{txt.lbl047}" styleClass="alineadoCentroTd">
+									<p:column headerText="#{txt.lbl039}">
+									#{doc.cataId.cataText1}
+									</p:column>
+									<p:column headerText="#{txt.lbl018}">
+									#{doc.lfdoName}
+									</p:column>
+									<p:column headerText="#{txt.lbl040}">
+									#{doc.lfdoOfficialRegistryNumber} #{txt.lbl042}: 
+									<p:outputLabel value="#{doc.lfdoOfficialRegistryDate}">
+											<f:convertDateTime pattern="dd/MM/yyyy" />
+										</p:outputLabel>
+									</p:column>
+									<p:column headerText="#{txt.lbl044}" width="100">
+										<p:commandButton value="#{txt.btn13}" async="true"
+											global="false" ajax="false" icon="fa fa-arrow-down"
+											actionListener="#{plac.descargarArchivo(doc.docuId)}">
+											<p:fileDownload
+												value="#{plac.fileLegalFrameworkDocToDownload}" />
+										</p:commandButton>
+									</p:column>
+									<p:column width="70" headerText="#{txt.lbl024}">
+										<p:commandButton icon="fa fa-pencil"
+											action="#{plac.seleccionarMarcoLegalEditar(doc)}"
+											process="@this" partialSubmit="true" async="true"
+											global="false" update=":frm:pnlDialogos" title="#{txt.btn15}"
+											onclick="PF('dlgEnProc').show()"
+											oncomplete="PF('dlgEnProc').hide()" />
+										<p:commandButton icon="fa fa-trash"
+											action="#{plac.eliminarMarcoLegal(doc)}" process="@this"
+											partialSubmit="true" async="true" global="false"
+											update=":frm:tvContenido:lstDocumentos,:frm:msgs"
+											title="#{txt.btn14}" onclick="PF('dlgEnProc').show()"
+											oncomplete="PF('dlgEnProc').hide()">
+											<p:confirm header="#{txt.lbl030}" message="#{txt.lbl045}"
+												icon="pi pi-exclamation-triangle" />
+										</p:commandButton>
+									</p:column>
+								</p:dataTable>
+							</h:panelGrid>
+							<h:panelGrid style="margin:0 auto;">
+								<p:commandButton icon="fa fa-check"
+									action="#{plac.finalizarRegistro()}" process="@this"
+									partialSubmit="true" async="true" global="false"
+									update=":frm:pnlContenidoPlan,:frm:msgs" value="#{txt.btn36}"
+									onclick="PF('dlgEnProc').show()"
+									oncomplete="PF('dlgEnProc').hide()" />
+							</h:panelGrid>
+						</p:tab>
+					</p:tabView>
+				</h:panelGrid>
+			</h:panelGrid>
+
+			<h:panelGrid id="pnlDialogos">
+				<p:dialog header="#{txt.lbl006}" widgetVar="dlgInfoGeneral"
+					closable="true" modal="true">
+					<h:panelGrid id="pnlInfoGeneral">
+						<h:panelGrid columns="3">
+							<p:outputLabel value="*#{txt.lbl002}: " for="acplName"
+								styleClass="etiquetaFormulario"
+								style="height:30px;line-height:30px;width:250px;" />
+							<p:inputText id="acplName"
+								value="#{plac.actionPlanCurrent.acplName}" size="50"
+								maxlength="100" />
+							<p:message for="acplName"  display="icon"/>
+
+						</h:panelGrid>
+						<h:panelGrid columns="4">
+							<p:outputLabel value="*#{txt.lbl003}: " for="acplStartDate"
+								styleClass="etiquetaFormulario"
+								style="height:30px;line-height:30px;width:250px;" />
+							<p:calendar id="acplStartDate"
+								value="#{plac.actionPlanCurrent.acplStartDate}" showOn="button"
+								pattern="dd/MM/yyyy" navigator="true" locale="es"/>
+							<p:message for="acplStartDate"  display="icon"/>
+							<f:verbatim />
+							<p:outputLabel value="*#{txt.lbl004}: " for="acplFinishDate"
+								styleClass="etiquetaFormulario"
+								style="height:30px;line-height:30px;width:250px;" />
+							<p:calendar id="acplFinishDate"
+								value="#{plac.actionPlanCurrent.acplFinishDate}" showOn="button"
+								pattern="dd/MM/yyyy" navigator="true" locale="es" />
+							<p:message for="acplFinishDate"  display="icon"/>
+							<h:panelGrid columns="3">
+								<p:outputLabel value="#{txt.lbl005}: " for="acplIscurrent"
+									styleClass="etiquetaFormulario"
+									style="height:30px;line-height:30px;width:100px;" />
+								<p:selectBooleanCheckbox id="acplIscurrent"
+									value="#{plac.actionPlanCurrent.acplIscurrent}" />
+								<p:message for="acplIscurrent"  display="icon"/>
+							</h:panelGrid>
+
+						</h:panelGrid>
+						<h:panelGrid columns="3">
+							<p:outputLabel value="*#{txt.lbl007}: " for="acplGeneralObjective"
+								styleClass="etiquetaFormulario"
+								style="height:60px;line-height:60px;width:200px;" />
+							<p:inputTextarea id="acplGeneralObjective"
+								value="#{plac.actionPlanCurrent.acplGeneralObjective}" cols="55"
+								maxlength="500" style="text-align:justify;"/>
+							<p:message for="acplGeneralObjective"  display="icon"/>
+						</h:panelGrid>
+					</h:panelGrid>
+					<h:panelGrid style="margin:0 auto;">
+						<p:commandButton id="btnGuardar" value="#{txt.btn02}"
+							icon="fa fa-save" action="#{plac.guardarPlanAccion()}"
+							process="@this,pnlInfoGeneral" partialSubmit="true"
+							update="pnlInfoGeneral,:frm:pnlListaPlanes,:frm:msgs"
+							async="true" global="false" onclick="PF('dlgEnProc').show()"
+							oncomplete="PF('dlgEnProc').hide()" />
+					</h:panelGrid>
+				</p:dialog>
+
+				<p:dialog header="#{txt.lbl014}" widgetVar="dlgObjEspecifico"
+					closable="true" modal="true">
+					<h:panelGrid>
+						<h:panelGrid id="pnlObjEsp" columns="3">
+							<p:outputLabel value="*#{txt.lbl014}: " for="objEspDesc"
+								styleClass="etiquetaFormulario"
+								style="height:60px;line-height:60px;width:150px;" />
+							<p:inputTextarea id="objEspDesc"
+								value="#{plac.specificObjectiveCurrent.spobDescription}"
+								cols="55" maxlength="500" style="text-align:justify;"/>
+							<p:message for="objEspDesc"  display="icon"/>
+
+						</h:panelGrid>
+						<h:panelGrid style="margin:0 auto;">
+							<p:commandButton id="btnGuardarObjEsp" value="#{txt.btn02}"
+								icon="fa fa-save" action="#{plac.guardarObjetivoEspecifico()}"
+								process="@this,pnlObjEsp" partialSubmit="true"
+								update="pnlObjEsp,:frm:tvContenido:lstObjEsp,:frm:msgs"
+								async="true" global="false" onclick="PF('dlgEnProc').show()"
+								oncomplete="PF('dlgEnProc').hide()" />
+						</h:panelGrid>
+					</h:panelGrid>
+
+				</p:dialog>
+
+				<p:dialog header="#{txt.lbl016}" widgetVar="dlgMeta" closable="true"
+					modal="true">
+					<h:panelGrid>
+						<h:panelGrid id="pnlMeta" columns="3">
+							<p:outputLabel value="*#{txt.lbl016}: " for="metaDesc"
+								styleClass="etiquetaFormulario"
+								style="height:60px;line-height:60px;width:150px;" />
+							<p:inputTextarea id="metaDesc"
+								value="#{plac.goalCurrent.goalDescription}" cols="55"
+								maxlength="500" style="text-align:justify;" />
+							<p:message for="metaDesc"  display="icon"/>
+
+						</h:panelGrid>
+						<h:panelGrid style="margin:0 auto;">
+							<p:commandButton id="btnMeta" value="#{txt.btn02}"
+								icon="fa fa-save" action="#{plac.guardarMeta()}"
+								process="@this,pnlMeta" partialSubmit="true"
+								update="pnlMeta,:frm:tvContenido:lstMetas,:frm:msgs"
+								async="true" global="false" onclick="PF('dlgEnProc').show()"
+								oncomplete="PF('dlgEnProc').hide()" />
+						</h:panelGrid>
+
+					</h:panelGrid>
+
+				</p:dialog>
+
+				<p:dialog header="#{txt.lbl022}" widgetVar="dlgComponente"
+					closable="true" modal="true">
+					<h:panelGrid>
+						<h:panelGrid id="pnlComponente" columns="3">
+							<p:outputLabel value="#{txt.lbl017}: " for="compCod"
+								styleClass="etiquetaFormulario"
+								style="height:60px;line-height:60px;width:150px;" />
+							<p:inputText id="compCod"
+								value="#{plac.componentCurrent.compCode}" size="10"
+								maxlength="4" disabled="#{plac.componentCurrent.compId==null}" />
+							<p:message for="compCod"  display="icon"/>
+							<p:outputLabel value="*#{txt.lbl018}: " for="compNom"
+								styleClass="etiquetaFormulario"
+								style="height:60px;line-height:60px;width:150px;" />
+							<p:inputTextarea id="compNom"
+								value="#{plac.componentCurrent.compName}" cols="55"
+								maxlength="100" style="text-align:justify;" />
+							<p:message for="compNom"  display="icon"/>
+							<p:outputLabel value="*#{txt.lbl019}: " for="compTipo"
+								styleClass="etiquetaFormulario"
+								style="height:60px;line-height:60px;width:150px;" />
+							<p:selectOneMenu id="compTipo"
+								value="#{plac.componentCurrent.cataId.cataId}" disabled="#{plac.componentCurrent.compId!=null}">
+								<f:selectItem itemLabel="#{txt.lbl025}.." itemValue="#{null}" />
+								<f:selectItems value="#{app.lstCatTipoComp}" var="tipoComp"
+									itemLabel="#{tipoComp.cataText1}"
+									itemValue="#{tipoComp.cataId}" />
+							</p:selectOneMenu>
+							<p:message for="compTipo"  display="icon"/>
+							<p:outputLabel value="*#{txt.lbl020}: " for="compObj"
+								styleClass="etiquetaFormulario"
+								style="height:60px;line-height:60px;width:150px;" />
+							<p:inputTextarea id="compObj"
+								value="#{plac.componentCurrent.compObjective}" cols="55"
+								maxlength="500" style="text-align:justify;"/>
+							<p:message for="compObj"  display="icon"/>
+
+						</h:panelGrid>
+						<h:panelGrid style="margin:0 auto;">
+							<p:commandButton id="btnComp" value="#{txt.btn02}"
+								icon="fa fa-save" action="#{plac.guardarComponente()}"
+								process="@this,pnlComponente" partialSubmit="true"
+								update="pnlComponente,:frm:tvContenido:lstComp,:frm:tvContenido:lstMedAcc,:frm:msgs"
+								async="true" global="false" onclick="PF('dlgEnProc').show()"
+								oncomplete="PF('dlgEnProc').hide()" />
+						</h:panelGrid>
+					</h:panelGrid>
+
+				</p:dialog>
+
+				<p:dialog header="#{txt.lbl023}" widgetVar="dlgMedida"
+					closable="true" modal="true">
+					<h:panelGrid>
+						<h:panelGrid id="pnlMedida" columns="3">
+							<p:outputLabel value="#{txt.lbl017}: " for="medCod"
+								styleClass="etiquetaFormulario"
+								style="height:60px;line-height:60px;width:150px;" />
+							<p:inputText id="medCod" value="#{plac.measureCurrent.measCode}"
+								size="10" maxlength="7"
+								disabled="#{plac.measureCurrent.measId==null}" />
+							<p:message for="medCod"  display="icon"/>
+							<p:outputLabel value="*#{txt.lbl022}: " for="medComp"
+								styleClass="etiquetaFormulario"
+								style="height:60px;line-height:60px;width:150px;" />
+							<p:selectOneMenu id="medComp" converter="#{componenteConverter}"
+								value="#{plac.measureCurrent.compId}"
+								var="componente" 
+								style="width:700px !important;" panelStyle="width:600px;">
+								<f:selectItem itemLabel="#{txt.lbl025}.." itemValue="#{null}" />
+								<f:selectItems value="#{plac.listComponent}" var="comp"
+									itemLabel="#{comp.compName}" itemValue="#{comp}" />
+									<p:column>
+										<h:outputText value="#{componente.compCode}"/>
+									</p:column>
+									<p:column>
+										<h:outputText value="#{componente.compName}"/>
+									</p:column>
+							</p:selectOneMenu>
+							<p:message for="medComp"  display="icon"/>
+							<p:outputLabel value="*#{txt.lbl023}: " for="medDesc"
+								styleClass="etiquetaFormulario"
+								style="height:60px;line-height:60px;width:150px;" />
+							<p:inputTextarea id="medDesc"
+								value="#{plac.measureCurrent.measDescription}" cols="55"
+								maxlength="500" style="text-align:justify;"/>
+							<p:message for="medDesc"  display="icon"/>
+
+						</h:panelGrid>
+						<h:panelGrid style="margin:0 auto;">
+							<p:commandButton id="btnMedida" value="#{txt.btn02}"
+								icon="fa fa-save" action="#{plac.guardarMedida()}"
+								process="@this,pnlMedida" partialSubmit="true"
+								update="pnlMedida,:frm:tvContenido:lstMedAcc,:frm:msgs"
+								async="true" global="false" onclick="PF('dlgEnProc').show()"
+								oncomplete="PF('dlgEnProc').hide()" />
+						</h:panelGrid>
+					</h:panelGrid>
+
+				</p:dialog>
+
+				<p:dialog header="#{txt.lbl097}" widgetVar="dlgIndicador"
+					closable="true" modal="true">
+					<h:panelGrid>
+						<h:panelGrid id="pnlIndicador" columns="3">
+							<p:outputLabel value="#{txt.lbl017}: " for="indCod"
+								styleClass="etiquetaFormulario"
+								style="height:60px;line-height:60px;width:150px;"
+								rendered="#{plac.measureCurrent.measId!=null}" />
+							<p:inputText id="indCod" value="#{plac.measureCurrent.measCode}"
+								size="10" maxlength="7"
+								rendered="#{plac.measureCurrent.measId!=null}" />
+							<p:message for="indCod"
+								rendered="#{plac.measureCurrent.measId!=null}"  display="icon"/>
+							<p:outputLabel value="*#{txt.lbl022}: " for="indComp"
+								styleClass="etiquetaFormulario"
+								style="height:60px;line-height:60px;width:150px;" />
+							<p:selectOneMenu id="indComp"  converter="#{componenteConverter}"
+								value="#{plac.measureCurrent.compId}"
+								var="componente" 
+								style="width:700px !important;" panelStyle="width:600px;">
+								<f:selectItem itemLabel="#{txt.lbl025}.." itemValue="#{null}" />
+								<f:selectItems value="#{plac.listComponent}" var="comp"
+									itemLabel="#{comp.compName}" itemValue="#{comp}" />
+									<p:column>
+										<h:outputText value="#{componente.compCode}"/>
+									</p:column>
+									<p:column>
+										<h:outputText value="#{componente.compName}" />
+									</p:column>
+							</p:selectOneMenu>
+							<p:message for="indComp"  display="icon"/>
+							<p:outputLabel value="*#{txt.lbl097}: " for="indDesc"
+								styleClass="etiquetaFormulario"
+								style="height:60px;line-height:60px;width:150px;" />
+							<p:inputTextarea id="indDesc"
+								value="#{plac.measureCurrent.measDescription}" cols="55"
+								maxlength="500" style="text-align:justify;"/>
+							<p:message for="indDesc"  display="icon"/>
+							<p:outputLabel value="*#{txt.lbl016}: " for="indGoal"
+								styleClass="etiquetaFormulario"
+								style="height:60px;line-height:60px;width:150px;" />
+							<p:inputTextarea id="indGoal"
+								value="#{plac.measureCurrent.measGoal}" cols="55"
+								maxlength="500" style="text-align:justify;"/>
+							<p:message for="indGoal"  display="icon"/>
+							<p:outputLabel value="#{txt.lbl256}: " for="indGoalValue"
+								styleClass="etiquetaFormulario"
+								style="height:60px;line-height:20px;width:150px;" />
+							<p:inputNumber id="indGoalValue"
+								value="#{plac.measureCurrent.measGoalValue}" size="12"
+								maxlength="20" />
+							<p:message for="indGoalValue"  display="icon"/>
+
+						</h:panelGrid>
+						<h:panelGrid style="margin:0 auto;">
+							<p:commandButton id="btnIndicador" value="#{txt.btn02}"
+								icon="fa fa-save" action="#{plac.guardarIndicador()}"
+								process="@this,pnlIndicador" partialSubmit="true"
+								update="pnlIndicador,:frm:tvContenido:lstIndicadores,:frm:msgs"
+								async="true" global="false" onclick="PF('dlgEnProc').show()"
+								oncomplete="PF('dlgEnProc').hide()" />
+						</h:panelGrid>
+					</h:panelGrid>
+
+				</p:dialog>
+
+				<p:dialog header="#{txt.lbl024}" widgetVar="dlgAccion"
+					closable="true" modal="true">
+					<h:panelGrid>
+						<h:panelGrid id="pnlAccion" columns="3">
+
+							<p:outputLabel value="*#{txt.lbl022}: " for="accComp"
+								styleClass="etiquetaFormulario"
+								style="height:60px;line-height:60px;width:150px;" />
+							<p:selectOneMenu id="accComp"  converter="#{componenteConverter}"
+								value="#{plac.actionCurrent.measId.compId}" var="componente" 
+								style="width:700px !important;" panelStyle="width:600px;">
+								<f:selectItem itemLabel="#{txt.lbl025}.." itemValue="#{null}" />
+								<f:selectItems value="#{plac.listComponent}" var="comp"
+									itemLabel="#{comp.compName}" itemValue="#{comp}" />
+									<p:column>
+										<h:outputText value="#{componente.compCode}"/>
+									</p:column>
+									<p:column>
+										<h:outputText value="#{componente.compName}"/>
+									</p:column>
+								<p:ajax event="change"
+									listener="#{plac.listarMedidasPorComponente()}" async="true"
+									global="false" process="@this" partialSubmit="true"
+									update="accMed"></p:ajax>
+							</p:selectOneMenu>
+							<p:message for="accComp"  display="icon"/>
+							<p:outputLabel value="*#{txt.lbl023}: " for="accMed"
+								styleClass="etiquetaFormulario"
+								style="height:60px;line-height:60px;width:150px;" />
+							<p:selectOneMenu id="accMed" converter="#{medidaConverter}"
+								value="#{plac.actionCurrent.measId}"
+								var="medida" 
+								style="width:700px !important;" panelStyle="width:600px;">
+								<f:selectItem itemLabel="#{txt.lbl025}.." itemValue="#{null}" />
+								<f:selectItems value="#{plac.listMeasureByComponent}" var="med"
+									itemLabel="#{med.measDescription}" itemValue="#{med}" />
+									<p:column>
+										<h:outputText value="#{medida.measCode}"/>
+										</p:column>
+										<p:column>
+										<h:outputText value="#{medida.measDescription}"/>
+										</p:column>
+							</p:selectOneMenu>
+							<p:message for="accMed"  display="icon"/>
+							<p:outputLabel value="*#{txt.lbl024}: " for="accDesc"
+								styleClass="etiquetaFormulario"
+								style="height:60px;line-height:60px;width:150px;" />
+							<p:inputTextarea id="accDesc"
+								value="#{plac.actionCurrent.actiDescription}" cols="55"
+								maxlength="500" style="text-align:justify;"/>
+							<p:message for="accDesc"  display="icon"/>
+
+						</h:panelGrid>
+						<h:panelGrid style="margin:0 auto;">
+							<p:commandButton id="btnAccion" value="#{txt.btn02}"
+								icon="fa fa-save" action="#{plac.guardarAccion()}"
+								process="@this,pnlAccion" partialSubmit="true"
+								update="pnlAccion,:frm:tvContenido:lstMedAcc,:frm:msgs"
+								async="true" global="false" onclick="PF('dlgEnProc').show()"
+								oncomplete="PF('dlgEnProc').hide()" />
+						</h:panelGrid>
+					</h:panelGrid>
+
+				</p:dialog>
+
+				<p:dialog header="#{txt.lbl026}" widgetVar="dlgCobeneficio"
+					closable="true" modal="true">
+					<h:panelGrid>
+						<h:panelGrid id="pnlCobeneficio" columns="3">
+
+							<p:outputLabel value="*#{txt.lbl022}: " for="cobComp"
+								styleClass="etiquetaFormulario"
+								style="height:60px;line-height:60px;width:150px;" />
+							<p:selectOneMenu id="cobComp"  converter="#{componenteConverter}"
+								value="#{plac.cobenefitCurrent.compId}" var="componente" 
+								style="width:700px !important;" panelStyle="width:600px;">
+								<f:selectItem itemLabel="#{txt.lbl025}.." itemValue="#{null}" />
+								<f:selectItems value="#{plac.listComponent}" var="comp"
+									itemLabel="#{comp.compName}" itemValue="#{comp}" />
+									<p:column>
+										<h:outputText value="#{componente.compCode}"/>
+									</p:column>
+									<p:column>
+										<h:outputText value="#{componente.compName}"/>
+									</p:column>
+							</p:selectOneMenu>
+							<p:message for="cobComp"  display="icon"/>
+							<p:outputLabel value="*#{txt.lbl026}: " for="cobDesc"
+								styleClass="etiquetaFormulario"
+								style="height:60px;line-height:60px;width:150px;" />
+							<p:inputTextarea id="cobDesc"
+								value="#{plac.cobenefitCurrent.cobeDescription}" cols="55"
+								maxlength="250" style="text-align:justify;"/>
+							<p:message for="cobDesc"  display="icon"/>
+
+						</h:panelGrid>
+						<h:panelGrid style="margin:0 auto;">
+							<p:commandButton id="btnCobeneficio" value="#{txt.btn02}"
+								icon="fa fa-save" action="#{plac.guardarCobeneficio()}"
+								process="@this,pnlCobeneficio" partialSubmit="true"
+								update="pnlCobeneficio,:frm:tvContenido:lstCobeneficios,:frm:msgs"
+								async="true" global="false" onclick="PF('dlgEnProc').show()"
+								oncomplete="PF('dlgEnProc').hide()" />
+						</h:panelGrid>
+					</h:panelGrid>
+
+				</p:dialog>
+
+				<p:dialog header="#{txt.lbl041}" widgetVar="dlgMarcoLegal"
+					closable="true" modal="true">
+					<h:panelGrid>
+						<h:panelGrid id="pnlMarcoLegal" columns="3">
+
+							<p:outputLabel value="*#{txt.lbl039}: " for="docMec"
+								styleClass="etiquetaFormulario"
+								style="height:60px;line-height:60px;width:150px;" />
+							<p:selectOneMenu id="docMec" converter="#{catalogoConverter}"
+								value="#{plac.legalFrameworkDocCurrent.cataId}">
+								<f:selectItems value="#{app.lstCatMecJurid}" var="mec"
+									itemLabel="#{mec.cataText1}" itemValue="#{mec}" />
+							</p:selectOneMenu>
+							<p:message for="docMec"  display="icon"/>
+							<p:outputLabel value="*#{txt.lbl018}: " for="docNom"
+								styleClass="etiquetaFormulario"
+								style="height:60px;line-height:60px;width:150px;" />
+							<p:inputTextarea id="docNom"
+								value="#{plac.legalFrameworkDocCurrent.lfdoName}" cols="55"
+								maxlength="200" style="text-align:justify;"/>
+							<p:message for="docNom"  display="icon"/>
+							<p:outputLabel value="#{txt.lbl040}: " for="docReg"
+								styleClass="etiquetaFormulario"
+								style="height:60px;line-height:60px;width:150px;" />
+							<p:inputText id="docReg"
+								value="#{plac.legalFrameworkDocCurrent.lfdoOfficialRegistryNumber}"
+								maxlength="50" />
+							<p:message for="docReg"  display="icon"/>
+							<p:outputLabel value="#{txt.lbl043}: " for="docFech"
+								styleClass="etiquetaFormulario"
+								style="height:60px;line-height:60px;width:150px;" />
+							<p:calendar id="docFech"
+								value="#{plac.legalFrameworkDocCurrent.lfdoOfficialRegistryDate}"
+								showOn="button" pattern="dd/MM/yyyy" navigator="true" locale="es"/>
+							<p:message for="docFech"  display="icon"/>
+							<p:outputLabel value="*#{txt.lbl044}: "
+								styleClass="etiquetaFormulario"
+								style="height:150px;line-height:60px;width:150px;"/>
+							<h:panelGrid
+								columns="2">
+								<p:fileUpload id="fuMarcoLegal" auto="true" label="#{txt.btn11}"
+									listener="#{plac.handleFileUpload}" update=":frm:msgs,:frm:namFile"
+									sizeLimit="20000000" 
+									allowTypes="/(\.|\/)(pdf|doc?x|jpe?g|png|zip|rar)$/"
+									invalidSizeMessage="#{txt.lbl048}" 
+									invalidFileMessage="#{txt.msg168}"
+									
+									>
+									<h:panelGrid>
+									<p:outputLabel value="#{txt.lbl435}: pdf,doc,docx,jpg,png,zip,rar"/>
+									<p:outputLabel value="#{txt.lbl436}: 20MB"/>
+									</h:panelGrid>
+									</p:fileUpload>
+									<sigma_components:ayuda texto="#{txt.lbl449}"/>
+									<p:outputLabel id="namFile" value="#{txt.lbl018}: #{plac.fileLegalFrameworkDocCurrent.fileName}"/>
+							</h:panelGrid>
+							<p:message for="fuMarcoLegal" display="icon"/>
+							
+						</h:panelGrid>
+						<h:panelGrid style="margin:0 auto;">
+							<p:commandButton id="btnMarcoLegal" value="#{txt.btn02}"
+								icon="fa fa-save" action="#{plac.guardarMarcoLegal()}"
+								process="@this,pnlMarcoLegal" partialSubmit="true"
+								update="pnlMarcoLegal,:frm:tvContenido:lstDocumentos,:frm:msgs"
+								async="true" global="false" onclick="PF('dlgEnProc').show()"
+								oncomplete="PF('dlgEnProc').hide()" />
+						</h:panelGrid>
+					</h:panelGrid>
+
+				</p:dialog>
+
+			</h:panelGrid>
+			<sigma_components:controlLogeo idPagina="SIGMA_ADM_PA"/>
+			
+			<sigma_components:dlgConfirmacion/>
+			
+		</center>
+</ui:define>
+</ui:composition>
+</body>
+</html>

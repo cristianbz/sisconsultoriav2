@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="subr_proy_ind" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="f44941ac-b0a2-4b1c-b52a-535126d45fcb">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="param_acpl_id" class="java.lang.Integer"/>
+	<parameter name="param_trac_year" class="java.lang.Integer"/>
+	<parameter name="param_cata_idsemestre" class="java.lang.Integer"/>
+	<parameter name="param_ind_code" class="java.lang.String"/>
+	<parameter name="param_trac_ids" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select 
+acpl_id, acpl_name,comp_code,comp_name,meas_code,meas_description,
+meas_goal,meas_goal_value,acti_description,nivel_comp,part_name,
+proj_title,proj_short_name,proj_style_color,proj_implementer_project,
+trac_year, semestre,
+sum(valor_alcanzado) as total from sigma.v_reporte_acciones_indicadores_paredd
+where 
+CAST(trac_id as text) in ( $P!{param_trac_ids} )
+and meas_code= $P{param_ind_code} 
+group by acpl_id, acpl_name,comp_code,comp_name,meas_code,meas_description,
+meas_goal,meas_goal_value,acti_description,nivel_comp,part_name,
+proj_title,proj_short_name,proj_style_color,proj_implementer_project,trac_year, semestre
+order by 5]]>
+	</queryString>
+	<field name="acpl_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="acpl_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="acpl_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="acpl_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="comp_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="comp_code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="comp_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="comp_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="meas_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="meas_code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="meas_description" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="meas_description"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="meas_goal" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="meas_goal"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="meas_goal_value" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="meas_goal_value"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="acti_description" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="acti_description"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="nivel_comp" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nivel_comp"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="part_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="part_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="proj_title" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="proj_title"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="proj_short_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="proj_short_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="proj_style_color" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="proj_style_color"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="proj_implementer_project" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="proj_implementer_project"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="trac_year" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="trac_year"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="semestre" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="semestre"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_reporte_acciones_indicadores_paredd"/>
+	</field>
+	<field name="total" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="total"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="250" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<pie3DChart>
+				<chart isShowLegend="true" evaluationTime="Report">
+					<reportElement x="40" y="20" width="480" height="220" uuid="3f78f61a-28d0-4452-ad99-191fa52468f8"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend textColor="#808080">
+						<font size="8"/>
+					</chartLegend>
+				</chart>
+				<pieDataset>
+					<keyExpression><![CDATA[$F{proj_short_name}]]></keyExpression>
+					<valueExpression><![CDATA[$F{total}]]></valueExpression>
+					<labelExpression><![CDATA[$F{proj_short_name}]]></labelExpression>
+				</pieDataset>
+				<pie3DPlot>
+					<plot/>
+					<itemLabel/>
+				</pie3DPlot>
+			</pie3DChart>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</summary>
+</jasperReport>

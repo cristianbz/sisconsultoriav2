@@ -1,0 +1,561 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="subr_ejec_pres" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="67f72c0f-a906-4e36-8d14-4e90cbc6f2f7">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="param_trac_id" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[select CAST(substring(pro.proj_term_from,1,4) AS INTEGER) as yearini,CAST(substring(pro.proj_term_to,1,4) AS INTEGER) as yearend,tra.trac_year,obj.psob_code,obj.psob_description,geo.gelo_name,cat.cata_text1,
+tram_year1, tram_year2, tram_year3, tram_year4, tram_year5, 
+tram_year6, tram_year7, tram_year8, tram_year9, tram_year10,tram_total
+from sigma.tracings tra, sigma.projects pro, sigma.tracings_amounts am,sigma.catalogs cat,
+sigma.projects_specific_objectives obj
+left join public.geographical_locations geo on obj.gelo_id=geo.gelo_id
+where pro.proj_id=tra.proj_id and tra.trac_id=am.trac_id and
+am.psob_id=obj.psob_id and am.cata_id=cat.cata_id and am.tram_status=true and am.trac_id= $P{param_trac_id} 
+order by psob_code,psob_description,cata_order]]>
+	</queryString>
+	<field name="yearini" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="yearini"/>
+	</field>
+	<field name="yearend" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="yearend"/>
+	</field>
+	<field name="trac_year" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="trac_year"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tracings"/>
+	</field>
+	<field name="psob_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="psob_code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="projects_specific_objectives"/>
+	</field>
+	<field name="psob_description" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="psob_description"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="projects_specific_objectives"/>
+	</field>
+	<field name="gelo_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="gelo_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="geographical_locations"/>
+	</field>
+	<field name="cata_text1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="cata_text1"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="catalogs"/>
+	</field>
+	<field name="tram_year1" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="tram_year1"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tracings_amounts"/>
+	</field>
+	<field name="tram_year2" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="tram_year2"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tracings_amounts"/>
+	</field>
+	<field name="tram_year3" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="tram_year3"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tracings_amounts"/>
+	</field>
+	<field name="tram_year4" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="tram_year4"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tracings_amounts"/>
+	</field>
+	<field name="tram_year5" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="tram_year5"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tracings_amounts"/>
+	</field>
+	<field name="tram_year6" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="tram_year6"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tracings_amounts"/>
+	</field>
+	<field name="tram_year7" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="tram_year7"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tracings_amounts"/>
+	</field>
+	<field name="tram_year8" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="tram_year8"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tracings_amounts"/>
+	</field>
+	<field name="tram_year9" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="tram_year9"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tracings_amounts"/>
+	</field>
+	<field name="tram_year10" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="tram_year10"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tracings_amounts"/>
+	</field>
+	<field name="tram_total" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="tram_total"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tracings_amounts"/>
+	</field>
+	<group name="componente">
+		<groupExpression><![CDATA[$F{psob_code}+ " "+$F{psob_description}+ "  "+$F{gelo_name}]]></groupExpression>
+		<groupHeader>
+			<band height="60">
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="5" y="0" width="545" height="44" uuid="1dbe33cc-3468-4b00-9c74-7ffa35e4e69b">
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{psob_code}+ " "+$F{psob_description}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement mode="Opaque" x="80" y="45" width="40" height="15" backcolor="#E6E3E3" uuid="c172246f-7bc3-45a3-9e08-3f9c5c7a5b1a">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{yearini}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement mode="Opaque" x="120" y="45" width="40" height="15" backcolor="#E6E3E3" uuid="1991dea7-e873-47e9-aa40-2345f3a7a13e">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{yearini}+1]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement mode="Opaque" x="160" y="45" width="40" height="15" backcolor="#E6E3E3" uuid="2f939b1b-b658-4002-b5ec-4abe7cfecedd">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<printWhenExpression><![CDATA[($F{yearini}+2)<=$F{yearend}]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{yearini}+2]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement mode="Opaque" x="200" y="45" width="40" height="15" backcolor="#E6E3E3" uuid="d621ac32-cf0e-4d0a-91ff-051a95c58716">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<printWhenExpression><![CDATA[($F{yearini}+3)<=$F{yearend}]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{yearini}+3]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement mode="Opaque" x="240" y="45" width="40" height="15" backcolor="#E6E3E3" uuid="993dc26a-eb53-42be-bdcb-9ce89d46c693">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<printWhenExpression><![CDATA[($F{yearini}+4)<=$F{yearend}]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{yearini}+4]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement mode="Opaque" x="280" y="45" width="40" height="15" backcolor="#E6E3E3" uuid="c5b9a750-108e-4228-8b7f-bd8948f9c57e">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<printWhenExpression><![CDATA[($F{yearini}+5)<=$F{yearend}]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{yearini}+5]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement mode="Opaque" x="320" y="45" width="40" height="15" backcolor="#E6E3E3" uuid="792d612d-e897-4f56-92f7-8c69bfcc4a85">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<printWhenExpression><![CDATA[($F{yearini}+6)<=$F{yearend}]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{yearini}+6]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement mode="Opaque" x="360" y="45" width="40" height="15" backcolor="#E6E3E3" uuid="c8d37109-bf2d-4d67-b368-12d3cb90c567">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<printWhenExpression><![CDATA[($F{yearini}+7)<=$F{yearend}]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{yearini}+7]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement mode="Opaque" x="400" y="45" width="40" height="15" backcolor="#E6E3E3" uuid="4dcef4fe-7464-424d-b591-6d7ef9060058">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<printWhenExpression><![CDATA[($F{yearini}+8)<=$F{yearend}]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{yearini}+8]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement mode="Opaque" x="440" y="45" width="40" height="15" backcolor="#E6E3E3" uuid="ef930799-4c9b-4501-87c0-3e292ac021c9">
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<printWhenExpression><![CDATA[($F{yearini}+9)<=$F{yearend}]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{yearini}+9]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement mode="Opaque" x="490" y="45" width="60" height="15" backcolor="#E6E3E3" uuid="e016bbfc-8bea-4b85-928b-ea63f216f641">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<text><![CDATA[TOTAL]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="16" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="555" height="16" forecolor="#FFFFFF" backcolor="#00AAC3" uuid="da956f69-1b89-4181-b074-65274ba5be0b">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[EJECUCIÓN PRESUPUESTARIA POR AÑOS Y CATEGORÍA DE COSTOS Y GASTOS]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="19" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField>
+				<reportElement mode="Opaque" x="0" y="0" width="80" height="19" backcolor="#E6E3E3" uuid="ea4c38d7-38e2-4867-a0f1-4e971f41755a">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cata_text1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#" isBlankWhenNull="true">
+				<reportElement x="80" y="0" width="40" height="19" uuid="997c8403-7fa8-4efa-85d0-7966e1bc65f0">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tram_year1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#" isBlankWhenNull="true">
+				<reportElement x="120" y="0" width="40" height="19" uuid="43c4804b-f5ed-48dc-ba66-9ec27bdb9846">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tram_year2}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#" isBlankWhenNull="true">
+				<reportElement x="160" y="0" width="40" height="19" uuid="61478fed-bcd6-4222-b344-2137242ddae4">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<printWhenExpression><![CDATA[($F{yearini}+2)<=$F{yearend}]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tram_year3}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#" isBlankWhenNull="true">
+				<reportElement x="490" y="0" width="60" height="19" uuid="772bfd12-c743-4465-b03e-877171894c0a">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tram_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#" isBlankWhenNull="true">
+				<reportElement x="200" y="0" width="40" height="19" uuid="b769fc4f-ab55-4f2d-9436-46e1a143dd96">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<printWhenExpression><![CDATA[($F{yearini}+3)<=$F{yearend}]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tram_year4}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#" isBlankWhenNull="true">
+				<reportElement x="240" y="0" width="40" height="19" uuid="d912c20b-5e7a-4c26-88d6-5aae4a8974f9">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<printWhenExpression><![CDATA[($F{yearini}+4)<=$F{yearend}]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tram_year5}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#" isBlankWhenNull="true">
+				<reportElement x="280" y="0" width="40" height="19" uuid="937681c2-8073-49f6-8800-482bc76adc34">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<printWhenExpression><![CDATA[($F{yearini}+5)<=$F{yearend}]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tram_year6}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#" isBlankWhenNull="true">
+				<reportElement x="320" y="0" width="40" height="19" uuid="d2b535a5-69e0-4280-a7b0-075ddd620f83">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<printWhenExpression><![CDATA[($F{yearini}+6)<=$F{yearend}]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tram_year7}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#" isBlankWhenNull="true">
+				<reportElement x="360" y="0" width="40" height="19" uuid="700743b7-020b-43f7-8f54-e1a1466a6a1b">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<printWhenExpression><![CDATA[($F{yearini}+7)<=$F{yearend}]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tram_year8}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#" isBlankWhenNull="true">
+				<reportElement x="400" y="0" width="40" height="19" uuid="52e228ce-eaf7-47b8-869f-7e22a9265f40">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<printWhenExpression><![CDATA[($F{yearini}+8)<=$F{yearend}]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tram_year9}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#" isBlankWhenNull="true">
+				<reportElement x="440" y="0" width="40" height="19" uuid="ebfbbba9-04b4-4990-b8ae-b5f2dc2accad">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<printWhenExpression><![CDATA[($F{yearini}+9)<=$F{yearend}]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tram_year10}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="45" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<subreport>
+				<reportElement x="0" y="10" width="555" height="30" uuid="d3748dab-b7b6-46fa-88c0-6b6fb301a139">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<subreportParameter name="param_trac_id">
+					<subreportParameterExpression><![CDATA[$P{param_trac_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["subr_ejec_pres_acu.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

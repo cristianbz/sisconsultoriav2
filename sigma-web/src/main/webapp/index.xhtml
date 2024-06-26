@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+ 
+<body>       
+	<!-- Lo que escribamos aquí NO aquí se va a renderizar. -->
+	Esto seguro que no lo ves.
+	
+	<ui:composition template="/resources/plantilla_sigma1.xhtml">
+		<ui:define name="contenido">
+			<div id="page">
+			<div id="content" class="container">
+				
+					<p:growl id="messages" autoUpdate="true" showDetail="true"
+						showSummary="false">
+					</p:growl>
+					<center>
+						<p:panel header="" styleClass="panelLogin"
+							style="margin-top:60px;">
+							<f:facet name="header">
+								<div style="width:260px; color:#007070;">
+									SISTEMA DE GESTIÓN DE MEDIDAS Y ACCIONES REDD+
+								</div>
+							</f:facet>
+							<center>
+								<img src="#{request.contextPath}/resources/images/user.jpg" width="100" height="100" />
+							</center>
+							<h:panelGrid id="grid" columns="2" styleClass="separatorTop w100" 
+								columnClasses="w66, field_mrg">
+								<h:panelGrid columns="2" styleClass="w100" 
+									columnClasses="w33 bold, field_mrg">
+									<p:outputLabel for="username" value="Usuario" 
+										styleClass="labelMain" />
+										<p:inputText value="#{ses.username}" id="username" 
+											required="true" requiredMessage="#{txt.msg125}" 
+											styleClass="w100" autocomplete="off"/>
+									<p:outputLabel for="password" value="Contraseña" 
+										styleClass="labelMain" />
+										<p:password value="#{ses.password}" id="password" 
+											required="true" requiredMessage="#{txt.msg126}" 
+											styleClass="w100" autocomplete="off"/>
+								</h:panelGrid>
+								<p:commandButton id="loginButton" value="Ingresar" 
+									action="#{ses.iniciarSesion()}" update=":frm" 
+									styleClass="buttonLogin w100" />
+										
+								
+							</h:panelGrid>
+							
+							<br/>
+							<h:panelGrid style="margin: 0 auto;text-align:center;">
+							 <h:outputLink value="http://172.16.0.177:8480/suia-iii/resetearClaves.jsf" target="_blank">
+        <h:outputText value="¿Olvidó su contraseña?" style="color:blue !important;" />
+    </h:outputLink>
+    <br/>
+    <p:commandButton type="button" value="Video Tutorial Creación de Usuario" onclick="PF('dlgVideoCreacion').show()"
+    style="background:#f5f5f5 !important;color:#006977 !important;"/>
+    <p:commandButton type="button" value="Contáctanos" onclick="PF('dlgContactanos').show()"
+    style="background:#f5f5f5 !important;color:#006977 !important;"/>
+    <br/>
+    <p:outputLabel value="Si aún no es usuario de SUIA, regístrese ahora"/>
+    <p:button value="Regístrese en el sistema" target="_blank" href="http://172.16.0.177:8480/suia-iii/promotor.jsf"
+    style="background:#006977 !important;color:#f5f5f5 !important;height:50px;"/>
+							</h:panelGrid>
+							
+							
+						</p:panel>
+						<br/>
+						<table>
+<tbody>
+<tr>
+<td><span class="ui-widget bold w75">Requisitos necesarios para uso del Sistema SUIA:</span></td>
+<td><span class="ui-widget w75">Adobe Flash Player</span><a href="https://get.adobe.com/flashplayer/" target="_blank"><span class="ui-widget bold w75">[descargar]</span></a></td>
+<td><span class="ui-widget w75"> Adobe Reader 8 o superior</span><a href="http://get.adobe.com/reader/" target="_blank"><span class="ui-widget bold w75">[descargar]</span></a></td>
+<td><span class="ui-widget w75"> JDK 8 (Funcionarios que Firman Digitalmente)</span><a href="https://www.java.com/es/download/" target="_blank"><span class="ui-widget bold w75">[descargar]</span></a></td>
+</tr>
+</tbody>
+</table>
+<span class="ui-widget bold w45">Resolución mínima 1024 x 768</span><table width="50">
+<tbody>
+<tr>
+<td><a href="https://www.mozilla.org/es-ES/firefox/new/" title="Para un óptimo funcionamiento del Sistema SUIA se recomienda usar Mozilla Firefox. Clic para descargar." target="_blank">
+						<img src="./resources/images/firefox.png" height="35"/></a></td>
+<td><a href="https://www.google.com/chrome/eula.html?hl=es" title="Para el funcionamiento del Sistema SUIA se recomienda usar Google Chrome. Clic para descargar." target="_blank">
+						<img src="./resources/images/google-chrome.png" height="29"/></a></td>
+</tr>
+</tbody>
+</table>
+
+					</center>
+												
+								<h:panelGrid id="pnlDialogosLogin">
+								
+								<p:dialog  widgetVar="dlgVideoCreacion" closable="true"
+								header="Video Tutorial Creación de Usuario" modal="true">
+								 <h:outputLink value="http://maetransparente.ambiente.gob.ec/documentacion/cursos/RegulaAmbien/CreacionUsuario.mp4" target="_blank">
+        <h:outputText value="Video Tutorial Creación de Usuario" style="text-decoration: underline;"/>
+    </h:outputLink>
+								</p:dialog>
+								<p:dialog widgetVar="dlgContactanos" closable="true"
+								header="Atención al ciudadano" modal="true">
+								<p:outputLabel value="MESA DE AYUDA"/><br/>
+								<p:outputLabel value="Telf: (02) 3987600 ext. 3001, 3002, 3004, 3005 y 3006"/><br/>
+								<p:outputLabel value="Correo: mesadeayuda@ambiente.gob.ec"/>
+								</p:dialog>
+								</h:panelGrid>				
+				
+			</div>
+		</div>
+		</ui:define>
+	</ui:composition>
+	
+	<!-- Ni TAMPOCO esto. -->
+	Y esto tampoco.
+</body>
+</html>

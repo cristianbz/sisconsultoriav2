@@ -1,0 +1,360 @@
+@CHARSET "UTF-8";
+
+.fondoColorSigma {
+	background: #00AAC3;
+	color: #FFFFFF !important;
+}
+
+.etiquetaFormulario {
+	display: block;
+	background: #00AAC3;
+	color: #FFFFFF;
+	font-size: 13px !important;
+	text-align: right;
+	white-space: pre-wrap;
+}
+
+.etiquetaFormulario2 {
+	display: block;
+	background: #FFFFFF;
+	color: #000000;
+	font-size: 12px !important;
+	text-align: right;
+}
+
+.etiquetaFormulario3 {
+	display: block;
+	background: #8CC4FC;
+	color: #000000;
+	font-size: 12px !important;
+	text-align: center;
+}
+
+.etiquetaFormulario4 {
+	display: block;
+	background: #00AAC3;
+	color: #FFFFFF;
+}
+
+.etiquetaTitulo {
+	display: block;
+	background: #00AAC3;
+	color: #FFFFFF;
+	font-size: 12px !important;
+	text-align: center;
+}
+
+.sinBordesAncho100 tbody td {
+	border: none;
+}
+
+.sinBordesAncho100 {
+	width: 100px !important;
+}
+
+.etiquetaSubtitulo {
+	font-weight: bold;
+	font-size: 13px !important;
+}
+
+.botonRegistroProyecto {
+	width: 150px !important;
+	height: 50px !important;
+	font-size: 14px !important;
+}
+
+.estiloMenuItemSeccionActual {
+	color: #ffffff !important;
+	background: #00AAC3 !important;
+}
+
+.ui-button {
+	background-color: #00b9f5 !important;
+	color: #FFFFFF !important;
+}
+
+.ui-state-highlight {
+	background-color: #00b9f5 !important;
+}
+
+.ui-state-active {
+	background-color: #00b9f5 !important;
+}
+
+body .ui-inputfield.ui-state-focus:not(.ui-state-error){
+	border-color:#B21D2D !important;
+}
+
+body .ui-selectonemenu.ui-state-focus:not(.ui-state-error){
+	border-color:#B21D2D !important;
+}
+
+.etiquetaReporte {
+	font-weight: bold !important;
+	text-align: right !important;
+}
+
+.estiloMontoSoloLectura .ui-inputfield {
+	background: #E5E7E9 !important;
+	font-size: 10px !important;
+	text-align: right !important;
+}
+
+.estiloMontoSoloLectura {
+	background: #E5E7E9 !important;
+	font-size: 10px !important;
+	text-align: right !important;
+}
+
+.estiloMontoSoloLecturaGrande {
+	background: #E5E7E9 !important;
+	font-size: 14px !important;
+	text-align: center !important;
+}
+
+.estiloMonto .ui-inputfield {
+	font-size: 10px !important;
+	text-align: right !important;
+}
+
+.fondoSoloLectura {
+	background: #E5E7E9 !important;
+}
+
+.estiloLetraPequenia {
+	font-size: 10px !important;
+}
+
+.botonInfo {
+	background: #FFFFFF !important;
+	color: #00AAC3 !important;
+}
+
+.estiloHeaderCampoTabla {
+	font-weight: bold;
+}
+
+.estiloComboLetraPequenia .ui-selectonemenu-label {
+	font-size: 10px !important;
+}
+
+.textCircle {
+	width: 18px;
+	height: 18px;
+	border-radius: 50%;
+	font-size: 10px;
+	color: #fff;
+	line-height: 18px;
+	text-align: center;
+	background: #5499C7
+}
+
+.estiloTooltipAyuda .ui-tooltip {
+	border: 1px solid #ccc;
+	box-shadow: 0 0 10px 0 #ddd;
+	-moz-box-shadow: 0 0 10px 0 #ddd;
+	-webkit-box-shadow: 0 0 10px 0 #ddd;
+	color: #666;
+	background: #f8f8f8;
+}
+
+.panelGridSinBorde td {
+	border-style: hidden !important;
+}
+
+.ancho325 {
+	width: 325px;
+}
+
+.ancho75 {
+	width: 75px;
+}
+
+.fondoPlanificado {
+	background: #85C1E9 !important;
+	display: block;
+	font-size: 12px !important;
+	text-align: center;
+}
+
+.fondoAdministrativo {
+	background: #AED6F1 !important;
+	display: block;
+	font-size: 12px !important;
+	text-align: center;
+}
+
+.fondoOperativo {
+	background: #ABEBC6 !important;
+	display: block;
+	font-size: 12px !important;
+	text-align: center;
+}
+
+.fondoEjecutado {
+	background: #82E0AA !important;
+	display: block;
+	font-size: 12px !important;
+	text-align: center;
+}
+
+.etiquetaFormulario5 {
+	
+}
+
+.ancho40 {
+	width: 40px;
+}
+
+.ancho110 {
+	width: 110px;
+}
+
+.ancho70 {
+	width: 70px;
+}
+
+.ancho80 {
+	width: 80px;
+}
+
+.ancho30 {
+	width: 30px;
+}
+
+.ancho20 {
+	width: 20px;
+}
+
+.ancho100 {
+	width: 100px;
+}
+
+.panelGridTable tbody {
+	display: table;
+}
+
+.panelGridAncho45vw tbody {
+	width: 45vw !important;
+	display: table;
+}
+
+.panelGridAncho30vw tbody {
+	width: 30vw !important;
+	display: table;
+}
+
+.panelGridAncho20vw tbody {
+	width: 20vw !important;
+	display: table;
+}
+
+.panelGridAncho10vw tbody {
+	width: 10vw !important;
+	display: table;
+}
+
+.thirty-percent {
+	width: 30%;
+}
+
+.forty-percent {
+	width: 40%;
+}
+
+.sixty-percent {
+	width: 60%;
+}
+
+.seventy-percent {
+	width: 70%;
+}
+
+ancho30vw {
+	width: 30vw;
+}
+
+.fondoEspecial {
+	background: #F75E12;
+}
+
+.panelGridSinBordeYEspacios td {
+	border-style: hidden !important;
+	padding: 0px !important;
+}
+
+.container_sigma1 {
+	margin-right: auto;
+	margin-left: auto;
+	width: 1024px;
+	overflow: hidden;
+	min-height: 850px;
+}
+
+.panelGridFilasAlineadasAlTop tr {
+	vertical-align: top !important;
+}
+
+.textoJustificado {
+	display: block;
+	text-align: justify !important;
+}
+
+.ui-dialog-titlebar {
+	text-align: center;
+}
+
+.colorTextoPanelCombo{
+	color:#D7DBDD;
+}
+
+.ui-fileupload-buttonbar .ui-button-text-icon-left .ui-button-text {
+    background-color: #D7DBDD!important;
+    color:#000000!important;
+}
+.alineadoDerecha {
+	text-align:right;
+}
+.alineadoIzquierda {
+	text-align:left;
+}
+
+.alineadoCentroTd td {
+	text-align:center !important;
+}
+body .ui-datalist .ui-datalist-content{
+	
+	border:0!important;
+}
+
+.circuloSeccion {
+  width: 50px;
+  height: 50px;
+  border:3px solid #00AAC3;  
+  line-height: 50px;
+  border-radius: 50%;
+  font-size: 20px;
+  color: #00AAC3;
+  text-align: center;
+  background: #FFFFFF
+}
+
+.circuloSeccionSeleccionada {
+  width: 50px;
+  height: 50px;
+  border:3px solid #00AAC3;  
+  line-height: 50px;
+  border-radius: 50%;
+  font-size: 20px;
+  color: #FFFFFF;
+  text-align: center;
+  background: #00AAC3
+}
+
+.estiloOcultar{
+	display:none !important;
+}
+
+.estiloComboSoloLectura .ui-selectonemenu-label {
+	background: #E5E7E9 !important;
+}

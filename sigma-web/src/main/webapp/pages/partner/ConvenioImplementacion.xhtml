@@ -1,0 +1,213 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sigma_components="http://java.sun.com/jsf/composite/sigma_components">
+
+<body>       
+	<!-- Lo que escribamos aquí NO aquí se va a renderizar. -->
+	Esto seguro que no lo ves.
+	
+	<ui:composition template="/resources/plantilla_sigma1.xhtml">
+		<ui:define name="contenido">
+		<center>
+			<h:panelGrid>
+				<h:panelGrid columns="3" styleClass="fondoColorSigma">
+					<h:outputText value="#{txt.lbl076}" style="font-weight:bold;"/>
+					<h:panelGrid width="670" rendered="#{!conv.flagSoloCrear}"/>
+					<h:panelGrid width="665" rendered="#{conv.flagSoloCrear}"/>
+					<p:commandButton id="btnNuevo" value="#{txt.btn25}"
+						action="#{conv.prepararNuevoConvenio()}" icon="fa fa-plus"
+						process="@this" partialSubmit="true" async="true" global="false"
+						update=":frm:pnlConvenio" style="font-size:12px;"
+						onclick="PF('dlgEnProc').show()"
+						oncomplete="PF('dlgEnProc').hide()" 
+						rendered="#{!conv.flagSoloCrear}"/>
+						<p:commandButton id="btnVolverProy" value="#{txt.btn37}"
+						action="#{conv.volverARegistroProyecto()}" icon="fa fa-mail-reply"
+						process="@this" partialSubmit="true" async="true" global="false"
+						 style="font-size:12px;"
+						onclick="PF('dlgEnProc').show()"
+						oncomplete="PF('dlgEnProc').hide()"
+						rendered="#{conv.flagSoloCrear}" />
+				</h:panelGrid>
+				<br />
+				<h:panelGrid id="pnlConvenio" columns="3" style="margin:0 auto;">
+					<p:outputLabel value="*#{txt.lbl077}: " for="agreRegCode"
+						styleClass="etiquetaFormulario"
+						style="height:40px;line-height:40px;width:200px;" />
+					<p:inputText id="agreRegCode"
+						value="#{conv.convenioActual.agreRegisterCode}" maxlength="6"
+						size="7" />
+					<p:message for="agreRegCode" />
+
+					<p:outputLabel value="#{txt.lbl078}: " for="agreFolio"
+						styleClass="etiquetaFormulario"
+						style="height:40px;line-height:40px;width:200px;" />
+					<p:inputText id="agreFolio"
+						value="#{conv.convenioActual.agreInvoiceCode}" maxlength="5"
+						size="6" />
+					<p:message for="agreFolio" />
+
+					<p:outputLabel value="*#{txt.lbl079}: " for="agreRegDate"
+						styleClass="etiquetaFormulario"
+						style="height:40px;line-height:40px;width:200px;" />
+					<p:calendar id="agreRegDate"
+						value="#{conv.convenioActual.agreRegisterDate}"
+						pattern="dd/MM/yyyy" navigator="true" locale="es"/>
+					<p:message for="agreRegDate" />
+
+					
+
+					<p:outputLabel value="*#{txt.lbl177}: " for="agreTitle"
+						styleClass="etiquetaFormulario"
+						style="height:40px;line-height:40px;width:200px;" />
+					<p:inputText id="agreTitle"
+						value="#{conv.convenioActual.agreTitle}" maxlength="200" size="50" />
+					<p:message for="agreTitle" />
+
+					<p:outputLabel value="*#{txt.lbl082}: " for="agreValidity"
+						styleClass="etiquetaFormulario"
+						style="height:40px;line-height:40px;width:200px;" />
+					<p:inputText id="agreValidity"
+						value="#{conv.convenioActual.agreValidity}" maxlength="100"
+						size="50" />
+					<p:message for="agreValidity" />
+
+					<p:outputLabel value="*#{txt.lbl083}: " for="agreSubsDate"
+						styleClass="etiquetaFormulario"
+						style="height:40px;line-height:40px;width:200px;" />
+					<p:calendar id="agreSubsDate"
+						value="#{conv.convenioActual.agreSubscriptionDate}"
+						pattern="dd/MM/yyyy" navigator="true" locale="es"/>
+					<p:message for="agreSubsDate" />
+
+					<p:outputLabel value="#{txt.lbl084}: " for="agreToDate"
+						styleClass="etiquetaFormulario"
+						style="height:40px;line-height:40px;width:200px;" />
+					<p:calendar id="agreToDate"
+						value="#{conv.convenioActual.agreToDate}" pattern="dd/MM/yyyy" 
+						navigator="true" locale="es"/>
+					<p:message for="agreToDate" />
+
+					<p:outputLabel value="#{txt.lbl085}: " for="agreScope"
+						styleClass="etiquetaFormulario"
+						style="height:50px;line-height:40px;width:200px;" />
+					<p:inputTextarea id="agreScope"
+						value="#{conv.convenioActual.agreScope}" maxlength="350" cols="50"
+						rows="3" />
+					<p:message for="agreScope" />
+
+					<p:outputLabel value="#{txt.lbl086}: " for="agreFinancing"
+						styleClass="etiquetaFormulario"
+						style="height:80px;line-height:40px;width:200px;" />
+					<p:inputTextarea id="agreFinancing"
+						value="#{conv.convenioActual.agreFinancing}" maxlength="500"
+						cols="50" rows="4" />
+					<p:message for="agreFinancing" />
+
+
+
+				</h:panelGrid>
+				<h:panelGrid style="margin:0 auto;">
+					<p:commandButton value="#{txt.btn02}" icon="fa fa-save"
+						action="#{conv.guardarConvenio()}" partialSubmit="true"
+						process="@this,pnlConvenio" async="true" global="false"
+						update="pnlConvenio,pnlListaConvenios,msgs"
+						onclick="PF('dlgEnProc').show()"
+						oncomplete="PF('dlgEnProc').hide()" />
+				</h:panelGrid>
+				<h:panelGrid id="pnlListaConvenios" width="1022"
+					style="font-size:10px;">
+					<p:dataTable id="lstConvenios" value="#{conv.listaConvenios}"
+						var="convenio" emptyMessage="#{txt.lbl047}">
+						<p:column headerText="#{txt.lbl077}" width="50">
+							<p:outputLabel value="#{convenio.agreRegisterCode}" />
+						</p:column>
+						<p:column headerText="#{txt.lbl078}" width="40">
+							<p:outputLabel value="#{convenio.agreInvoiceCode}" />
+						</p:column>
+						<p:column headerText="#{txt.lbl081}">
+							<p:outputLabel value="#{convenio.agreTitle}" />
+						</p:column>
+						<p:column  headerText="#{txt.lbl079}" width="65">
+							<p:outputLabel value="#{convenio.agreRegisterDate}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</p:outputLabel>
+						</p:column>
+						<p:column   headerText="#{txt.lbl083}" width="65">
+							<p:outputLabel value="#{convenio.agreSubscriptionDate}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</p:outputLabel>
+						</p:column>
+						<p:column   headerText="#{txt.lbl084}" width="65">
+							<p:outputLabel value="#{convenio.agreToDate}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</p:outputLabel>
+						</p:column>
+						<p:column headerText="#{txt.lbl044}" width="70">
+						<p:commandButton icon="fa fa-arrow-circle-up"
+										action="#{conv.seleccionarConvenioParaAdjuntarArchivo(convenio)}"
+										process="@this" async="true" global="false"
+										partialSubmit="true" update=":frm:pnlDialogos"
+										title="#{txt.btn12}"/>
+										
+										<p:commandButton async="true"
+											global="false" ajax="false" icon="fa fa-arrow-circle-down"
+											actionListener="#{conv.descargarArchivoConvenio(convenio.docuId)}"
+											rendered="#{convenio.docuId!=null}"
+											title="#{txt.btn13}">
+											<p:fileDownload
+												value="#{conv.archivoConvenioADescargar}" />
+										</p:commandButton>
+						</p:column>
+						<p:column width="60" headerText="#{txt.lbl024}">
+							<p:commandButton id="btnEditConv"
+								action="#{conv.seleccionarConvenioAEditar(convenio)}"
+								icon="fa fa-pencil" title="#{txt.btn15}" process="@this"
+								partialSubmit="true" async="true" global="false"
+								update=":frm:pnlConvenio" onclick="PF('dlgEnProc').show()"
+								oncomplete="PF('dlgEnProc').hide()" />
+								
+								<p:commandButton icon="fa fa-trash"
+							action="#{conv.eliminarConvenio(convenio)}" process="@this"
+							async="true" global="false" partialSubmit="true"
+							title="#{txt.btn14}"
+							update=":frm:pnlConvenio,:frm:pnlListaConvenios,:frm:msgs"
+							onclick="PF('dlgEnProc').show()"
+							oncomplete="PF('dlgEnProc').hide()">
+							<p:confirm header="#{txt.lbl030}" message="#{txt.lbl088}"
+								icon="pi pi-exclamation-triangle" />
+						</p:commandButton>
+						</p:column>
+					</p:dataTable>
+				</h:panelGrid>
+
+				<h:panelGrid id="pnlDialogos">
+					<p:dialog header="#{txt.lbl059}" widgetVar="dlgCargarArchivoConv"
+						closable="true" modal="true">
+						<h:panelGrid>
+							<p:fileUpload id="fuDocConv" auto="true" label="#{txt.btn11}"
+								listener="#{conv.adjuntarArchivoEnConvenio}"
+								update=":frm:msgs,:frm:pnlListaConvenios" sizeLimit="30000000"
+								allowTypes="/(\.|\/)(pdf|doc?x|jpe?g|png)$/"
+								invalidSizeMessage="#{txt.lbl048}" >
+								<h:panelGrid>
+									<p:outputLabel value="#{txt.lbl435}: pdf,doc,docx,jpg,png"/>
+									<p:outputLabel value="#{txt.lbl436}: 30MB"/>
+									</h:panelGrid>
+								</p:fileUpload>
+						</h:panelGrid>
+					</p:dialog>
+				</h:panelGrid>
+			</h:panelGrid>
+			<sigma_components:controlLogeo idPagina="SIGMA_ADM_CONV"/>
+			
+			<sigma_components:dlgConfirmacion/>
+		</center>
+</ui:define>
+</ui:composition>
+</body>
+</html>

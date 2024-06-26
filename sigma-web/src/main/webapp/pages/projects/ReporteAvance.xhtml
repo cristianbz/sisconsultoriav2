@@ -1,0 +1,2430 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sigma_components="http://java.sun.com/jsf/composite/sigma_components">
+<body>
+	<!-- Lo que escribamos aquí NO aquí se va a renderizar. -->
+	Esto seguro que no lo ves.
+
+	<ui:composition template="/resources/plantilla_sigma1.xhtml">
+		<ui:define name="contenido">
+			<center>
+				<p:panel style="width:1022px;">
+
+					<h:panelGrid styleClass="fondoColorSigma" width="995" style="text-align:center;margin:0 auto;">
+						<h:outputText value="#{txt.lbl184}"
+							style="font-size:16px;font-weight:bold;" />
+					</h:panelGrid>
+					<h:panelGrid id="pnlTotal" style="font-size:12px;" width="995">
+						<h:panelGrid id="pnlBusqueda" rendered="#{segui.controlAvance==0}"
+							style="margin:0 auto;">
+							<p:panel header="#{txt.lbl143}">
+								<h:panelGrid columns="2" style="margin:0 auto;"
+									rendered="#{ses.visualizacionSegunRol('SIGMA_ADMIN') or ses.visualizacionSegunRol('SIGMA_TECNICO') }">
+									<p:outputLabel value="#{txt.lbl113}:" />
+									<p:selectOneRadio id="tipBusProy" value="#{segui.tipoBusq}">
+										<f:selectItem itemLabel="#{txt.lbl114}" itemValue="SOC" />
+										<f:selectItem itemLabel="#{txt.lbl246}" itemValue="TIT" />
+										<p:ajax process="@this" partialSubmit="true"
+											update=":frm:pnlCritBusq"></p:ajax>
+									</p:selectOneRadio>
+									<f:verbatim />
+									<h:panelGrid id="pnlCritBusq" columns="4">
+
+										<p:selectOneMenu id="codSocioBusq"
+											value="#{segui.codSocioSeleccionado}"
+											rendered="#{segui.tipoBusq=='SOC'}" style="width:500px;">
+											<f:selectItem itemLabel="#{txt.lbl025} ..."
+												itemValue="#{null}" />
+											<f:selectItems value="#{segui.listaSociosImpl}" var="soc"
+												itemLabel="#{soc.partName}" itemValue="#{soc.partId}">
+											</f:selectItems>
+										</p:selectOneMenu>
+										<p:message for="codSocioBusq"
+											rendered="#{segui.tipoBusq=='SOC'}" />
+										<p:inputText id="tituloBusq" value="#{segui.tituloProyecto}"
+											rendered="#{segui.tipoBusq=='TIT'}" size="60" maxlength="100" />
+										<p:message for="tituloBusq"
+											rendered="#{segui.tipoBusq=='SOC'}" />
+
+									</h:panelGrid>
+
+									
+								</h:panelGrid>
+								<h:panelGrid style="margin:0 auto;">
+								<p:commandButton id="btnBusqProyRep" value="#{txt.btn18}"
+											action="#{segui.buscarProyectosyReportes()}"
+											icon="fa fa-search"
+											process="@this,:frm:tipBusProy,:frm:pnlCritBusq"
+											partialSubmit="true" async="true" global="false"
+											update="pnlListaProy,msgs,pnlCritBusq,pnlListaRep"
+											onclick="PF('dlgEnProc').show()"
+											oncomplete="PF('dlgEnProc').hide()" />
+								</h:panelGrid>
+								<h:panelGrid style="margin:0 auto;"
+									rendered="#{ses.visualizacionSegunRol('SIGMA_SOCIO') or ses.visualizacionSegunRol('SIGMA_IMPLEMENTADOR')}">
+									<p:commandButton id="btnBusqProyRepSocio" value="#{txt.btn54}"
+										action="#{segui.buscarProyectosyReportesDeSocio('SIGMA_SOCIO')}"
+										icon="fa fa-search" process="@this" partialSubmit="true"
+										async="true" global="false"
+										update="pnlListaProy,msgs,pnlListaRep"
+										onclick="PF('dlgEnProc').show()"
+										oncomplete="PF('dlgEnProc').hide()"
+										rendered="#{ses.visualizacionSegunRol('SIGMA_SOCIO')}" />
+									<p:commandButton id="btnBusqProyRepImp" value="#{txt.btn54}"
+										action="#{segui.buscarProyectosyReportesDeSocio('SIGMA_IMPLEMENTADOR')}"
+										icon="fa fa-search" process="@this" partialSubmit="true"
+										async="true" global="false"
+										update="pnlListaProy,msgs,pnlListaRep"
+										onclick="PF('dlgEnProc').show()"
+										oncomplete="PF('dlgEnProc').hide()"
+										rendered="#{ses.visualizacionSegunRol('SIGMA_IMPLEMENTADOR')}" />
+								</h:panelGrid>
+								<h:panelGrid id="pnlListaProy" width="955">
+									<p:dataTable id="lstProyectos"
+										value="#{segui.listaProyectosEncontrados}" var="proyecto"
+										emptyMessage="#{txt.lbl047}"
+										rendered="#{segui.listaProyectosEncontrados.size()>0}"
+										styleClass="alineadoCentroTd">
+										<f:facet name="header">#{txt.lbl186}</f:facet>
+										<p:column>
+											<p:outputLabel value="#{proyecto.projCode}"
+												style="display:block;text-align:justify;" />
+											<p:outputLabel value="#{proyecto.projShortName}"
+												styleClass="estiloHeaderCampoTabla"
+												style="display:block;text-align:justify;" />
+											<p:outputLabel
+												value="#{proyecto.projTitle}  ( #{proyecto.projTermFrom} a #{proyecto.projTermTo} )"
+												style="display:block;text-align:justify;" />
+											<br />
+											<p:outputLabel value="#{txt.lbl114}"
+												styleClass="estiloHeaderCampoTabla"
+												style="display:block;text-align:justify;" />
+											<p:outputLabel value="#{proyecto.partId.partName}"
+												style="display:block;text-align:justify;" />
+										</p:column>
+
+										<p:column width="70" headerText="#{txt.lbl024}">
+											<p:commandButton id="btnCrearRep" icon="fa fa-file"
+												action="#{segui.crearNuevoReporte(proyecto)}"
+												title="#{txt.btn42}" process="@this" partialSubmit="true"
+												async="true" global="false" update=":frm:pnlTotal,:frm:msgs"
+												onclick="PF('dlgEnProc').show()"
+												oncomplete="PF('dlgEnProc').hide()">
+												<p:confirm header="#{txt.lbl030}" message="#{txt.msg159}"
+													icon="pi pi-exclamation-triangle" escape="false" />
+											</p:commandButton>
+
+
+											<p:commandButton id="btnVerRep" icon="fa fa-search"
+												action="#{segui.buscarReportesDeProyecto(proyecto)}"
+												title="#{txt.btn55}" process="@this" partialSubmit="true"
+												async="true" global="false" update=":frm:pnlTotal,:frm:msgs"
+												onclick="PF('dlgEnProc').show()"
+												oncomplete="PF('dlgEnProc').hide()" />
+											<p:outputLabel value="#{proyecto.projId}"
+												style="color:white;font-size:8px;" />
+										</p:column>
+									</p:dataTable>
+								</h:panelGrid>
+								<br />
+								<h:panelGrid id="pnlListaRep" width="955">
+									<p:dataTable id="lstReportes"
+										value="#{segui.listaReportesEncontrados}" var="reporte"
+										emptyMessage="#{txt.lbl047}"
+										rendered="#{segui.listaReportesEncontrados.size()>0}"
+										styleClass="alineadoCentroTd">
+										<f:facet name="header">#{txt.lbl187}</f:facet>
+										<p:column>
+											<p:outputLabel value="#{proyecto.projShortName}"
+												styleClass="estiloHeaderCampoTabla"
+												style="display:block;text-align:justify;" />
+											<p:outputLabel
+												value="#{reporte.projId.projTitle}  ( #{reporte.projId.projTermFrom} a #{reporte.projId.projTermTo} )"
+												style="display:block;text-align:justify;" />
+											<br />
+											<p:outputLabel value="#{txt.lbl114}"
+												styleClass="estiloHeaderCampoTabla"
+												style="display:block;text-align:justify;" />
+											<p:outputLabel value="#{reporte.projId.partId.partName}"
+												style="display:block;text-align:justify;" />
+										</p:column>
+
+										<p:column width="150" headerText="#{txt.lbl188}">
+											<p:outputLabel value="#{txt.lbl192}"
+												styleClass="estiloHeaderCampoTabla" />
+											<br />
+											<p:outputLabel value="#{reporte.tracYear}" />
+											<br />
+											<p:outputLabel value="#{txt.lbl193}"
+												styleClass="estiloHeaderCampoTabla" />
+											<br />
+											<p:outputLabel value="#{reporte.cataId.cataText1}" />
+											<br />
+											<h:outputText styleClass="ui-icon fa fa-file"
+												style="color:#99A3A4;"
+												rendered="#{reporte.tracRegisterStatus==null or reporte.tracRegisterStatus=='C'}" />
+											<h:outputText styleClass="ui-icon fa fa-save"
+												style="color:blue;"
+												rendered="#{reporte.tracRegisterStatus=='P'}" />
+											<h:outputText styleClass="ui-icon fa fa-save"
+												style="color:green;"
+												rendered="#{reporte.tracRegisterStatus=='G'}" />
+											<h:outputText styleClass="ui-icon fa fa-check-circle"
+												style="color:#F5B041;"
+												rendered="#{reporte.tracRegisterStatus=='V'}" />
+											<p:outputLabel value=" #{txt.lbl335}"
+												rendered="#{reporte.tracRegisterStatus==null or reporte.tracRegisterStatus=='C'}" />
+											<p:outputLabel value=" #{txt.lbl336}"
+												rendered="#{reporte.tracRegisterStatus=='P'}" />
+											<p:outputLabel value=" #{txt.lbl337}"
+												rendered="#{reporte.tracRegisterStatus=='G'}" />
+											<p:outputLabel value=" #{txt.lbl338}"
+												rendered="#{reporte.tracRegisterStatus=='V'}" />
+
+										</p:column>
+										<p:column width="100" headerText="#{txt.lbl024}">
+											<p:commandButton id="btnEditarRep" icon="fa fa-check-circle"
+												action="#{segui.editarReporte(reporte)}"
+												title="#{txt.btn43}" process="@this" partialSubmit="true"
+												async="true" global="false" update=":frm:pnlTotal"
+												onclick="PF('dlgEnProc').show()"
+												oncomplete="PF('dlgEnProc').hide()"
+												rendered="#{reporte.tracRegisterStatus!='V'}" />
+											<p:commandButton icon="fa fa-check-circle"
+												action="#{segui.verReporteValidado(reporte)}"
+												process="@this" partialSubmit="true" async="true"
+												global="false" update=":frm:pnlTotal,:frm:pnlDialogoResumen"
+												onclick="PF('dlgEnProc').show()"
+												oncomplete="PF('dlgEnProc').hide()"
+												rendered="#{reporte.tracRegisterStatus=='V'}" />
+											<p:commandButton icon="fa fa-trash"
+												action="#{segui.eliminarReporte(reporte)}" process="@this"
+												partialSubmit="true" async="true" global="false"
+												title="#{txt.btn61}" update=":frm:pnlListaRep,:frm:msgs"
+												onclick="PF('dlgEnProc').show()"
+												oncomplete="PF('dlgEnProc').hide()"
+												rendered="#{reporte.tracRegisterStatus!='V'}">
+												<p:confirm header="#{txt.lbl030}" message="#{txt.msg151}"
+													icon="pi pi-exclamation-triangle" />
+											</p:commandButton>
+											<p:commandButton icon="fa fa-pencil-square-o"
+												action="#{segui.habilitarEdicion(reporte)}" process="@this"
+												partialSubmit="true" async="true" global="false"
+												title="#{txt.btn62}" update=":frm:pnlListaRep,:frm:msgs"
+												onclick="PF('dlgEnProc').show()"
+												oncomplete="PF('dlgEnProc').hide()"
+												rendered="#{reporte.tracRegisterStatus=='V' and (ses.visualizacionSegunRol('SIGMA_ADMIN') or ses.visualizacionSegunRol('SIGMA_TECNICO')) }">
+												<p:confirm header="#{txt.lbl030}" message="#{txt.msg153}"
+													icon="pi pi-exclamation-triangle" />
+											</p:commandButton>
+											<p:commandButton action="#{segui.generarReportePDF(reporte)}"
+												icon="fa fa-file-pdf-o" ajax="false"
+												style="background:#C70039 !important;">
+
+											</p:commandButton>
+											<p:outputLabel value="#{reporte.tracId}"
+												style="color:white;font-size:8px;" />
+
+										</p:column>
+									</p:dataTable>
+								</h:panelGrid>
+							</p:panel>
+
+						</h:panelGrid>
+						<h:panelGrid id="pnlControlAvance"
+							rendered="#{segui.controlAvance gt 0}" width="995">
+
+							<h:panelGrid style="margin:0 auto;">
+							<h:panelGrid columns="25">
+							<h:panelGrid rendered="#{segui.controlAvance==1}">
+							  <div class="circuloSeccionSeleccionada" >1</div>
+						    </h:panelGrid>
+							<h:panelGrid rendered="#{segui.controlAvance!=1}">
+							  <div class="circuloSeccion" >1</div>
+						    </h:panelGrid>
+						     <p:separator style="width:15px;height:1px;"/>
+						     <h:panelGrid rendered="#{segui.controlAvance==2}">
+							  <div class="circuloSeccionSeleccionada" >2</div>
+						    </h:panelGrid>
+							<h:panelGrid rendered="#{segui.controlAvance!=2}">
+							  <div class="circuloSeccion" >2</div>
+						    </h:panelGrid>
+						     <p:separator style="width:15px;height:1px;"/>
+						     <h:panelGrid rendered="#{segui.controlAvance==3}">
+							  <div class="circuloSeccionSeleccionada" >3</div>
+						    </h:panelGrid>
+							<h:panelGrid rendered="#{segui.controlAvance!=3}">
+							  <div class="circuloSeccion" >3</div>
+						    </h:panelGrid>
+						     <p:separator style="width:15px;height:1px;"/>
+						     <h:panelGrid rendered="#{segui.controlAvance==4}">
+							  <div class="circuloSeccionSeleccionada" >4</div>
+						    </h:panelGrid>
+							<h:panelGrid rendered="#{segui.controlAvance!=4}">
+							  <div class="circuloSeccion" >4</div>
+						    </h:panelGrid>
+						     <p:separator style="width:15px;height:1px;"/>
+						     <h:panelGrid rendered="#{segui.controlAvance==5}">
+							  <div class="circuloSeccionSeleccionada" >5</div>
+						    </h:panelGrid>
+							<h:panelGrid rendered="#{segui.controlAvance!=5}">
+							  <div class="circuloSeccion" >5</div>
+						    </h:panelGrid>
+						     <p:separator style="width:15px;height:1px;"/>
+						     <h:panelGrid rendered="#{segui.controlAvance==6}">
+							  <div class="circuloSeccionSeleccionada" >6</div>
+						    </h:panelGrid>
+							<h:panelGrid rendered="#{segui.controlAvance!=6}">
+							  <div class="circuloSeccion" >6</div>
+						    </h:panelGrid>
+						     <p:separator style="width:15px;height:1px;"/>
+						     <h:panelGrid rendered="#{segui.controlAvance==7}">
+							  <div class="circuloSeccionSeleccionada" >7</div>
+						    </h:panelGrid>
+							<h:panelGrid rendered="#{segui.controlAvance!=7}">
+							  <div class="circuloSeccion" >7</div>
+						    </h:panelGrid>
+						     <p:separator style="width:15px;height:1px;"/>
+						     <h:panelGrid rendered="#{segui.controlAvance==8}">
+							  <div class="circuloSeccionSeleccionada" >8</div>
+						    </h:panelGrid>
+							<h:panelGrid rendered="#{segui.controlAvance!=8}">
+							  <div class="circuloSeccion" >8</div>
+						    </h:panelGrid>
+						     <p:separator style="width:15px;height:1px;"/>
+						     <h:panelGrid rendered="#{segui.controlAvance==9}">
+							  <div class="circuloSeccionSeleccionada" >9</div>
+						    </h:panelGrid>
+							<h:panelGrid rendered="#{segui.controlAvance!=9}">
+							  <div class="circuloSeccion" >9</div>
+						    </h:panelGrid>
+							</h:panelGrid>
+							
+								
+							</h:panelGrid>
+							<h:panelGrid styleClass="fondoColorSigma" width="985">
+								<h:outputText
+									style="display:block;text-align:right !important;white-space:pre-wrap;"
+									value="#{segui.reporteActual.projId.projCode} - #{segui.reporteActual.projId.projTitle} -#{txt.lbl368} #{segui.reporteActual.cataId.cataText1} - #{segui.reporteActual.tracYear}" />
+							</h:panelGrid>
+						</h:panelGrid>
+						<h:panelGrid id="pnlSeccion01"
+							rendered="#{segui.controlAvance==1}">
+							<h:panelGrid styleClass="fondoColorSigma" width="985" columns="2"
+								columnClasses="alineadoIzquierda,alineadoDerecha">
+								<h:outputText value="#{txt.lbl174}"
+									style="font-weight:bold;font-size:14px;" />
+								<p:commandButton type="button" onclick="PF('dlgInf01').show()"
+									icon="fa fa-question" styleClass="botonInfo"
+									title="#{txt.lbl250}" />
+							</h:panelGrid>
+							<p:panel>
+								<h:panelGrid id="pnlInfoSec01" columns="3"
+									style="margin:0 auto;">
+									<p:outputLabel value="*#{txt.lbl188}: " for="tracYear"
+										styleClass="etiquetaFormulario"
+										style="height:40px;line-height:40px;width:200px;" />
+									<h:panelGrid columns="3">
+										<p:selectOneMenu id="tracYear"
+											value="#{segui.reporteActual.tracYear}">
+											<f:selectItem itemLabel="#{txt.lbl025} ..."
+												itemValue="#{null}" />
+											<f:selectItems value="#{segui.listaAniosReporte}" var="anio"
+												itemLabel="#{anio}" itemValue="#{anio}">
+											</f:selectItems>
+										</p:selectOneMenu>
+										<p:message for="tracYear" display="icon" />
+										<p:selectOneMenu id="tracSemester"
+											value="#{segui.reporteActual.cataId.cataId}"
+											style="width:150px;">
+											<f:selectItem itemLabel="#{txt.lbl025} ..."
+												itemValue="#{null}" />
+											<f:selectItems value="#{app.lstCatTiposPeriodosReporte}"
+												var="cat" itemLabel="#{cat.cataText1}"
+												itemValue="#{cat.cataId}">
+											</f:selectItems>
+										</p:selectOneMenu>
+									</h:panelGrid>
+									<p:message for="tracSemester" display="icon" />
+
+									<p:outputLabel value="#{txt.lbl120}: "
+										styleClass="etiquetaFormulario"
+										style="height:40px;line-height:40px;width:200px;" />
+									<p:inputText value="#{txt.lbl131}"
+										rendered="#{segui.reporteActual.projId.projType=='PDI'}"
+										size="50" readonly="true" styleClass="fondoSoloLectura" />
+									<p:inputText value="#{txt.lbl132}"
+										rendered="#{segui.reporteActual.projId.projType=='PRG'}"
+										size="50" readonly="true" styleClass="fondoSoloLectura" />
+									<p:inputText value="#{txt.lbl133}"
+										rendered="#{segui.reporteActual.projId.projType=='PRY'}"
+										size="50" readonly="true" styleClass="fondoSoloLectura" />
+									<f:verbatim />
+									<p:outputLabel value="#{txt.lbl190}: "
+										styleClass="etiquetaFormulario"
+										style="height:40px;line-height:40px;width:200px;" />
+									<p:inputText value="#{segui.reporteActual.projId.projCode}"
+										size="20" readonly="true" styleClass="fondoSoloLectura" />
+									<f:verbatim />
+									<p:outputLabel value="#{txt.lbl081}: "
+										styleClass="etiquetaFormulario"
+										style="height:100px;line-height:40px;width:200px;" />
+									<p:inputTextarea
+										value="#{segui.reporteActual.projId.projTitle}" cols="60"
+										readonly="true" styleClass="fondoSoloLectura" />
+									<f:verbatim />
+									<p:outputLabel value="#{txt.lbl123}: "
+										styleClass="etiquetaFormulario"
+										style="height:40px;line-height:40px;width:200px;" />
+									<p:inputText
+										value="#{segui.reporteActual.projId.projTermFrom} / #{segui.reporteActual.projId.projTermTo}"
+										size="40" readonly="true" styleClass="fondoSoloLectura" />
+									<f:verbatim />
+									<p:outputLabel value="#{txt.lbl191}: "
+										styleClass="etiquetaFormulario"
+										style="height:40px;line-height:40px;width:200px;" />
+									<p:inputTextarea
+										value="#{segui.reporteActual.projId.partId.partName}"
+										cols="60" rows="2" readonly="true"
+										styleClass="fondoSoloLectura" />
+									<f:verbatim />
+								</h:panelGrid>
+								<h:panelGrid columns="3" style="margin: 0 auto;">
+									<p:commandButton value="#{txt.btn38}"
+										icon="fa fa-fw fa-arrow-left" action="#{segui.inicializar()}"
+										process="@this" partialSubmit="true" async="true"
+										global="false" update="msgs,pnlTotal"
+										styleClass="botonRegistroProyecto"
+										onclick="PF('dlgEnProc').show()"
+										oncomplete="PF('dlgEnProc').hide()">
+										<p:confirm header="#{txt.lbl030}" message="#{txt.lbl300}"
+											icon="pi pi-exclamation-triangle" />
+									</p:commandButton>
+									<p:commandButton value="#{txt.btn02}" icon="fa fa-fw fa-save"
+										action="#{segui.guardarSeccion01('')}"
+										process="@this,pnlInfoSec01" partialSubmit="true" async="true"
+										global="false" update="msgs,pnlTotal,:frm:pnlDialogoResumen"
+										styleClass="botonRegistroProyecto"
+										onclick="PF('dlgEnProc').show()"
+										oncomplete="PF('dlgEnProc').hide()" />
+									<p:commandButton value="#{txt.btn30}"
+										icon="fa fa-fw fa-arrow-right"
+										action="#{segui.guardarSeccion01('SIG')}"
+										process="@this,pnlInfoSec01" partialSubmit="true" async="true"
+										global="false" update="msgs,pnlTotal,:frm:pnlDialogoResumen"
+										styleClass="botonRegistroProyecto"
+										onclick="PF('dlgEnProc').show()"
+										oncomplete="PF('dlgEnProc').hide()" />
+								</h:panelGrid>
+							</p:panel>
+						</h:panelGrid>
+						<h:panelGrid id="pnlSeccion02"
+							rendered="#{segui.controlAvance==2}">
+							<h:panelGrid styleClass="fondoColorSigma" width="985" columns="2"
+								columnClasses="alineadoIzquierda,alineadoDerecha">
+								<h:outputText value="#{txt.lbl194}"
+									style="font-weight:bold;font-size:14px;" />
+								<p:commandButton type="button" onclick="PF('dlgInf02').show()"
+									icon="fa fa-question" styleClass="botonInfo"
+									title="#{txt.lbl250}" />
+							</h:panelGrid>
+
+
+							<h:panelGrid id="pnlInfoSec02" width="985">
+
+								<p:outputLabel value="#{txt.lbl254}"
+									style="font-size:14px!important;font-weight:bold;height:30px;" />
+
+
+								<h:panelGrid id="pnlObjCat" width="980">
+
+									<h:panelGrid columns="2">
+										<h:panelGrid columns="4">
+											<p:outputLabel value="#{txt.lbl123} del #{txt.lbl133}" />
+											<h:panelGrid columns="2">
+												<p:outputLabel value="#{txt.lbl135}:" />
+												<p:outputLabel
+													value="#{segui.reporteActual.projId.projTermFrom}"
+													style="font-weight:bold;" />
+												<p:outputLabel value="#{txt.lbl136}:" />
+												<p:outputLabel
+													value="#{segui.reporteActual.projId.projTermTo}"
+													style="font-weight:bold;" />
+											</h:panelGrid>
+											<h:panelGrid width="100" />
+											<h:panelGrid columns="4" style="display:blocK;" width="200">
+												<p:outputLabel value="#{txt.lbl405}" style="font-size:8px;" />
+												<h:panelGrid>
+													<div style="width: 15px; height: 15px; background: red;" />
+												</h:panelGrid>
+												<h:panelGrid>
+													<div style="width: 15px; height: 15px; background: red;" />
+												</h:panelGrid>
+												<h:panelGrid>
+													<div style="width: 15px; height: 15px; background: red;" />
+												</h:panelGrid>
+											</h:panelGrid>
+										</h:panelGrid>
+
+										<p:panel style="width:350px!important;"
+											rendered="#{segui.reporteActual.cataId.cataId==app.lstCatTiposPeriodosReporte.get(1).cataId}">
+											<p:outputLabel value="#{txt.lbl255}" style="display:block;text-align:justify;" />
+										</p:panel>
+									</h:panelGrid>
+
+									<ui:repeat id="rep" var="lstObj"
+										value="#{segui.listaMontosObjComp}">
+										<p:outputLabel value="#{lstObj.psobId.geloId.geloName}"
+											style="font-weight:bold;color:blue;" />
+										<br />
+										<p:outputLabel
+											value="#{lstObj.psobId.psobCode}.- #{lstObj.psobId.psobDescription}"
+											style="font-weight:bold;" />
+										<p:dataTable id="lstObjCat"
+											value="#{lstObj.listaPorCategorias}" var="cat"
+											style="width:#{segui.anchoDataTableMontos}px!important;">
+											<p:column width="150" headerText="Costos y Gastos">
+												<p:outputLabel value="#{cat.cataId.cataText1}" />
+												<h:inputHidden id="tipo" value="#{cat.cataId.cataText2}" />
+											</p:column>
+											<p:column headerText="#{segui.listaColumnaAnios[0]}"   width="70" styleClass="#{segui.listaColumnaAnios[0]!=null?'':'estiloOcultar'}">
+												<p:inputNumber id="year1" value="#{cat.tramYear1}"
+													styleClass="#{segui.listaColumnaAnios[0]!=null?'estiloMonto':'estiloOcultar'}" size="10" decimalPlaces="2"
+													decimalSeparator="," thousandSeparator="."
+													maxValue="99000000"
+													onkeyup="repoEjecPresCalcTotalCat(this.id)" />
+											</p:column>
+											<p:column headerText="#{segui.listaColumnaAnios[1]}"   width="70" styleClass="#{segui.listaColumnaAnios[1]!=null?'':'estiloOcultar'}">
+												<p:inputNumber id="year2" value="#{cat.tramYear2}"
+													styleClass="#{segui.listaColumnaAnios[1]!=null?'estiloMonto':'estiloOcultar'}" size="10" decimalPlaces="2"
+													decimalSeparator="," thousandSeparator="."
+													maxValue="99000000"
+													onkeyup="repoEjecPresCalcTotalCat(this.id)" />
+											</p:column>
+											<p:column headerText="#{segui.listaColumnaAnios[2]}"   width="70" styleClass="#{segui.listaColumnaAnios[2]!=null?'':'estiloOcultar'}">
+												<p:inputNumber id="year3" value="#{cat.tramYear3}"
+													styleClass="#{segui.listaColumnaAnios[2]!=null?'estiloMonto':'estiloOcultar'}" size="10" decimalPlaces="2"
+													decimalSeparator="," thousandSeparator="."
+													maxValue="99000000"
+													onkeyup="repoEjecPresCalcTotalCat(this.id)" />
+											</p:column>
+											<p:column headerText="#{segui.listaColumnaAnios[3]}"  width="70" styleClass="#{segui.listaColumnaAnios[3]!=null?'':'estiloOcultar'}">
+												<p:inputNumber id="year4" value="#{cat.tramYear4}"
+													styleClass="#{segui.listaColumnaAnios[3]!=null?'estiloMonto':'estiloOcultar'}" size="10" decimalPlaces="2"
+													decimalSeparator="," thousandSeparator="."
+													maxValue="99000000"
+													onkeyup="repoEjecPresCalcTotalCat(this.id)" />
+											</p:column>
+											<p:column headerText="#{segui.listaColumnaAnios[4]}"  width="70" styleClass="#{segui.listaColumnaAnios[4]!=null?'':'estiloOcultar'}">
+												<p:inputNumber id="year5" value="#{cat.tramYear5}"
+													styleClass="#{segui.listaColumnaAnios[4]!=null?'estiloMonto':'estiloOcultar'}" size="10" decimalPlaces="2"
+													decimalSeparator="," thousandSeparator="."
+													maxValue="99000000"
+													onkeyup="repoEjecPresCalcTotalCat(this.id)" />
+											</p:column>
+											<p:column headerText="#{segui.listaColumnaAnios[5]}"  width="70"  styleClass="#{segui.listaColumnaAnios[5]!=null?'':'estiloOcultar'}">
+												<p:inputNumber id="year6" value="#{cat.tramYear6}"
+													styleClass="#{segui.listaColumnaAnios[5]!=null?'estiloMonto':'estiloOcultar'}" size="10" decimalPlaces="2"
+													decimalSeparator="," thousandSeparator="."
+													maxValue="99000000"
+													onkeyup="repoEjecPresCalcTotalCat(this.id)" />
+											</p:column>
+											<p:column headerText="#{segui.listaColumnaAnios[6]}" width="70" styleClass="#{segui.listaColumnaAnios[6]!=null?'':'estiloOcultar'}">
+												<p:inputNumber id="year7" value="#{cat.tramYear7}"
+													styleClass="#{segui.listaColumnaAnios[6]!=null?'estiloMonto':'estiloOcultar'}" size="10" decimalPlaces="2"
+													decimalSeparator="," thousandSeparator="."
+													maxValue="99000000"
+													onkeyup="repoEjecPresCalcTotalCat(this.id)" />
+											</p:column>
+
+
+											<p:column headerText="Total" width="70">
+												<p:outputLabel id="lblTotal"
+													style="display:block;width:80px;background:#EAEFF3;text-align:right;"
+													value="      " />
+												<h:inputHidden id="total" value="#{cat.tramTotal}" />
+											</p:column>
+										</p:dataTable>
+									</ui:repeat>
+									<br />
+									<p:outputLabel value="#{txt.lbl253}"
+										style="font-size:14px!important;font-weight:bold;height:30px;" />
+
+									<h:panelGrid columns="5">
+										<h:panelGrid width="290" />
+										<p:outputLabel value="#{txt.lbl197}"
+											styleClass="fondoPlanificado"
+											style="height:20px;line-height:20px;width:100px;" />
+										<p:outputLabel value="#{txt.lbl204}"
+											styleClass="fondoAdministrativo"
+											style="height:20px;line-height:20px;width:100px;" />
+										<p:outputLabel value="#{txt.lbl205}"
+											styleClass="fondoOperativo"
+											style="height:20px;line-height:20px;width:100px;" />
+										<p:outputLabel value="#{txt.lbl198}"
+											styleClass="fondoEjecutado"
+											style="height:20px;line-height:20px;width:100px;" />
+										
+
+
+									</h:panelGrid>
+
+									<br />
+									<h:panelGrid width="985" style="margin:0 auto;">
+										<p:dataTable id="lstAcumulados" widgetVar="lstAcumulados"
+											value="#{segui.listaMontosObjComp}" var="obj"
+											styleClass="alineadoCentroTd">
+											<p:column width="70" headerText="#{txt.lbl017}">
+												<p:outputLabel value="#{obj.psobId.psobCode}" />
+											</p:column>
+											<p:column width="200"
+												headerText="#{segui.reporteActual.projId.projType=='PDI'?txt.lbl014:lbl022}">
+												<p:outputLabel value="#{obj.psobId.psobDescription}"
+													style="display:block;text-align:justify;" />
+											</p:column>
+											<p:column headerText="#{txt.lbl197}" width="120">
+												<h:panelGrid styleClass="panelGridSinBorde">
+													<p:outputLabel id="lblMontoPlanificado"
+														style="width:80px;text-align:right;margin:0 auto;"
+														styleClass="fondoPlanificado" />
+													<h:inputHidden id="montoPlanificado"
+														value="#{obj.tramAssignedAmount}" />
+												</h:panelGrid>
+
+											</p:column>
+											<p:column width="120"
+												headerText="#{txt.lbl204} Y #{txt.lbl205}">
+												<h:panelGrid styleClass="panelGridSinBorde"
+													style="margin:0 auto;">
+													<p:outputLabel id="lblMontoAdministrativo"
+														style="width:80px;text-align:right;margin:0 auto;"
+														styleClass="fondoAdministrativo" />
+													<p:outputLabel id="lblMontoOperativo"
+														style="width:80px;text-align:right;margin:0 auto;"
+														styleClass="fondoOperativo" />
+													<h:inputHidden id="montoAdministrativo"
+														value="#{obj.tramAdministrative}" />
+													<h:inputHidden id="montoOperativo"
+														value="#{obj.tramOperative}" />
+												</h:panelGrid>
+
+											</p:column>
+											<p:column headerText="#{txt.lbl198}" width="120">
+												<p:outputLabel id="lblMontoEjecutado"
+													style="width:80px;text-align:right;margin:0 auto;"
+													styleClass="fondoEjecutado" />
+												<h:inputHidden id="montoEjecutado"
+													value="#{obj.tramExecutedAmount}" />
+											</p:column>
+
+											<p:column width="40" headerText="#{txt.lbl199}">
+												<p:inputText id="avance" value="#{obj.tramExecutedPercent}"
+													onkeypress="document.getElementById(this.id).readOnly=true;"
+													size="6" styleClass="estiloMontoSoloLectura" />
+											</p:column>
+
+										</p:dataTable>
+
+										<h:panelGrid columns="2" style="margin:0 auto;">
+											<p:outputLabel value="#{txt.lbl199} #{txt.lbl200}:" />
+											<p:inputText id="avancePresTotal"
+												value="#{segui.reporteActual.tracBudgetProgress}" size="4"
+												styleClass="estiloMontoSoloLecturaGrande" />
+											<p:message for="avancePresTotal" />
+										</h:panelGrid>
+									</h:panelGrid>
+								</h:panelGrid>
+							</h:panelGrid>
+							<h:panelGrid columns="3" style="margin: 0 auto;">
+								<p:commandButton value="#{txt.btn38}"
+									icon="fa fa-fw fa-arrow-left"
+									action="#{segui.cancelarSeccion('02')}" process="@this"
+									partialSubmit="true" async="true" global="false"
+									update="msgs,pnlTotal" styleClass="botonRegistroProyecto"
+									onclick="PF('dlgEnProc').show()"
+									oncomplete="PF('dlgEnProc').hide()" />
+
+								<p:commandButton value="#{txt.btn02}" icon="fa fa-fw fa-save"
+									action="#{segui.guardarSeccion02('')}"
+									process="@this,pnlInfoSec02" partialSubmit="true" async="true"
+									global="false" update="msgs,pnlTotal,:frm:pnlDialogoResumen"
+									styleClass="botonRegistroProyecto"
+									onclick="PF('dlgEnProc').show()"
+									oncomplete="PF('dlgEnProc').hide()" />
+								<p:commandButton value="#{txt.btn30}"
+									icon="fa fa-fw fa-arrow-right"
+									action="#{segui.guardarSeccion02('SIG')}"
+									process="@this,pnlInfoSec02" partialSubmit="true" async="true"
+									global="false" update="msgs,pnlTotal,:frm:pnlDialogoResumen"
+									styleClass="botonRegistroProyecto"
+									onclick="PF('dlgEnProc').show()"
+									oncomplete="PF('dlgEnProc').hide()" />
+							</h:panelGrid>
+
+						</h:panelGrid>
+						<h:panelGrid id="pnlSeccion03"
+							rendered="#{segui.controlAvance==3}">
+							<h:panelGrid styleClass="fondoColorSigma" width="985" columns="2"
+								columnClasses="alineadoIzquierda,alineadoDerecha">
+								<h:outputText value="#{txt.lbl209}"
+									style="font-weight:bold;font-size:14px;" />
+								<p:commandButton type="button" onclick="PF('dlgInf03').show()"
+									icon="fa fa-question" styleClass="botonInfo"
+									title="#{txt.lbl250}" />
+							</h:panelGrid>
+							<h:panelGrid id="pnlInfoSec03" width="980" style="margin:0 auto;">
+
+								<h:panelGrid columns="5">
+									<h:panelGrid width="700" />
+									<p:outputLabel value="#{txt.lbl405}" style="font-size:8px;" />
+									<h:panelGrid>
+										<div style="width: 15px; height: 15px; background: red;" />
+									</h:panelGrid>
+									<h:panelGrid>
+										<div style="width: 15px; height: 15px; background: red;" />
+									</h:panelGrid>
+									<h:panelGrid>
+										<div style="width: 15px; height: 15px; background: red;" />
+									</h:panelGrid>
+								</h:panelGrid>
+								<p:dataTable id="lstAcc" value="#{segui.listaAcciones}"
+									var="acc" emptyMessage="#{txt.lbl047}" scrollable="true"
+									scrollWidth="975" scrollHeight="800"
+									widgetVar="dataTableIndicadores" styleClass="alineadoCentroTd">
+									<f:facet name="header">
+									#{txt.lbl307}
+									</f:facet>
+									<p:column groupRow="true" headerText="#{txt.lbl024}"
+										width="280">
+										<h:panelGrid styleClass="panelGridSinBorde">
+											<p:outputLabel
+												value="#{acc.pracId.pracParentId.psobId.geloId.geloName} - "
+												style="font-size:10px;font-weight:bold;display:block;text-align:justify;"
+												rendered="#{acc.pracId.pracParentId.psobId.geloId!=null}" />
+											<p:outputLabel
+												value="#{acc.pracId.psobId.psobCode}.- #{acc.pracId.psobId.psobDescription}"
+												style="font-size:10px;font-weight:bold;display:block;text-align:justify;" />
+											<p:outputLabel
+												value="#{acc.pracId.pracParentId.pracCode} #{acc.pracId.pracParentId.pracDescription}"
+												style="display:block;text-align:justify;" />
+											<p:outputLabel
+												value="#{acc.pracId.pracParentId.partId.partAcronym}"
+												rendered="#{acc.pracId.pracParentId.partId!=null}"
+												style="font-weight:bold;display:block;text-align:justify;" />
+										</h:panelGrid>
+									</p:column>
+
+									<p:column headerText="#{txt.lbl097}" width="280">
+
+										<h:panelGrid styleClass="panelGridSinBorde">
+											<p:outputLabel value="#{acc.pracId.pracDescription}"
+												style="display:block;text-align:justify;" />
+											<h:panelGrid styleClass="panelGridSinBorde" columns="3"
+												style="display:block;">
+												<p:outputLabel value="#{txt.lbl016}:"
+													style="font-size:10px;font-weight:bold;display:block;text-align:justify;" />
+												<p:inputText id="valMeta"
+													value="#{acc.pracId.pracGoalValue}"
+													rendered="#{acc.pracId.pracGoalValue!=null}"
+													style="font-size:10px;text-align:left !important;"
+													readonly="true" size="10"
+													styleClass="estiloMontoSoloLectura" />
+												<h:outputText id="iconDescMeta" value=""
+													styleClass="ui-icon fa fa-info-circle" />
+												<p:tooltip for="iconDescMeta" value="#{acc.pracId.pracGoal}"
+													style="max-width: 300px; white-space:pre-wrap;"
+													escape="false" />
+
+											</h:panelGrid>
+
+											<p:outputLabel value="#{acc.trprInfoExtra}" escape="false" />
+
+										</h:panelGrid>
+
+
+									</p:column>
+									<p:column headerText="#{txt.lbl211} y #{txt.lbl212}">
+										<h:panelGrid styleClass="panelGridSinBorde">
+											<h:panelGrid columns="2"
+												styleClass="panelGridSinBordeYEspacios"
+												columnClasses="ancho110,ancho30" style="display:block;">
+												<p:inputNumber id="valAlc" value="#{acc.trprReachedValue}"
+													size="10" disabled="#{acc.pracId.pracGoalValue==null}"
+													style="font-size:10px;" decimalSeparator=","
+													thousandSeparator="." minValue="0"
+													onkeyup="repoAccCalAvanceDesdeValorAlcanzado(this.id,this.value,'#{segui.listaAcciones.size()}')" />
+												<sigma_components:ayuda texto="#{txt.lbl369}" />
+
+											</h:panelGrid>
+											<p:inputTextarea value="#{acc.trprDetails}" cols="23"
+												style="text-align:justify;" />
+										</h:panelGrid>
+									</p:column>
+									<p:column headerText="#{txt.lbl213}" width="55"
+										styleClass="estiloLetraPequenia">
+										<p:inputText id="avance" value="#{acc.trprProgressPercent}"
+											size="3" readonly="#{acc.pracId.pracGoalValue!=null}"
+											styleClass="estiloMontoSoloLectura"
+											onblur="repoAccCalAvanceTotal('#{segui.listaAcciones.size()}')" />
+									</p:column>
+									<p:column headerText="#{txt.lbl257}"
+										styleClass="estiloLetraPequenia" width="55">
+										<p:inputText id="pond" value="#{acc.pracId.pracWeighing}"
+											size="3" style="font-size:10px;"
+											styleClass="estiloMontoSoloLectura" />
+									</p:column>
+
+
+								</p:dataTable>
+
+
+
+
+
+								<h:panelGrid columns="2" style="margin:0 auto;">
+									<p:outputLabel value="#{txt.lbl199} #{txt.lbl200}:" />
+									<p:inputText id="avanceTotal"
+										value="#{segui.reporteActual.tracActionsProgress}" size="4"
+										styleClass="estiloMontoSoloLecturaGrande" />
+									<p:message for="avanceTotal" />
+								</h:panelGrid>
+							</h:panelGrid>
+							<h:panelGrid columns="3" style="margin: 0 auto;">
+								<p:commandButton value="#{txt.btn38}"
+									icon="fa fa-fw fa-arrow-left"
+									action="#{segui.cancelarSeccion('03')}" process="@this"
+									partialSubmit="true" async="true" global="false"
+									update="msgs,pnlTotal" styleClass="botonRegistroProyecto"
+									onclick="PF('dlgEnProc').show()"
+									oncomplete="PF('dlgEnProc').hide()" />
+
+								<p:commandButton value="#{txt.btn02}" icon="fa fa-fw fa-save"
+									action="#{segui.guardarSeccion03('')}"
+									process="@this,pnlInfoSec03" partialSubmit="true" async="true"
+									global="false" update="msgs,pnlTotal,:frm:pnlDialogoResumen"
+									styleClass="botonRegistroProyecto"
+									onclick="repoAccCalAvanceTotal('#{segui.listaAcciones.size()}');PF('dlgEnProc').show()"
+									oncomplete="PF('dlgEnProc').hide()" />
+								<p:commandButton value="#{txt.btn30}"
+									icon="fa fa-fw fa-arrow-right"
+									action="#{segui.guardarSeccion03('SIG')}"
+									process="@this,pnlInfoSec03" partialSubmit="true" async="true"
+									global="false" update="msgs,pnlTotal,:frm:pnlDialogoResumen"
+									styleClass="botonRegistroProyecto"
+									onclick="PF('dlgEnProc').show()"
+									oncomplete="PF('dlgEnProc').hide()" />
+							</h:panelGrid>
+
+						</h:panelGrid>
+						<h:panelGrid id="pnlSeccion04"
+							rendered="#{segui.controlAvance==4}">
+							<h:panelGrid styleClass="fondoColorSigma" width="985" columns="2"
+								columnClasses="alineadoIzquierda,alineadoDerecha">
+								<h:outputText value="#{txt.lbl216}"
+									style="font-weight:bold;font-size:14px;" />
+								<p:commandButton type="button" onclick="PF('dlgInf04').show()"
+									icon="fa fa-question" styleClass="botonInfo"
+									title="#{txt.lbl250}" />
+							</h:panelGrid>
+							<h:panelGrid id="pnlInfoSec04" width="985">
+								<h:panelGrid columns="5">
+									<h:panelGrid width="700" />
+									<p:outputLabel value="#{txt.lbl406}" style="font-size:8px;" />
+									<h:panelGrid>
+										<div style="width: 15px; height: 15px; background: #D1CAC9;" />
+									</h:panelGrid>
+									<h:panelGrid>
+										<div style="width: 15px; height: 15px; background: #D1CAC9;" />
+									</h:panelGrid>
+									<h:panelGrid>
+										<div style="width: 15px; height: 15px; background: red;" />
+									</h:panelGrid>
+								</h:panelGrid>
+
+								<p:commandButton value="Nuevo Evento"
+									action="#{segui.prepararNuevoEvento()}" process="@this"
+									partialSubmit="true" async="true" global="false"
+									update=":frm:pnlDialogos" onclick="PF('dlgEnProc').show()"
+									oncomplete="PF('dlgEnProc').hide()" />
+								<p:dataTable id="lstEventos"
+									value="#{segui.listaEventosProyecto}" var="eve" emptyMessage=""
+									scrollable="true" scrollHeight="500"
+									rendered="#{segui.listaEventosProyecto.size()>0}"
+									styleClass="alineadoCentroTd">
+									<f:facet name="header">Lista de Eventos</f:facet>
+									<p:column headerText="#{txt.lbl018}" width="250">
+										<p:outputLabel value="#{eve.meetName}"
+											style="display:block;text-align:justify;" />
+									</p:column>
+									<p:column headerText="#{txt.lbl273}">
+										<p:outputLabel value="#{eve.meetResponsable}"
+											style="display:block;text-align:justify;" />
+									</p:column>
+									<p:column headerText="#{txt.lbl135}">
+										<p:outputLabel value="#{eve.meetDateStart}" />
+									</p:column>
+									<p:column headerText="#{txt.lbl136}">
+										<p:outputLabel value="#{eve.meetDateEnd}" />
+									</p:column>
+									<p:column headerText="#{txt.lbl224}">
+										<p:outputLabel value="#{eve.geloId.geloName}" />
+									</p:column>
+									<p:column headerText="#{txt.lbl262}">
+										<p:outputLabel value="#{eve.meetParticipantsNumber}" />
+									</p:column>
+									<p:column width="70" headerText="#{txt.lbl024}">
+										<p:commandButton
+											action="#{segui.seleccionarEventoAEditar(eve)}"
+											process="@this" partialSubmit="true" async="true"
+											global="false" update=":frm:pnlDialogos,:frm:msgs"
+											onclick="PF('dlgEnProc').show()"
+											oncomplete="PF('dlgEnProc').hide()" icon="fa fa-pencil" />
+										<p:commandButton action="#{segui.eliminarEvento(eve)}"
+											process="@this" partialSubmit="true" async="true"
+											global="false" update=":frm:pnlInfoSec04,:frm:msgs"
+											onclick="PF('dlgEnProc').show()"
+											oncomplete="PF('dlgEnProc').hide()" icon="fa fa-trash">
+											<p:confirm header="#{txt.lbl030}" message="#{txt.lbl301}"
+												icon="pi pi-exclamation-triangle" />
+										</p:commandButton>
+									</p:column>
+								</p:dataTable>
+							</h:panelGrid>
+							<h:panelGrid columns="3" style="margin: 0 auto;">
+								<p:commandButton value="#{txt.btn38}"
+									icon="fa fa-fw fa-arrow-left"
+									action="#{segui.cancelarSeccion('04')}" process="@this"
+									partialSubmit="true" async="true" global="false"
+									update="msgs,pnlTotal" styleClass="botonRegistroProyecto"
+									onclick="PF('dlgEnProc').show()"
+									oncomplete="PF('dlgEnProc').hide()" />
+
+								<p:commandButton value="#{txt.btn02}" icon="fa fa-fw fa-save"
+									action="#{segui.guardarSeccion04('')}"
+									process="@this,pnlInfoSec04" partialSubmit="true" async="true"
+									global="false" update="msgs,pnlTotal,:frm:pnlDialogoResumen"
+									styleClass="botonRegistroProyecto"
+									onclick="PF('dlgEnProc').show()"
+									oncomplete="PF('dlgEnProc').hide()" />
+								<p:commandButton value="#{txt.btn30}"
+									icon="fa fa-fw fa-arrow-right"
+									action="#{segui.guardarSeccion04('SIG')}"
+									process="@this,pnlInfoSec04" partialSubmit="true" async="true"
+									global="false" update="msgs,pnlTotal,:frm:pnlDialogoResumen"
+									styleClass="botonRegistroProyecto"
+									onclick="PF('dlgEnProc').show()"
+									oncomplete="PF('dlgEnProc').hide()" />
+							</h:panelGrid>
+
+						</h:panelGrid>
+						<h:panelGrid id="pnlSeccion05"
+							rendered="#{segui.controlAvance==5}">
+							<h:panelGrid styleClass="fondoColorSigma" width="985" columns="2"
+								columnClasses="alineadoIzquierda,alineadoDerecha">
+								<h:outputText value="#{txt.lbl217}"
+									style="font-weight:bold;font-size:14px;" />
+								<p:commandButton type="button" onclick="PF('dlgInf05').show()"
+									icon="fa fa-question" styleClass="botonInfo"
+									title="#{txt.lbl250}" />
+							</h:panelGrid>
+							<h:panelGrid id="pnlInfoSec05" width="985">
+								<h:panelGrid columns="5">
+									<h:panelGrid width="700" />
+									<p:outputLabel value="#{txt.lbl406}" style="font-size:8px;" />
+									<h:panelGrid>
+										<div style="width: 15px; height: 15px; background: #D1CAC9;" />
+									</h:panelGrid>
+									<h:panelGrid>
+										<div style="width: 15px; height: 15px; background: #D1CAC9;" />
+									</h:panelGrid>
+									<h:panelGrid>
+										<div style="width: 15px; height: 15px; background: red;" />
+									</h:panelGrid>
+								</h:panelGrid>
+								<h:panelGrid>
+									<p:dataTable value="#{segui.listaPregGestCon}" var="preg"
+										styleClass="alineadoCentroTd">
+										<p:column width="300" headerText="#{txt.lbl097}">
+											<p:outputLabel value="#{preg.cataId.cataText1}:"
+												style="display:block;text-align:right;font-size:14px !important;" />
+										</p:column>
+										<p:column width="75" headerText="#{txt.lbl258}">
+											<p:inputNumber value="#{preg.tkmaValue}" size="3"
+												maxValue="999" minValue="0" decimalPlaces="0"
+												onkeypress="if( (event.which &lt; 48 || event.which &gt; 57) ) return false;" />
+										</p:column>
+										<p:column headerText="#{txt.lbl259}">
+											<h:panelGrid columns="2" styleClass="panelGridSinBorde"
+												style="display:block;">
+												<p:inputTextarea value="#{preg.tkmaDescription}"
+													maxlength="1000" cols="66" style="text-align:justify;" />
+												<sigma_components:ayuda texto="#{txt.lbl370}" />
+											</h:panelGrid>
+										</p:column>
+									</p:dataTable>
+								</h:panelGrid>
+							</h:panelGrid>
+							<h:panelGrid columns="3" style="margin: 0 auto;">
+								<p:commandButton value="#{txt.btn38}"
+									icon="fa fa-fw fa-arrow-left"
+									action="#{segui.cancelarSeccion('05')}" process="@this"
+									partialSubmit="true" async="true" global="false"
+									update="msgs,pnlTotal" styleClass="botonRegistroProyecto"
+									onclick="PF('dlgEnProc').show()"
+									oncomplete="PF('dlgEnProc').hide()" />
+
+								<p:commandButton value="#{txt.btn02}" icon="fa fa-fw fa-save"
+									action="#{segui.guardarSeccion05('')}"
+									process="@this,pnlInfoSec05" partialSubmit="true" async="true"
+									global="false" update="msgs,pnlTotal,:frm:pnlDialogoResumen"
+									styleClass="botonRegistroProyecto"
+									onclick="PF('dlgEnProc').show()"
+									oncomplete="PF('dlgEnProc').hide()" />
+								<p:commandButton value="#{txt.btn30}"
+									icon="fa fa-fw fa-arrow-right"
+									action="#{segui.guardarSeccion05('SIG')}"
+									process="@this,pnlInfoSec05" partialSubmit="true" async="true"
+									global="false" update="msgs,pnlTotal,:frm:pnlDialogoResumen"
+									styleClass="botonRegistroProyecto"
+									onclick="PF('dlgEnProc').show()"
+									oncomplete="PF('dlgEnProc').hide()" />
+							</h:panelGrid>
+
+						</h:panelGrid>
+
+						<h:panelGrid id="pnlSeccion06"
+							rendered="#{segui.controlAvance==6}">
+							<h:panelGrid styleClass="fondoColorSigma" width="985" columns="2"
+								columnClasses="alineadoIzquierda,alineadoDerecha">
+								<h:outputText value="#{txt.lbl247}"
+									style="font-weight:bold;font-size:14px;" />
+								<p:commandButton type="button" onclick="PF('dlgInf06').show()"
+									icon="fa fa-question" styleClass="botonInfo"
+									title="#{txt.lbl250}" />
+							</h:panelGrid>
+
+							<h:panelGrid id="pnlInfoSec06" width="985">
+								<h:panelGrid columns="5">
+									<h:panelGrid width="700" />
+									<p:outputLabel value="#{txt.lbl406}" style="font-size:8px;" />
+									<h:panelGrid>
+										<div style="width: 15px; height: 15px; background: #D1CAC9;" />
+									</h:panelGrid>
+									<h:panelGrid>
+										<div style="width: 15px; height: 15px; background: #D1CAC9;" />
+									</h:panelGrid>
+									<h:panelGrid>
+										<div style="width: 15px; height: 15px; background: red;" />
+									</h:panelGrid>
+								</h:panelGrid>
+								<p:dataTable value="#{segui.listaPregComunicacion}" var="preg"
+									styleClass="alineadoCentroTd">
+									<p:column width="300" headerText="#{txt.lbl097}">
+										<p:outputLabel value="#{preg.cataId.cataText1}:"
+											style="display:block;text-align:right;font-size:14px !important;" />
+									</p:column>
+									<p:column width="85" headerText="Respuesta">
+										<p:inputNumber value="#{preg.tkmaValue}" maxValue="999"
+											minValue="0" decimalPlaces="0"
+											rendered="#{preg.cataId.cataNumber lt 10}" size="3"
+											onkeypress="if( (event.which &lt; 48 || event.which &gt; 57) ) return false;" />
+										<p:selectOneMenu value="#{preg.tkmaValue}" style="width:65px;"
+											rendered="#{preg.cataId.cataNumber gt 9}">
+											<f:selectItem itemLabel="#{txt.lbl028}" itemValue="#{1}" />
+											<f:selectItem itemLabel="#{txt.lbl029}" itemValue="#{0}" />
+										</p:selectOneMenu>
+									</p:column>
+									<p:column headerText="#{txt.lbl259}">
+										<h:panelGrid columns="2" styleClass="panelGridSinBorde"
+											style="display:block;">
+											<p:inputTextarea value="#{preg.tkmaDescription}" cols="65"
+												maxlength="1000" style="text-align:justify;" />
+											<sigma_components:ayuda texto="#{txt.lbl370}" />
+										</h:panelGrid>
+									</p:column>
+								</p:dataTable>
+							</h:panelGrid>
+							<h:panelGrid columns="3" style="margin: 0 auto;">
+								<p:commandButton value="#{txt.btn38}"
+									icon="fa fa-fw fa-arrow-left"
+									action="#{segui.cancelarSeccion('06')}" process="@this"
+									partialSubmit="true" async="true" global="false"
+									update="msgs,pnlTotal" styleClass="botonRegistroProyecto"
+									onclick="PF('dlgEnProc').show()"
+									oncomplete="PF('dlgEnProc').hide()" />
+
+								<p:commandButton value="#{txt.btn02}" icon="fa fa-fw fa-save"
+									action="#{segui.guardarSeccion06('')}"
+									process="@this,pnlInfoSec06" partialSubmit="true" async="true"
+									global="false" update="msgs,pnlTotal,:frm:pnlDialogoResumen"
+									styleClass="botonRegistroProyecto"
+									onclick="PF('dlgEnProc').show()"
+									oncomplete="PF('dlgEnProc').hide()" />
+								<p:commandButton value="#{txt.btn30}"
+									icon="fa fa-fw fa-arrow-right"
+									action="#{segui.guardarSeccion06('SIG')}"
+									process="@this,pnlInfoSec06" partialSubmit="true" async="true"
+									global="false" update="msgs,pnlTotal,:frm:pnlDialogoResumen"
+									styleClass="botonRegistroProyecto"
+									onclick="PF('dlgEnProc').show()"
+									oncomplete="PF('dlgEnProc').hide()" />
+							</h:panelGrid>
+
+						</h:panelGrid>
+						<h:panelGrid id="pnlSeccion07"
+							rendered="#{segui.controlAvance==7}">
+							<h:panelGrid styleClass="fondoColorSigma" width="985" columns="2"
+								columnClasses="alineadoIzquierda,alineadoDerecha">
+								<h:outputText value="#{txt.lbl234}"
+									style="font-weight:bold;font-size:14px;" />
+								<p:commandButton type="button" onclick="PF('dlgInf07').show()"
+									icon="fa fa-question" styleClass="botonInfo"
+									title="#{txt.lbl250}" />
+							</h:panelGrid>
+
+							<h:panelGrid id="pnlInfoSec07" width="985">
+								
+								<h:panelGrid columns="5">
+									<h:panelGrid width="700" />
+									<p:outputLabel value="#{txt.lbl406}" style="font-size:8px;" />
+									<h:panelGrid>
+										<div style="width: 15px; height: 15px; background: #D1CAC9;" />
+									</h:panelGrid>
+									<h:panelGrid>
+										<div style="width: 15px; height: 15px; background: #D1CAC9;" />
+									</h:panelGrid>
+									<h:panelGrid>
+										<div style="width: 15px; height: 15px; background: red;" />
+									</h:panelGrid>
+								</h:panelGrid>
+								<p:dataTable id="lstRiesgos" value="#{segui.listaRiesgos}"
+									var="risk" styleClass="alineadoCentroTd">
+									<p:column headerText="#{txt.lbl150}" width="450">
+										<p:outputLabel
+											value="#{txt.lbl019}: #{risk.prriId.cataId.cataText1}"
+											styleClass="estiloLetraPequenia"
+											style="display:block;text-align:justify;" />
+										<br />
+										<p:outputLabel value="#{risk.prriId.prriDescription}"
+											style="display:block;text-align:justify;" />
+										<br />
+										<p:outputLabel value="#{txt.lbl153}: "
+											styleClass="estiloLetraPequenia"
+											style="display:block;text-align:justify;" />
+										<br />
+										<p:outputLabel value="#{risk.prriId.prriMitigationMeasure}"
+											style="display:block;text-align:justify;" />
+									</p:column>
+									<p:column headerText="#{txt.lbl237}">
+										<h:panelGrid columns="4" styleClass="panelGridSinBorde"
+											width="250" style="display:block;">
+
+											<p:outputLabel value="#{txt.lbl235}:"
+												styleClass="estiloLetraPequenia"
+												style="display:block;text-align:justify;" />
+											<p:selectBooleanCheckbox value="#{risk.trprRiskIspresent}">
+												<p:ajax process="@this" partialSubmit="true" async="true"
+												listener="#{segui.limpiarDetalleRiesgo(risk)}"
+													global="false" update="estadoRiesgo,detalleRiesgo"></p:ajax>
+											</p:selectBooleanCheckbox>
+											<f:verbatim />
+											<p:selectOneMenu id="estadoRiesgo"
+												value="#{risk.trprRiskStatus}" style="width:150px;"
+												disabled="#{!risk.trprRiskIspresent or risk.trprRiskIspresent==null}">
+												<f:selectItem itemLabel="#{txt.lbl025} ..."
+													itemValue="#{null}" />
+												<f:selectItem itemLabel="#{txt.lbl239}" itemValue="D" />
+												<f:selectItem itemLabel="#{txt.lbl240}" itemValue="I" />
+												<f:selectItem itemLabel="#{txt.lbl241}" itemValue="M" />
+											</p:selectOneMenu>
+										</h:panelGrid>
+										<p:inputTextarea id="detalleRiesgo"
+											value="#{risk.trprDetails}" cols="65" maxlength="1000"
+											style="text-align:justify;"
+											disabled="#{!risk.trprRiskIspresent or risk.trprRiskIspresent==null}" />
+									</p:column>
+								</p:dataTable>
+							</h:panelGrid>
+							<h:panelGrid columns="3" style="margin: 0 auto;">
+								<p:commandButton value="#{txt.btn38}"
+									icon="fa fa-fw fa-arrow-left"
+									action="#{segui.cancelarSeccion('07')}" process="@this"
+									partialSubmit="true" async="true" global="false"
+									update="msgs,pnlTotal" styleClass="botonRegistroProyecto"
+									onclick="PF('dlgEnProc').show()"
+									oncomplete="PF('dlgEnProc').hide()" />
+
+								<p:commandButton value="#{txt.btn02}" icon="fa fa-fw fa-save"
+									action="#{segui.guardarSeccion07('')}"
+									process="@this,pnlInfoSec07" partialSubmit="true" async="true"
+									global="false" update="msgs,pnlTotal,:frm:pnlDialogoResumen"
+									styleClass="botonRegistroProyecto"
+									onclick="PF('dlgEnProc').show()"
+									oncomplete="PF('dlgEnProc').hide()" />
+								<p:commandButton value="#{txt.btn30}"
+									icon="fa fa-fw fa-arrow-right"
+									action="#{segui.guardarSeccion07('SIG')}"
+									process="@this,pnlInfoSec07" partialSubmit="true" async="true"
+									global="false" update="msgs,pnlTotal,:frm:pnlDialogoResumen"
+									styleClass="botonRegistroProyecto"
+									onclick="PF('dlgEnProc').show()"
+									oncomplete="PF('dlgEnProc').hide()" />
+							</h:panelGrid>
+
+						</h:panelGrid>
+						<h:panelGrid id="pnlSeccion08"
+							rendered="#{segui.controlAvance==8}">
+							<h:panelGrid styleClass="fondoColorSigma" width="985" columns="2"
+								columnClasses="alineadoIzquierda,alineadoDerecha">
+								<h:outputText value="#{txt.lbl242}"
+									style="font-weight:bold;font-size:14px;" />
+								<p:commandButton type="button" onclick="PF('dlgInf08').show()"
+									icon="fa fa-question" styleClass="botonInfo"
+									title="#{txt.lbl250}" />
+							</h:panelGrid>
+
+
+
+							<h:panelGrid id="pnlInfoSec08" width="985">
+
+								<h:panelGrid columns="5">
+									<h:panelGrid width="700" />
+									<p:outputLabel value="#{txt.lbl406}" style="font-size:8px;" />
+									<h:panelGrid>
+										<div style="width: 15px; height: 15px; background: #D1CAC9;" />
+									</h:panelGrid>
+									<h:panelGrid>
+										<div style="width: 15px; height: 15px; background: #D1CAC9;" />
+									</h:panelGrid>
+									<h:panelGrid>
+										<div style="width: 15px; height: 15px; background: red;" />
+									</h:panelGrid>
+								</h:panelGrid>
+								<h:panelGrid id="pnlProblem" columns="3" style="margin:0 auto;">
+									<p:outputLabel value="#{txt.lbl243}:"
+										styleClass="etiquetaFormulario"
+										style="height:50px;width:150px;font-weight:bold;" />
+									<p:selectOneMenu id="probTipo"
+										value="#{segui.objetoProblema.cataId.cataId}"
+										style="width:200px;">
+										<f:selectItem itemLabel="#{txt.lbl025} ..."
+											itemValue="#{null}" />
+										<f:selectItems value="#{app.lstCatTiposProblemas}"
+											var="tipPro" itemLabel="#{tipPro.cataText1}"
+											itemValue="#{tipPro.cataId}" />
+									</p:selectOneMenu>
+									<p:message for="probTipo" display="icon" />
+
+									<p:outputLabel value="#{txt.lbl244}:"
+										styleClass="etiquetaFormulario"
+										style="height:50px;width:150px;font-weight:bold;" />
+									<p:inputTextarea id="probDesc"
+										value="#{segui.objetoProblema.trprDescription}"
+										maxlength="500" rows="2" cols="70" />
+									<p:message for="probDesc" display="icon" />
+
+									<p:outputLabel value="#{txt.lbl245}:"
+										styleClass="etiquetaFormulario"
+										style="height:50px;width:150px;font-weight:bold;" />
+									<p:inputTextarea id="probSol"
+										value="#{segui.objetoProblema.trprSolution}" maxlength="1000"
+										rows="2" cols="70" />
+									<p:message for="probSol" display="icon" />
+									<f:verbatim />
+									<h:panelGrid columns="2">
+										<h:panelGrid width="145" />
+										<p:commandButton value="#{txt.btn02}"
+											action="#{segui.guardarProblema()}" async="true"
+											global="false" process="@this,pnlProblem"
+											partialSubmit="true" icon="fa fa-save" title="#{txt.btn02}"
+											update="pnlListaProb,pnlProblem,pnlDialogoResumen,:frm:msgs"
+											onclick="PF('dlgEnProc').show()"
+											oncomplete="PF('dlgEnProc').hide()" />
+									</h:panelGrid>
+
+
+
+
+								</h:panelGrid>
+								<h:panelGrid id="pnlListaProb">
+									<p:dataTable value="#{segui.listaProblemas}" var="prob"
+										styleClass="alineadoCentroTd">
+										<p:column headerText="#{txt.lbl243}" width="150">
+											<p:outputLabel value="#{prob.cataId.cataText1}" />
+										</p:column>
+										<p:column headerText="#{txt.lbl244}">
+											<p:outputLabel value="#{prob.trprDescription}"
+												style="display:block;text-align:justify;" />
+										</p:column>
+										<p:column headerText="#{txt.lbl245}">
+											<p:outputLabel value="#{prob.trprSolution}"
+												style="display:block;text-align:justify;" />
+										</p:column>
+										<p:column width="70" headerText="#{txt.lbl024}">
+											<p:commandButton icon="fa fa-pencil"
+												action="#{segui.seleccionarProblemaAEditar(prob)}"
+												process="@this" partialSubmit="true" async="true"
+												global="false" update=":frm:pnlProblem" title="#{txt.btn15}"
+												onclick="PF('dlgEnProc').show()"
+												oncomplete="PF('dlgEnProc').hide()" />
+											<p:commandButton icon="fa fa-trash"
+												action="#{segui.eliminarProblema(prob)}" process="@this"
+												async="true" global="false" partialSubmit="true"
+												title="#{txt.btn14}"
+												update=":frm:pnlListaProb,:frm:msgs,:frm:pnlDialogoResumen"
+												onclick="PF('dlgEnProc').show()"
+												oncomplete="PF('dlgEnProc').hide()">
+												<p:confirm header="#{txt.lbl030}" message="#{txt.lbl248}"
+													icon="pi pi-exclamation-triangle" />
+											</p:commandButton>
+										</p:column>
+									</p:dataTable>
+								</h:panelGrid>
+
+							</h:panelGrid>
+							<h:panelGrid columns="3" style="margin: 0 auto;">
+								<p:commandButton value="#{txt.btn38}"
+									icon="fa fa-fw fa-arrow-left"
+									action="#{segui.cancelarSeccion('08')}" process="@this"
+									partialSubmit="true" async="true" global="false"
+									update="msgs,pnlTotal" styleClass="botonRegistroProyecto"
+									onclick="PF('dlgEnProc').show()"
+									oncomplete="PF('dlgEnProc').hide()" />
+								<p:commandButton value="#{txt.btn30}"
+									icon="fa fa-fw fa-arrow-right"
+									action="#{segui.cargarSeccion09()}" process="@this"
+									partialSubmit="true" async="true" global="false"
+									update="msgs,pnlTotal" styleClass="botonRegistroProyecto"
+									onclick="PF('dlgEnProc').show()"
+									oncomplete="PF('dlgEnProc').hide()" />
+
+
+							</h:panelGrid>
+
+						</h:panelGrid>
+						<h:panelGrid id="pnlSeccion09"
+							rendered="#{segui.controlAvance==9}">
+							<h:panelGrid styleClass="fondoColorSigma" width="985" columns="2"
+								columnClasses="alineadoIzquierda,alineadoDerecha">
+								<h:outputText value="#{txt.lbl299}"
+									style="font-weight:bold;font-size:14px;" />
+							</h:panelGrid>
+							<h:panelGrid width="985" style="margin:0 auto;">
+								<h:panelGrid columns="2" style="margin:0 auto;">
+									<p:donutChart id="chart1" widgetVar="chart1"
+										model="#{segui.donutModelAvanceEjecPres}"
+										style="width: 340px !important; height: 300px;" />
+									<p:donutChart id="chart2" widgetVar="chart2"
+										model="#{segui.donutModelAvanceAcciones}"
+										style="width: 340px !important; height: 300px;" />
+								</h:panelGrid>
+								<br />
+								<br />
+								<h:panelGrid width="985" style="margin:0 auto;">
+									<p:barChart id="chart3" widgetVar="chart3"
+										model="#{segui.barModelEjecPres}"
+										style="width:750px !important;height:350px;" />
+									<p:dataTable id="lstObjChart"
+										value="#{segui.listaMontosObjComp}" var="obj"
+										rowIndexVar="rowIndex" styleClass="alineadoCentroTd">
+										<p:column width="30" headerText="Nº">
+											<p:outputLabel value="#{rowIndex+1}" />
+										</p:column>
+										<p:column width="70" headerText="#{txt.lbl017}">
+											<p:outputLabel value="#{obj.psobId.psobCode}" />
+										</p:column>
+										<p:column
+											headerText="#{segui.reporteActual.projId.projType=='PDI'?txt.lbl014:lbl022}">
+											<p:outputLabel value="#{obj.psobId.psobDescription}"
+												style="display:block;text-align:justify;" />
+										</p:column>
+
+									</p:dataTable>
+								</h:panelGrid>
+								<h:panelGrid columns="4" style="margin:0 auto;">
+									<p:commandButton value="#{txt.btn38}"
+										icon="fa fa-fw fa-arrow-left"
+										action="#{segui.cancelarSeccion('09')}" process="@this"
+										partialSubmit="true" async="true" global="false"
+										update="msgs,pnlTotal" styleClass="botonRegistroProyecto"
+										onclick="PF('dlgEnProc').show()"
+										oncomplete="PF('dlgEnProc').hide()"
+										rendered="#{segui.reporteActual.tracRegisterStatus!='V'}" />
+									<p:commandButton type="button" value="#{txt.btn40}"
+										onclick="PF('dlgResumen').show();"
+										icon="fa fa-print" styleClass="botonRegistroProyecto" 
+										/>
+									<p:commandButton value="#{txt.btn02}" icon="fa fa-fw fa-save"
+										action="#{segui.marcarComoGuardadoReporte()}" process="@this"
+										partialSubmit="true" async="true" global="false"
+										update="msgs,pnlTotal" styleClass="botonRegistroProyecto"
+										onclick="PF('dlgEnProc').show()"
+										oncomplete="PF('dlgEnProc').hide()"
+										rendered="#{segui.reporteActual.tracRegisterStatus!='V'}" />
+									<p:commandButton value="#{txt.btn36}" icon="fa fa-fw fa-check"
+										action="#{segui.finalizarReporte()}" process="@this"
+										partialSubmit="true" async="true" global="false"
+										update="msgs,pnlTotal" styleClass="botonRegistroProyecto"
+										onclick="PF('dlgEnProc').show()"
+										oncomplete="PF('dlgEnProc').hide()"
+										rendered="#{segui.reporteActual.tracRegisterStatus!='V'}">
+										<p:confirm header="#{txt.lbl030}" message="#{txt.msg128}"
+											icon="pi pi-exclamation-triangle" />
+									</p:commandButton>
+
+								</h:panelGrid>
+							</h:panelGrid>
+
+						</h:panelGrid>
+
+					</h:panelGrid>
+				</p:panel>
+				<h:panelGrid id="pnlDialogos">
+					<p:dialog widgetVar="dlgEvento" header="#{txt.lbl261}" modal="true">
+						<h:panelGrid id="pnlFormSimpl" width="1024">
+							<h:panelGrid columns="2">
+								<h:panelGrid columns="3">
+									<p:outputLabel value="*#{txt.lbl272}: "
+										styleClass="etiquetaFormulario"
+										style="width:150px;height:25px;" />
+									<p:inputText id="eveName"
+										value="#{segui.eventoActual.meetName}" size="60"
+										maxlength="200" />
+									<p:message for="eveName" display="icon" />
+									<p:outputLabel value="#{txt.lbl273}: "
+										styleClass="etiquetaFormulario"
+										style="width:150px;height:25px;" />
+									<p:inputText id="eveResp"
+										value="#{segui.eventoActual.meetResponsable}" size="60"
+										maxlength="100" />
+									<p:message for="eveResp" display="icon" />
+									<p:outputLabel value="*#{txt.lbl446}: "
+										styleClass="etiquetaFormulario"
+										style="width:150px;height:25px;" />
+									<p:calendar id="eveDateStart"
+										value="#{segui.eventoActual.meetDateStart}" navigator="true"
+										pattern="yyyy/MM/dd HH:mm" locale="es"/>
+									<p:message for="eveDateStart" display="icon" />
+									<p:outputLabel value="*#{txt.lbl447}: "
+										styleClass="etiquetaFormulario"
+										style="width:150px;height:25px;" />
+									<p:calendar id="eveDateEnd"
+										value="#{segui.eventoActual.meetDateEnd}" navigator="true"
+										pattern="yyyy/MM/dd HH:mm" locale="es"/>
+									<p:message for="eveDateEnd" display="icon" />
+									<p:outputLabel value="*#{txt.lbl224}: "
+										styleClass="etiquetaFormulario"
+										style="width:150px;height:25px;" />
+									<p:selectOneMenu id="eveGeo"
+										value="#{segui.eventoActual.geloId.geloId}">
+										<f:selectItem itemLabel="#{txt.lbl025} ..." itemValue="#{-1}" />
+										<f:selectItems value="#{app.lstGeoLocProvincias}" var="prov"
+											itemLabel="#{prov[0]}" itemValue="#{prov[1]}">
+										</f:selectItems>
+									</p:selectOneMenu>
+									<p:message for="eveGeo" display="icon" />
+									<p:outputLabel value="*#{txt.lbl262}: "
+										styleClass="etiquetaFormulario"
+										style="width:150px;height:25px;" />
+									<p:inputNumber id="totalPart"
+										value="#{segui.eventoActual.meetParticipantsNumber}" size="7"
+										maxlength="3" decimalPlaces="0" maxValue="999" minValue="0" />
+									<p:message for="totalPart" display="icon" />
+									<p:outputLabel value="*#{txt.lbl271}: "
+										styleClass="etiquetaFormulario"
+										style="width:150px;height:36px;" />
+									<p:inputNumber id="totalIndig"
+										value="#{segui.eventoActual.meetTotalIndigenous}" size="7"
+										maxlength="3" decimalPlaces="0" maxValue="999" minValue="0" />
+									<p:message for="totalIndig" display="icon" />
+									<p:outputLabel value="*Desagregación por Sexo: "
+										styleClass="etiquetaFormulario"
+										style="width:150px;height:36px;" />
+									<h:panelGrid columns="2" styleClass="alineadoCentroTd">
+										<p:outputLabel value="#{txt.lbl263}"
+											styleClass="textoEtiqueta4" />
+										<p:outputLabel value="#{txt.lbl264}"
+											styleClass="textoEtiqueta4" />
+										<p:inputNumber id="totalMasc"
+											value="#{segui.eventoActual.meetTotalMale}" size="7"
+											maxlength="3" decimalPlaces="0" maxValue="999" minValue="0" />
+
+										<p:inputNumber id="totalFem"
+											value="#{segui.eventoActual.meetTotalFemale}" size="7"
+											maxlength="3" decimalPlaces="0" maxValue="999" minValue="0" />
+									</h:panelGrid>
+									<h:panelGrid>
+										<p:message for="totalMasc" display="icon" />
+										<p:message for="totalFem" display="icon" />
+									</h:panelGrid>
+									<p:outputLabel value="*Desagregación por Rango de Edad: "
+										styleClass="etiquetaFormulario"
+										style="width:150px;height:70px;" />
+									<h:panelGrid columns="6" styleClass="alineadoCentroTd">
+										<p:outputLabel value="#{txt.lbl265}"
+											styleClass="textoEtiqueta4" />
+										<p:outputLabel value="#{txt.lbl266}"
+											styleClass="textoEtiqueta4" />
+										<p:outputLabel value="#{txt.lbl267}"
+											styleClass="textoEtiqueta4" />
+										<p:outputLabel value="#{txt.lbl268}"
+											styleClass="textoEtiqueta4" />
+										<p:outputLabel value="#{txt.lbl269}"
+											styleClass="textoEtiqueta4" />
+										<p:outputLabel value="#{txt.lbl270}"
+											styleClass="textoEtiqueta4" />
+										<p:inputNumber id="total18a25"
+											value="#{segui.eventoActual.meetTotalAge18to25}" size="7"
+											maxlength="3" decimalPlaces="0" maxValue="999" minValue="0" />
+										<p:inputNumber id="total26a35"
+											value="#{segui.eventoActual.meetTotalAge26to35}" size="7"
+											maxlength="3" decimalPlaces="0" maxValue="999" minValue="0" />
+										<p:inputNumber id="total36a45"
+											value="#{segui.eventoActual.meetTotalAge36to45}" size="7"
+											maxlength="3" decimalPlaces="0" maxValue="999" minValue="0" />
+										<p:inputNumber id="total46a55"
+											value="#{segui.eventoActual.meetTotalAge46to55}" size="7"
+											maxlength="3" decimalPlaces="0" maxValue="999" minValue="0" />
+										<p:inputNumber id="total56a64"
+											value="#{segui.eventoActual.meetTotalAge56to64}" size="7"
+											maxlength="3" decimalPlaces="0" maxValue="999" minValue="0" />
+										<p:inputNumber id="total65ymas"
+											value="#{segui.eventoActual.meetTotalAge65andmore}" size="7"
+											maxlength="3" />
+									</h:panelGrid>
+									<h:panelGrid>
+										<p:message for="total18a25" display="icon" />
+									</h:panelGrid>
+								</h:panelGrid>
+								<h:panelGrid>
+									<h:panelGrid styleClass="fondoColorSigma" width="415"
+										columnClasses="alineadoIzquierda,alineadoDerecha">
+										<h:outputText
+											value="Desagregación por origen étnico o nacionalidad indígena y sexo"
+											style="font-weight:bold;font-size:12px;" />
+									</h:panelGrid>
+									<h:panelGrid>
+
+										<p:selectOneRadio id="tipTot" value="#{segui.tipoTotal}"
+											style="width:350px;">
+											<f:selectItem itemLabel="Origen Étnico" itemValue="#{1}" />
+											<f:selectItem itemLabel="Nacionalidades Indígenas"
+												itemValue="#{2}" />
+											<p:ajax listener="#{segui.actualizarCatalogoTotal()}"
+												process="@this" async="true" global="false"
+												partialSubmit="true" update=":frm:pnlTotalEve" />
+										</p:selectOneRadio>
+										<br />
+										<h:panelGrid id="pnlTotalEve" columns="5"
+											styleClass="alineadoCentroTd">
+											<f:verbatim />
+											<p:outputLabel value="#{txt.lbl394}"
+												style="display:block;font-size:10px;width:50px;" />
+											<p:outputLabel value="#{txt.lbl395}"
+												style="display:block;font-size:10px;width:50px;" />
+											<p:outputLabel value="#{txt.lbl396}"
+												style="display:block;font-size:10px;width:50px;" />
+											<f:verbatim />
+											<p:selectOneMenu value="#{segui.totalEvento.cataId.cataId}"
+												style="width:130px;">
+												<f:selectItems value="#{segui.listaCatalogoTotal}" var="ct"
+													itemLabel="#{ct.cataText1}" itemValue="#{ct.cataId}" />
+											</p:selectOneMenu>
+											<p:inputNumber value="#{segui.totalEvento.metoNumber1}"
+												size="7" maxValue="999" minValue="0" decimalPlaces="0" />
+											<p:inputNumber value="#{segui.totalEvento.metoNumber2}"
+												size="7" maxValue="999" minValue="0" decimalPlaces="0" />
+											<p:inputNumber value="#{segui.totalEvento.metoNumber3}"
+												size="7" maxValue="999" minValue="0" decimalPlaces="0" />
+											<p:commandButton value="#{txt.btn02}"
+												action="#{segui.aniadirObjetoTotal()}" icon="fa fa-save"
+												process="@this,:frm:pnlTotalEve" async="true" global="false"
+												partialSubmit="true"
+												update=":frm:pnlTotalesEve,:frm:pnlTotalEve" />
+										</h:panelGrid>
+										<h:panelGrid id="pnlTotalesEve">
+											<p:dataTable value="#{segui.listaTotalesDeEvento}" var="tot"
+												emptyMessage="#{txt.lbl047}" rowIndexVar="rowIndex"
+												rendered="#{segui.listaTotalesDeEvento.size()>0}"
+												styleClass="alineadoCentroTd">
+												<p:column width="95">
+												<f:facet name="header">
+												<h:outputText value="#{txt.lbl448}" style="font-size:10px"/>
+												</f:facet>
+													<p:outputLabel value="#{tot.cataId.cataText1}" />
+												</p:column>
+												<p:column width="37">
+												<f:facet name="header">
+												<h:outputText value="#{txt.lbl394}" style="font-size:10px"/>
+												</f:facet>
+													<p:outputLabel value="#{tot.metoNumber1}" />
+												</p:column>
+												<p:column width="37">
+												<f:facet name="header">
+												<h:outputText value="#{txt.lbl395}" style="font-size:10px"/>
+												</f:facet>
+													<p:outputLabel value="#{tot.metoNumber2}" />
+												</p:column>
+												<p:column width="37">
+												<f:facet name="header">
+												<h:outputText value="#{txt.lbl396}" style="font-size:10px"/>
+												</f:facet>
+													<p:outputLabel value="#{tot.metoNumber3}" />
+												</p:column>
+												<p:column width="50" headerText="#{txt.lbl437}">
+													<p:commandButton
+														action="#{segui.eliminarTotalEvento(rowIndex)}"
+														icon="fa fa-trash" process="@this" async="true"
+														global="false" partialSubmit="true"
+														update=":frm:pnlTotalesEve" />
+												</p:column>
+											</p:dataTable>
+										</h:panelGrid>
+
+
+									</h:panelGrid>
+								</h:panelGrid>
+							</h:panelGrid>
+
+
+						</h:panelGrid>
+						<h:panelGrid columns="2" style="margin:0 auto;">
+							<p:commandButton icon="fa fa-save" value="#{txt.btn02}"
+								action="#{segui.guardarEvento()}" async="true" global="false"
+								process="@this,pnlFormSimpl" partialSubmit="true"
+								update=":frm:pnlFormSimpl,:frm:msgs,:frm:pnlInfoSec04"
+								onclick="PF('dlgEnProc').show()"
+								oncomplete="PF('dlgEnProc').hide()" />
+							<p:commandButton type="button" value="#{txt.btn31}"
+								icon="fa fa-remove" onclick="PF('dlgEvento').hide()" />
+						</h:panelGrid>
+					</p:dialog>
+					<p:dialog widgetVar="dlgProgresoHistorico" header="" modal="true">
+						<h:panelGrid width="600">
+							<p:dataTable value="#{segui.listaProgresoHistoricoPorAccion}"
+								var="ph">
+								<p:column width="150" headerText="#{txt.lbl368}">
+									<p:outputLabel
+										value="#{ph.tracId.tracYear} #{ph.tracId.cataId.cataText1} " />
+								</p:column>
+								<p:column width="60" headerText="#{txt.lbl211}">
+									<p:outputLabel value="#{ph.trprReachedValue}" />
+								</p:column>
+								<p:column width="370" headerText="#{txt.lbl212}">
+									<p:outputLabel value="#{ph.trprDetails}" />
+								</p:column>
+							</p:dataTable>
+							<h:panelGrid style="margin:0 auto;">
+								<p:commandButton type="button" value="#{txt.btn63}"
+									icon="fa fa-remove" onclick="PF('dlgProgresoHistorico').hide()" />
+							</h:panelGrid>
+						</h:panelGrid>
+					</p:dialog>
+				</h:panelGrid>
+				<h:panelGrid id="pnlDialogoResumen">
+					<p:dialog widgetVar="dlgResumen" modal="true" header="#{txt.btn40}">
+						<h:panelGrid width="1050">
+							<p:scrollPanel style="width:800px;height:500px">
+								<p:panel id="pnlResumen">
+									<h:panelGrid styleClass="fondoColorSigma" width="995">
+										<h:outputText value="#{txt.lbl184}"
+											style="font-weight:bold;font-size:16px;" />
+									</h:panelGrid>
+									<h:panelGrid style="font-size:12px;" width="1022">
+
+										<h:panelGrid width="995"
+											styleClass="panelGridSinBordeYEspacios">
+
+											<h:panelGrid styleClass="fondoColorSigma" width="985">
+												<h:outputText
+													style="display:block;text-align:right !important;white-space:pre-wrap;"
+													value="#{segui.reporteActual.projId.projCode} - #{segui.reporteActual.projId.projTitle} -#{txt.lbl368} #{segui.reporteActual.cataId.cataText1} - #{segui.reporteActual.tracYear}" />
+											</h:panelGrid>
+
+										</h:panelGrid>
+											<h:panelGrid id="r_pnlSeccion01"
+							>
+							<h:panelGrid styleClass="fondoColorSigma" width="985" columns="2"
+								columnClasses="alineadoIzquierda,alineadoDerecha">
+								<h:outputText value="#{txt.lbl174}"
+									style="font-weight:bold;font-size:14px;" />
+								
+							</h:panelGrid>
+							<p:panel>
+								<h:panelGrid columns="3"
+									style="margin:0 auto;">
+									<p:outputLabel value="*#{txt.lbl188}: " 
+										styleClass="etiquetaFormulario"
+										style="height:40px;line-height:40px;width:200px;" />
+									<h:panelGrid columns="2">
+										<p:selectOneMenu 
+											value="#{segui.reporteActual.tracYear}">
+											<f:selectItem itemLabel="#{txt.lbl025} ..."
+												itemValue="#{null}" />
+											<f:selectItems value="#{segui.listaAniosReporte}" var="anio"
+												itemLabel="#{anio}" itemValue="#{anio}">
+											</f:selectItems>
+										</p:selectOneMenu>
+										<p:selectOneMenu 
+											value="#{segui.reporteActual.cataId.cataId}"
+											style="width:150px;">
+											<f:selectItem itemLabel="#{txt.lbl025} ..."
+												itemValue="#{null}" />
+											<f:selectItems value="#{app.lstCatTiposPeriodosReporte}"
+												var="cat" itemLabel="#{cat.cataText1}"
+												itemValue="#{cat.cataId}">
+											</f:selectItems>
+										</p:selectOneMenu>
+									</h:panelGrid>
+									<f:verbatim/>
+
+									<p:outputLabel value="#{txt.lbl120}: "
+										styleClass="etiquetaFormulario"
+										style="height:40px;line-height:40px;width:200px;" />
+									<p:inputText value="#{txt.lbl131}"
+										rendered="#{segui.reporteActual.projId.projType=='PDI'}"
+										size="50" readonly="true" styleClass="fondoSoloLectura" />
+									<p:inputText value="#{txt.lbl132}"
+										rendered="#{segui.reporteActual.projId.projType=='PRG'}"
+										size="50" readonly="true" styleClass="fondoSoloLectura" />
+									<p:inputText value="#{txt.lbl133}"
+										rendered="#{segui.reporteActual.projId.projType=='PRY'}"
+										size="50" readonly="true" styleClass="fondoSoloLectura" />
+									<f:verbatim />
+									<p:outputLabel value="#{txt.lbl190}: "
+										styleClass="etiquetaFormulario"
+										style="height:40px;line-height:40px;width:200px;" />
+									<p:inputText value="#{segui.reporteActual.projId.projCode}"
+										size="20" readonly="true" styleClass="fondoSoloLectura" />
+									<f:verbatim />
+									<p:outputLabel value="#{txt.lbl081}: "
+										styleClass="etiquetaFormulario"
+										style="height:100px;line-height:40px;width:200px;" />
+									<p:inputTextarea
+										value="#{segui.reporteActual.projId.projTitle}" cols="60"
+										readonly="true" styleClass="fondoSoloLectura" />
+									<f:verbatim />
+									<p:outputLabel value="#{txt.lbl123}: "
+										styleClass="etiquetaFormulario"
+										style="height:40px;line-height:40px;width:200px;" />
+									<p:inputText
+										value="#{segui.reporteActual.projId.projTermFrom} / #{segui.reporteActual.projId.projTermTo}"
+										size="40" readonly="true" styleClass="fondoSoloLectura" />
+									<f:verbatim />
+									<p:outputLabel value="#{txt.lbl191}: "
+										styleClass="etiquetaFormulario"
+										style="height:40px;line-height:40px;width:200px;" />
+									<p:inputTextarea
+										value="#{segui.reporteActual.projId.partId.partName}"
+										cols="60" rows="2" readonly="true"
+										styleClass="fondoSoloLectura" />
+									<f:verbatim />
+								</h:panelGrid>
+								
+							</p:panel>
+						</h:panelGrid>
+						<h:panelGrid id="r_pnlSeccion02"
+							>
+							<h:panelGrid styleClass="fondoColorSigma" width="985" columns="2"
+								columnClasses="alineadoIzquierda,alineadoDerecha">
+								<h:outputText value="#{txt.lbl194}"
+									style="font-weight:bold;font-size:14px;" />
+							</h:panelGrid>
+
+
+							<h:panelGrid  width="985">
+
+								<p:outputLabel value="#{txt.lbl254}"
+									style="font-size:14px!important;font-weight:bold;height:30px;" />
+
+
+								<h:panelGrid  width="980">
+
+									<h:panelGrid columns="2">
+										<h:panelGrid columns="4">
+											<p:outputLabel value="#{txt.lbl123} del #{txt.lbl133}" />
+											<h:panelGrid columns="2">
+												<p:outputLabel value="#{txt.lbl135}:" />
+												<p:outputLabel
+													value="#{segui.reporteActual.projId.projTermFrom}"
+													style="font-weight:bold;" />
+												<p:outputLabel value="#{txt.lbl136}:" />
+												<p:outputLabel
+													value="#{segui.reporteActual.projId.projTermTo}"
+													style="font-weight:bold;" />
+											</h:panelGrid>
+											<h:panelGrid width="100" />
+											<h:panelGrid columns="4" width="200">
+												<p:outputLabel value="#{txt.lbl405}" style="font-size:8px;" />
+												<h:panelGrid>
+													<div style="width: 15px; height: 15px; background: red;" />
+												</h:panelGrid>
+												<h:panelGrid>
+													<div style="width: 15px; height: 15px; background: red;" />
+												</h:panelGrid>
+												<h:panelGrid>
+													<div style="width: 15px; height: 15px; background: red;" />
+												</h:panelGrid>
+											</h:panelGrid>
+										</h:panelGrid>
+
+										<p:panel style="width:350px!important;"
+											rendered="#{segui.reporteActual.cataId.cataId==app.lstCatTiposPeriodosReporte.get(1).cataId}">
+											<p:outputLabel value="#{txt.lbl255}" />
+										</p:panel>
+									</h:panelGrid>
+
+									<ui:repeat id="r_rep" var="lstObj"
+										value="#{segui.listaMontosObjComp}">
+										<p:outputLabel value="#{lstObj.psobId.geloId.geloName}"
+											style="font-weight:bold;color:blue;" />
+										<br />
+										<p:outputLabel
+											value="#{lstObj.psobId.psobCode}.- #{lstObj.psobId.psobDescription}"
+											style="font-weight:bold;" />
+										<p:dataTable id="r_lstObjCat"
+											value="#{lstObj.listaPorCategorias}" var="cat"
+											style="width:975px!important;">
+											<p:column width="150" headerText="Costos y Gastos">
+												<p:outputLabel value="#{cat.cataId.cataText1}" />
+											</p:column>
+											<p:column headerText="#{segui.listaColumnaAnios[0]}" styleClass="#{segui.listaColumnaAnios[0]!=null?'':'estiloOcultar'}">
+												<p:inputNumber  value="#{cat.tramYear1}" readonly="true"
+													styleClass="estiloMonto" size="10" />
+											</p:column>
+											<p:column headerText="#{segui.listaColumnaAnios[1]}" styleClass="#{segui.listaColumnaAnios[1]!=null?'':'estiloOcultar'}">
+												<p:inputNumber  value="#{cat.tramYear2}" readonly="true"
+													styleClass="estiloMonto" size="10" />
+											</p:column>
+											<p:column headerText="#{segui.listaColumnaAnios[2]}" styleClass="#{segui.listaColumnaAnios[2]!=null?'':'estiloOcultar'}">
+												<p:inputNumber  value="#{cat.tramYear3}" readonly="true"
+													styleClass="estiloMonto" size="10" />
+											</p:column>
+											<p:column headerText="#{segui.listaColumnaAnios[3]}" styleClass="#{segui.listaColumnaAnios[3]!=null?'':'estiloOcultar'}">
+												<p:inputNumber  value="#{cat.tramYear4}" readonly="true"
+													styleClass="estiloMonto" size="10"/>
+											</p:column>
+											<p:column headerText="#{segui.listaColumnaAnios[4]}" styleClass="#{segui.listaColumnaAnios[4]!=null?'':'estiloOcultar'}">
+												<p:inputNumber value="#{cat.tramYear5}" readonly="true"
+													styleClass="estiloMonto" size="10"/>
+											</p:column>
+											<p:column headerText="#{segui.listaColumnaAnios[5]}" styleClass="#{segui.listaColumnaAnios[5]!=null?'':'estiloOcultar'}">
+												<p:inputNumber value="#{cat.tramYear6}" readonly="true"
+													styleClass="estiloMonto" size="10" />
+											</p:column>
+											<p:column headerText="#{segui.listaColumnaAnios[6]}" styleClass="#{segui.listaColumnaAnios[6]!=null?'':'estiloOcultar'}">
+												<p:inputNumber value="#{cat.tramYear7}" readonly="true"
+													styleClass="estiloMonto" />
+											</p:column>
+
+
+											<p:column headerText="Total">
+											<p:inputNumber value="#{cat.tramTotal}"
+													styleClass="estiloMonto" size="10" decimalPlaces="2"
+													decimalSeparator="," thousandSeparator="."
+													maxValue="99000000"/>
+												
+											</p:column>
+										</p:dataTable>
+									</ui:repeat>
+									<br />
+									<p:outputLabel value="#{txt.lbl253}"
+										style="font-size:14px!important;font-weight:bold;height:30px;" />
+
+									<h:panelGrid columns="5">
+										<h:panelGrid width="290" />
+										<p:outputLabel value="#{txt.lbl197}"
+											styleClass="fondoPlanificado"
+											style="height:20px;line-height:20px;width:100px;" />
+										<p:outputLabel value="#{txt.lbl204}"
+											styleClass="fondoAdministrativo"
+											style="height:20px;line-height:20px;width:100px;" />
+										<p:outputLabel value="#{txt.lbl205}"
+											styleClass="fondoOperativo"
+											style="height:20px;line-height:20px;width:100px;" />
+										<p:outputLabel value="#{txt.lbl198}"
+											styleClass="fondoEjecutado"
+											style="height:20px;line-height:20px;width:100px;" />
+										
+
+
+									</h:panelGrid>
+
+									<br />
+									<h:panelGrid width="985" style="margin:0 auto;">
+										<p:dataTable  widgetVar="lstAcumulados"
+											value="#{segui.listaMontosObjComp}" var="obj"
+											styleClass="alineadoCentroTd">
+											<p:column width="70" headerText="#{txt.lbl017}">
+												<p:outputLabel value="#{obj.psobId.psobCode}" />
+											</p:column>
+											<p:column width="200"
+												headerText="#{segui.reporteActual.projId.projType=='PDI'?txt.lbl014:lbl022}">
+												<p:outputLabel value="#{obj.psobId.psobDescription}"
+													style="display:block;text-align:justify;" />
+											</p:column>
+											<p:column headerText="#{txt.lbl197}" width="120">
+												<h:panelGrid styleClass="panelGridSinBorde">
+													
+													<p:inputText readonly="true" styleClass="fondoPlanificado"
+														value="#{obj.tramAssignedAmount}" size="10"/>
+												</h:panelGrid>
+
+											</p:column>
+											<p:column width="120"
+												headerText="#{txt.lbl204} Y #{txt.lbl205}">
+												<h:panelGrid styleClass="panelGridSinBorde"
+													style="margin:0 auto;">
+													
+													<p:inputText readonly="true" styleClass="fondoAdministrativo"
+														value="#{obj.tramAdministrative}" size="10"/>
+													<p:inputText readonly="true" styleClass="fondoOperativo"
+														value="#{obj.tramOperative}" size="10"/>
+												</h:panelGrid>
+
+											</p:column>
+											<p:column headerText="#{txt.lbl198}" width="120">
+												
+												<p:inputText readonly="true" styleClass="fondoEjecutado"
+													value="#{obj.tramExecutedAmount}" size="10"/>
+											</p:column>
+
+											<p:column width="40" headerText="#{txt.lbl199}">
+												<p:inputText  value="#{obj.tramExecutedPercent}" readonly="true"
+													size="6" styleClass="estiloMontoSoloLectura" />
+											</p:column>
+
+										</p:dataTable>
+
+										<h:panelGrid columns="2" style="margin:0 auto;">
+											<p:outputLabel value="#{txt.lbl199} #{txt.lbl200}:" />
+											<p:inputText readonly="true"
+												value="#{segui.reporteActual.tracBudgetProgress}" size="4"
+												styleClass="estiloMontoSoloLecturaGrande" />
+										</h:panelGrid>
+									</h:panelGrid>
+								</h:panelGrid>
+							</h:panelGrid>
+							
+
+						</h:panelGrid>
+						<h:panelGrid id="r_pnlSeccion03">
+							<h:panelGrid styleClass="fondoColorSigma" width="985" columns="2"
+								columnClasses="alineadoIzquierda,alineadoDerecha">
+								<h:outputText value="#{txt.lbl209}"
+									style="font-weight:bold;font-size:14px;" />
+								
+							</h:panelGrid>
+							<h:panelGrid  width="980" style="margin:0 auto;">
+
+								<h:panelGrid columns="5">
+									<h:panelGrid width="700" />
+									<p:outputLabel value="#{txt.lbl405}" style="font-size:8px;" />
+									<h:panelGrid>
+										<div style="width: 15px; height: 15px; background: red;" />
+									</h:panelGrid>
+									<h:panelGrid>
+										<div style="width: 15px; height: 15px; background: red;" />
+									</h:panelGrid>
+									<h:panelGrid>
+										<div style="width: 15px; height: 15px; background: red;" />
+									</h:panelGrid>
+								</h:panelGrid>
+								<p:dataTable  value="#{segui.listaAcciones}"
+									var="acc" emptyMessage="#{txt.lbl047}" scrollable="true"
+									scrollWidth="960" scrollHeight="800"
+								   styleClass="alineadoCentroTd">
+									<f:facet name="header">
+									#{txt.lbl307}
+									</f:facet>
+									<p:column groupRow="true" headerText="#{txt.lbl024}"
+										width="280">
+										<h:panelGrid styleClass="panelGridSinBorde">
+											<p:outputLabel
+												value="#{acc.pracId.pracParentId.psobId.geloId.geloName} - "
+												style="font-size:10px;font-weight:bold;display:block;text-align:justify;"
+												rendered="#{acc.pracId.pracParentId.psobId.geloId!=null}" />
+											<p:outputLabel
+												value="#{acc.pracId.psobId.psobCode}.- #{acc.pracId.psobId.psobDescription}"
+												style="font-size:10px;font-weight:bold;display:block;text-align:justify;" />
+											<p:outputLabel
+												value="#{acc.pracId.pracParentId.pracCode} #{acc.pracId.pracParentId.pracDescription}"
+												style="display:block;text-align:justify;" />
+											<p:outputLabel
+												value="#{acc.pracId.pracParentId.partId.partAcronym}"
+												rendered="#{acc.pracId.pracParentId.partId!=null}"
+												style="font-weight:bold;display:block;text-align:justify;" />
+										</h:panelGrid>
+									</p:column>
+
+									<p:column headerText="#{txt.lbl097}" width="280">
+
+										<h:panelGrid styleClass="panelGridSinBorde">
+											<p:outputLabel value="#{acc.pracId.pracDescription}"
+												style="display:block;text-align:justify;" />
+											<h:panelGrid styleClass="panelGridSinBorde" columns="3"
+												style="display:block;">
+												<p:outputLabel value="#{txt.lbl016}:"
+													style="font-size:10px;font-weight:bold;display:block;text-align:justify;" />
+												<p:inputText 
+													value="#{acc.pracId.pracGoalValue}"
+													rendered="#{acc.pracId.pracGoalValue!=null}"
+													style="font-size:10px;text-align:left !important;"
+													readonly="true" size="10"
+													styleClass="estiloMontoSoloLectura" />
+												<h:outputText id="r_iconDescMeta" value=""
+													styleClass="ui-icon fa fa-info-circle" />
+												<p:tooltip for="r_iconDescMeta" value="#{acc.pracId.pracGoal}"
+													style="max-width: 300px; white-space:pre-wrap;"
+													escape="false" />
+
+											</h:panelGrid>
+
+											
+
+										</h:panelGrid>
+
+
+									</p:column>
+									<p:column headerText="#{txt.lbl211} y #{txt.lbl212}">
+										<h:panelGrid styleClass="panelGridSinBorde">
+											<h:panelGrid 
+												styleClass="panelGridSinBordeYEspacios"
+												columnClasses="ancho110,ancho30" style="display:block;">
+												<p:inputNumber  value="#{acc.trprReachedValue}"
+													size="10" disabled="#{acc.pracId.pracGoalValue==null}"
+													style="font-size:10px;" decimalSeparator=","
+													thousandSeparator="." minValue="0" readonly="true"/>
+												
+
+											</h:panelGrid>
+											<p:inputTextarea value="#{acc.trprDetails}" cols="20"
+												style="text-align:justify;" disabled="true" />
+										</h:panelGrid>
+									</p:column>
+									<p:column headerText="#{txt.lbl213}" width="55"
+										styleClass="estiloLetraPequenia">
+										<p:inputText  value="#{acc.trprProgressPercent}"
+											size="3" readonly="#{acc.pracId.pracGoalValue!=null}"
+											styleClass="estiloMontoSoloLectura" disabled="true"/>
+									</p:column>
+									<p:column headerText="#{txt.lbl257}"
+										styleClass="estiloLetraPequenia" width="55">
+										<p:inputText  value="#{acc.pracId.pracWeighing}"
+											size="3" style="font-size:10px;"
+											styleClass="estiloMontoSoloLectura" disabled="true"/>
+									</p:column>
+
+
+								</p:dataTable>
+
+
+
+
+
+								<h:panelGrid columns="2" style="margin:0 auto;">
+									<p:outputLabel value="#{txt.lbl199} #{txt.lbl200}:" />
+									<p:inputText 
+										value="#{segui.reporteActual.tracActionsProgress}" size="4"
+										styleClass="estiloMontoSoloLecturaGrande" readonly="true"/>
+									
+								</h:panelGrid>
+							</h:panelGrid>
+							
+
+						</h:panelGrid>
+						<h:panelGrid id="r_pnlSeccion04">
+							<h:panelGrid styleClass="fondoColorSigma" width="985" columns="2"
+								columnClasses="alineadoIzquierda,alineadoDerecha">
+								<h:outputText value="#{txt.lbl216}"
+									style="font-weight:bold;font-size:14px;" />
+							</h:panelGrid>
+							<h:panelGrid width="985">
+								<h:panelGrid columns="5">
+									<h:panelGrid width="700" />
+									<p:outputLabel value="#{txt.lbl406}" style="font-size:8px;" />
+									<h:panelGrid>
+										<div style="width: 15px; height: 15px; background: #D1CAC9;" />
+									</h:panelGrid>
+									<h:panelGrid>
+										<div style="width: 15px; height: 15px; background: #D1CAC9;" />
+									</h:panelGrid>
+									<h:panelGrid>
+										<div style="width: 15px; height: 15px; background: red;" />
+									</h:panelGrid>
+								</h:panelGrid>
+
+								
+								<p:dataTable 
+									value="#{segui.listaEventosProyecto}" var="eve" emptyMessage=""
+									scrollable="true" scrollHeight="500"
+									rendered="#{segui.listaEventosProyecto.size()>0}"
+									styleClass="alineadoCentroTd">
+									<f:facet name="header">Lista de Eventos</f:facet>
+									<p:column headerText="#{txt.lbl018}" width="250">
+										<p:outputLabel value="#{eve.meetName}"
+											style="display:block;text-align:justify;" />
+									</p:column>
+									<p:column headerText="#{txt.lbl273}">
+										<p:outputLabel value="#{eve.meetResponsable}"
+											style="display:block;text-align:justify;" />
+									</p:column>
+									<p:column headerText="#{txt.lbl135}">
+										<p:outputLabel value="#{eve.meetDateStart}" />
+									</p:column>
+									<p:column headerText="#{txt.lbl136}">
+										<p:outputLabel value="#{eve.meetDateEnd}" />
+									</p:column>
+									<p:column headerText="#{txt.lbl224}">
+										<p:outputLabel value="#{eve.geloId.geloName}" />
+									</p:column>
+									<p:column headerText="#{txt.lbl262}">
+										<p:outputLabel value="#{eve.meetParticipantsNumber}" />
+									</p:column>
+								</p:dataTable>
+							</h:panelGrid>
+							
+
+						</h:panelGrid>
+						<h:panelGrid id="r_pnlSeccion05">
+							<h:panelGrid styleClass="fondoColorSigma" width="985" columns="2"
+								columnClasses="alineadoIzquierda,alineadoDerecha">
+								<h:outputText value="#{txt.lbl217}"
+									style="font-weight:bold;font-size:14px;" />
+							</h:panelGrid>
+							<h:panelGrid width="985">
+								<h:panelGrid columns="5">
+									<h:panelGrid width="700" />
+									<p:outputLabel value="#{txt.lbl406}" style="font-size:8px;" />
+									<h:panelGrid>
+										<div style="width: 15px; height: 15px; background: #D1CAC9;" />
+									</h:panelGrid>
+									<h:panelGrid>
+										<div style="width: 15px; height: 15px; background: #D1CAC9;" />
+									</h:panelGrid>
+									<h:panelGrid>
+										<div style="width: 15px; height: 15px; background: red;" />
+									</h:panelGrid>
+								</h:panelGrid>
+								<h:panelGrid>
+									<p:dataTable value="#{segui.listaPregGestCon}" var="preg"
+										styleClass="alineadoCentroTd">
+										<p:column width="300" headerText="#{txt.lbl097}">
+											<p:outputLabel value="#{preg.cataId.cataText1}:"
+												style="display:block;text-align:right;font-size:14px !important;" />
+										</p:column>
+										<p:column width="75" headerText="#{txt.lbl258}">
+											<p:inputNumber value="#{preg.tkmaValue}" size="3"
+												maxValue="999" minValue="0" decimalPlaces="0"
+												onkeypress="if( (event.which &lt; 48 || event.which &gt; 57) ) return false;" />
+										</p:column>
+										<p:column headerText="#{txt.lbl259}">
+											<h:panelGrid columns="2" styleClass="panelGridSinBorde"
+												style="display:block;">
+												<p:inputTextarea value="#{preg.tkmaDescription}"
+													maxlength="1000" cols="66" style="text-align:justify;" disabled="true"/>
+												
+											</h:panelGrid>
+										</p:column>
+									</p:dataTable>
+								</h:panelGrid>
+							</h:panelGrid>
+							
+
+						</h:panelGrid>
+
+						<h:panelGrid id="r_pnlSeccion06">
+							<h:panelGrid styleClass="fondoColorSigma" width="985" columns="2"
+								columnClasses="alineadoIzquierda,alineadoDerecha">
+								<h:outputText value="#{txt.lbl247}"
+									style="font-weight:bold;font-size:14px;" />
+							</h:panelGrid>
+
+							<h:panelGrid  width="985">
+								<h:panelGrid columns="5">
+									<h:panelGrid width="700" />
+									<p:outputLabel value="#{txt.lbl406}" style="font-size:8px;" />
+									<h:panelGrid>
+										<div style="width: 15px; height: 15px; background: #D1CAC9;" />
+									</h:panelGrid>
+									<h:panelGrid>
+										<div style="width: 15px; height: 15px; background: #D1CAC9;" />
+									</h:panelGrid>
+									<h:panelGrid>
+										<div style="width: 15px; height: 15px; background: red;" />
+									</h:panelGrid>
+								</h:panelGrid>
+								<p:dataTable value="#{segui.listaPregComunicacion}" var="preg"
+									styleClass="alineadoCentroTd">
+									<p:column width="300" headerText="#{txt.lbl097}">
+										<p:outputLabel value="#{preg.cataId.cataText1}:"
+											style="display:block;text-align:right;font-size:14px !important;" />
+									</p:column>
+									<p:column width="85" headerText="Respuesta">
+										<p:inputNumber value="#{preg.tkmaValue}" maxValue="999"
+											minValue="0" decimalPlaces="0"
+											rendered="#{preg.cataId.cataNumber lt 10}" size="3"
+											onkeypress="if( (event.which &lt; 48 || event.which &gt; 57) ) return false;" />
+										<p:selectOneMenu value="#{preg.tkmaValue}" style="width:65px;"
+											rendered="#{preg.cataId.cataNumber gt 9}">
+											<f:selectItem itemLabel="#{txt.lbl028}" itemValue="#{1}" />
+											<f:selectItem itemLabel="#{txt.lbl029}" itemValue="#{0}" />
+										</p:selectOneMenu>
+									</p:column>
+									<p:column headerText="#{txt.lbl259}">
+										<h:panelGrid columns="2" styleClass="panelGridSinBorde"
+											style="display:block;">
+											<p:inputTextarea value="#{preg.tkmaDescription}" cols="65"
+												maxlength="1000" style="text-align:justify;" disabled="true" />
+											
+										</h:panelGrid>
+									</p:column>
+								</p:dataTable>
+							</h:panelGrid>
+							
+
+						</h:panelGrid>
+						<h:panelGrid id="r_pnlSeccion07">
+							<h:panelGrid styleClass="fondoColorSigma" width="985" columns="2"
+								columnClasses="alineadoIzquierda,alineadoDerecha">
+								<h:outputText value="#{txt.lbl234}"
+									style="font-weight:bold;font-size:14px;" />
+							</h:panelGrid>
+
+							<h:panelGrid  width="985">
+								
+								<h:panelGrid columns="5">
+									<h:panelGrid width="700" />
+									<p:outputLabel value="#{txt.lbl406}" style="font-size:8px;" />
+									<h:panelGrid>
+										<div style="width: 15px; height: 15px; background: #D1CAC9;" />
+									</h:panelGrid>
+									<h:panelGrid>
+										<div style="width: 15px; height: 15px; background: #D1CAC9;" />
+									</h:panelGrid>
+									<h:panelGrid>
+										<div style="width: 15px; height: 15px; background: red;" />
+									</h:panelGrid>
+								</h:panelGrid>
+								<p:dataTable  value="#{segui.listaRiesgos}"
+									var="risk" styleClass="alineadoCentroTd">
+									<p:column headerText="#{txt.lbl150}" width="450">
+										<p:outputLabel
+											value="#{txt.lbl019}: #{risk.prriId.cataId.cataText1}"
+											styleClass="estiloLetraPequenia"
+											style="display:block;text-align:justify;" />
+										<br />
+										<p:outputLabel value="#{risk.prriId.prriDescription}"
+											style="display:block;text-align:justify;" />
+										<br />
+										<p:outputLabel value="#{txt.lbl153}: "
+											styleClass="estiloLetraPequenia"
+											style="display:block;text-align:justify;" />
+										<br />
+										<p:outputLabel value="#{risk.prriId.prriMitigationMeasure}"
+											style="display:block;text-align:justify;" />
+									</p:column>
+									<p:column headerText="#{txt.lbl237}">
+										<h:panelGrid columns="4" styleClass="panelGridSinBorde"
+											width="250" style="display:block;">
+
+											<p:outputLabel value="#{txt.lbl235}:"
+												styleClass="estiloLetraPequenia"
+												style="display:block;text-align:justify;" />
+											<p:selectBooleanCheckbox value="#{risk.trprRiskIspresent}">
+											</p:selectBooleanCheckbox>
+											<f:verbatim />
+											<p:selectOneMenu 
+												value="#{risk.trprRiskStatus}" style="width:150px;"
+												disabled="true">
+												<f:selectItem itemLabel="#{txt.lbl025} ..."
+													itemValue="#{null}" />
+												<f:selectItem itemLabel="#{txt.lbl239}" itemValue="D" />
+												<f:selectItem itemLabel="#{txt.lbl240}" itemValue="I" />
+												<f:selectItem itemLabel="#{txt.lbl241}" itemValue="M" />
+											</p:selectOneMenu>
+										</h:panelGrid>
+										<p:inputTextarea 
+											value="#{risk.trprDetails}" cols="65" maxlength="1000"
+											style="text-align:justify;"
+											disabled="true" />
+									</p:column>
+								</p:dataTable>
+							</h:panelGrid>
+							
+
+						</h:panelGrid>
+						<h:panelGrid id="r_pnlSeccion08">
+							<h:panelGrid styleClass="fondoColorSigma" width="985" columns="2"
+								columnClasses="alineadoIzquierda,alineadoDerecha">
+								<h:outputText value="#{txt.lbl242}"
+									style="font-weight:bold;font-size:14px;" />
+							</h:panelGrid>
+
+
+
+							<h:panelGrid  width="985">
+
+								<h:panelGrid columns="5">
+									<h:panelGrid width="700" />
+									<p:outputLabel value="#{txt.lbl406}" style="font-size:8px;" />
+									<h:panelGrid>
+										<div style="width: 15px; height: 15px; background: #D1CAC9;" />
+									</h:panelGrid>
+									<h:panelGrid>
+										<div style="width: 15px; height: 15px; background: #D1CAC9;" />
+									</h:panelGrid>
+									<h:panelGrid>
+										<div style="width: 15px; height: 15px; background: red;" />
+									</h:panelGrid>
+								</h:panelGrid>
+								
+								<h:panelGrid>
+									<p:dataTable value="#{segui.listaProblemas}" var="prob"
+										styleClass="alineadoCentroTd">
+										<p:column headerText="#{txt.lbl243}" width="150">
+											<p:outputLabel value="#{prob.cataId.cataText1}" />
+										</p:column>
+										<p:column headerText="#{txt.lbl244}">
+											<p:outputLabel value="#{prob.trprDescription}"
+												style="display:block;text-align:justify;" />
+										</p:column>
+										<p:column headerText="#{txt.lbl245}">
+											<p:outputLabel value="#{prob.trprSolution}"
+												style="display:block;text-align:justify;" />
+										</p:column>
+										
+									</p:dataTable>
+								</h:panelGrid>
+
+							</h:panelGrid>
+							
+
+						</h:panelGrid>
+
+									</h:panelGrid>
+								</p:panel>
+								<h:panelGrid columns="2" style="margin:0 auto;">
+									<p:commandButton value="#{txt.btn21}"
+										action="#{segui.generarReportePDF}" icon="fa fa-print"
+										ajax="false">
+
+									</p:commandButton>
+									<p:commandButton type="button" value="#{txt.btn31}"
+										icon="fa fa-remove" onclick="PF('dlgResumen').hide()" />
+								</h:panelGrid>
+							</p:scrollPanel>
+						</h:panelGrid>
+					</p:dialog>
+				</h:panelGrid>
+
+				<h:panelGrid id="pnlDialogosInformativos">
+					<p:dialog widgetVar="dlgInf01" modal="true" closable="false"
+						header="" width="500">
+						<p:panel header="#{txt.lbl174}">
+							<p:outputLabel style="display: block;text-align: justify;"
+								value="#{txt.lbl314}" escape="false" />
+							<br />
+							<h:panelGrid style="margin:0 auto;">
+								<p:commandButton value="#{txt.btn51}" type="button"
+									onclick="PF('dlgInf01').hide()" />
+							</h:panelGrid>
+						</p:panel>
+					</p:dialog>
+					<p:dialog widgetVar="dlgInf02" modal="true" closable="false"
+						header="" width="500">
+						<p:panel header="#{txt.lbl194}">
+							<p:outputLabel style="display: block;text-align: justify;"
+								value="#{txt.lbl315}" escape="false" />
+							<br />
+							<h:panelGrid style="margin:0 auto;">
+								<p:commandButton value="#{txt.btn51}" type="button"
+									onclick="PF('dlgInf02').hide()" />
+							</h:panelGrid>
+						</p:panel>
+					</p:dialog>
+					<p:dialog widgetVar="dlgInf03" modal="true" closable="false"
+						header="" width="500">
+						<p:panel header="#{txt.lbl209}">
+							<p:outputLabel style="display: block;text-align: justify;"
+								value="#{txt.lbl210}" escape="false" />
+							<br />
+							<h:panelGrid style="margin:0 auto;">
+								<p:commandButton value="#{txt.btn51}" type="button"
+									onclick="PF('dlgInf03').hide()" />
+							</h:panelGrid>
+						</p:panel>
+					</p:dialog>
+					<p:dialog widgetVar="dlgInf04" modal="true" closable="false"
+						header="" width="500">
+						<p:panel header="#{txt.lbl216}">
+							<p:outputLabel style="display: block;text-align: justify;"
+								value="#{txt.lbl316}" escape="false" />
+							<br />
+							<h:panelGrid style="margin:0 auto;">
+								<p:commandButton value="#{txt.btn51}" type="button"
+									onclick="PF('dlgInf04').hide()" />
+							</h:panelGrid>
+						</p:panel>
+					</p:dialog>
+					<p:dialog widgetVar="dlgInf05" modal="true" closable="false"
+						header="" width="500">
+						<p:panel header="#{txt.lbl217}">
+							<p:outputLabel style="display: block;text-align: justify;"
+								value="#{txt.lbl317}" escape="false" />
+							<br />
+							<h:panelGrid style="margin:0 auto;">
+								<p:commandButton value="#{txt.btn51}" type="button"
+									onclick="PF('dlgInf05').hide()" />
+							</h:panelGrid>
+						</p:panel>
+					</p:dialog>
+					<p:dialog widgetVar="dlgInf06" modal="true" closable="false"
+						header="" width="500">
+						<p:panel header="#{txt.lbl247}">
+							<p:outputLabel style="display: block;text-align: justify;"
+								value="#{txt.lbl318}" escape="false" />
+							<br />
+							<h:panelGrid style="margin:0 auto;">
+								<p:commandButton value="#{txt.btn51}" type="button"
+									onclick="PF('dlgInf06').hide()" />
+							</h:panelGrid>
+						</p:panel>
+					</p:dialog>
+					<p:dialog widgetVar="dlgInf07" modal="true" closable="false"
+						header="" width="500">
+						<p:panel header="#{txt.lbl234}">
+							<p:outputLabel style="display: block;text-align: justify;"
+								value="#{txt.lbl319}" escape="false" />
+							<br />
+							<h:panelGrid style="margin:0 auto;">
+								<p:commandButton value="#{txt.btn51}" type="button"
+									onclick="PF('dlgInf07').hide()" />
+							</h:panelGrid>
+						</p:panel>
+					</p:dialog>
+					<p:dialog widgetVar="dlgInf08" modal="true" closable="false"
+						header="" width="500">
+						<p:panel header="#{txt.lbl242}">
+							<p:outputLabel style="display: block;text-align: justify;"
+								value="#{txt.lbl320}" escape="false" />
+							<br />
+							<h:panelGrid style="margin:0 auto;">
+								<p:commandButton value="#{txt.btn51}" type="button"
+									onclick="PF('dlgInf08').hide()" />
+							</h:panelGrid>
+						</p:panel>
+					</p:dialog>
+				</h:panelGrid>
+				<sigma_components:controlLogeo idPagina="SIGMA_REP_PROY"/>
+			
+			    <sigma_components:dlgConfirmacion/>
+			</center>
+		</ui:define>
+	</ui:composition>
+</body>
+</html>

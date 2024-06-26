@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sigma_components="http://java.sun.com/jsf/composite/sigma_components">
+
+<body>       
+	<!-- Lo que escribamos aquí NO aquí se va a renderizar. -->
+	Esto seguro que no lo ves.
+	
+	<ui:composition template="/resources/plantilla_sigma1.xhtml">
+		<ui:define name="contenido">
+		<center>
+			<h:panelGrid>
+				<h:panelGrid columns="3" styleClass="fondoColorSigma">
+					<p:outputLabel value="#{txt.lbl420}" />
+					<h:panelGrid width="350"></h:panelGrid>
+					
+				</h:panelGrid>
+				<br />
+				<h:panelGrid id="pnlCatalogo" columns="3">
+					<p:outputLabel value="*#{txt.lbl019}:" for="caTipo"
+						styleClass="etiquetaFormulario"
+						style="height:40px;line-height:40px;width:200px;" />
+					<p:selectOneMenu id="caTipo"
+									value="#{cataContr.tipoActual}"
+									converter="#{catalogoTypeConverter}"
+									panelStyle="width:180px" effect="fade" var="t" filter="true"
+									filterMatchMode="contains" style="width:580px;">
+									<f:selectItems value="#{app.lstCatTypes}"
+										var="tipo"
+										itemLabel="#{tipo.catyMnemonic}"
+										itemValue="#{tipo}" />
+									<p:column width="120">
+										<h:outputText value="#{t.catyMnemonic}"/>
+									</p:column>
+									<p:column width="460">
+										<h:outputText value="#{t.catyDescription}" />
+									</p:column>
+									
+									<p:ajax event="change" listener="#{cataContr.listarCatalogosPorTipo()}"
+									process="@this" async="true" global="false" partialSubmit="true"
+									update=":frm:pnlListaItems,:frm:msgs,:frm:pnlCatalogo" onstart="PF('dlgEnProc').show()"
+						oncomplete="PF('dlgEnProc').hide()"/>
+					</p:selectOneMenu>
+					<p:message for="caTipo" />
+
+					<p:outputLabel value="*#{txt.lbl419}:" for="caOrden"
+						styleClass="etiquetaFormulario"
+						style="height:40px;line-height:40px;width:200px;" />
+					<p:inputText id="caOrden" value="#{cataContr.catalogoActual.cataOrder}"
+						maxlength="3" size="3" />
+					<p:message for="caOrden" />
+					
+					
+					<p:outputLabel value="*#{txt.lbl421}:" for="caText1"
+						styleClass="etiquetaFormulario"
+						style="height:40px;line-height:40px;width:200px;" />
+					<p:inputText id="caText1" value="#{cataContr.catalogoActual.cataText1}"
+						maxlength="100" size="30" />
+					<p:message for="caText1" />
+					
+					<p:outputLabel value="#{txt.lbl422}:" for="caText2"
+						styleClass="etiquetaFormulario"
+						style="height:40px;line-height:40px;width:200px;" />
+					<p:inputTextarea id="caText2" value="#{cataContr.catalogoActual.cataText2}"
+						maxlength="2000" rows="10" cols="30"/>
+					<p:message for="caText2" />
+					
+					<p:outputLabel value="*#{txt.lbl423}:" for="caNumber"
+						styleClass="etiquetaFormulario"
+						style="height:40px;line-height:40px;width:200px;" />
+					<p:inputText id="caNumber" value="#{cataContr.catalogoActual.cataNumber}"
+						maxlength="3" size="3" />
+					<p:message for="caNumber" />
+					
+					 
+					
+
+
+
+
+				</h:panelGrid>
+				<h:panelGrid style="margin:0 auto;">
+					<p:commandButton value="#{txt.btn02}" icon="fa fa-save"
+						action="#{cataContr.guardarCatalogo()}" partialSubmit="true"
+						process="@this,pnlCatalogo" async="true" global="false"
+						update="pnlCatalogo,pnlListaItems,msgs,frm:caTipo"
+						onclick="PF('dlgEnProc').show()"
+						oncomplete="PF('dlgEnProc').hide()" />
+				</h:panelGrid>
+				<h:panelGrid id="pnlListaItems" width="800"
+					style="font-size:10px;">
+					<p:dataTable id="lstItems" value="#{cataContr.listaCatalogoPorTipo}"
+						var="item" emptyMessage="#{txt.lbl047}">
+						<f:facet name="header">#{txt.lbl424}</f:facet>
+						<p:column headerText="#{txt.lbl419}" >
+							<p:outputLabel value="#{item.cataOrder}" />
+						</p:column>
+						<p:column headerText="#{txt.lbl421}" >
+							<p:outputLabel value="#{item.cataText1}" />
+						</p:column>
+						<p:column headerText="#{txt.lbl422}">
+							<p:outputLabel value="#{item.cataText2}" />
+						</p:column>
+						<p:column headerText="#{txt.lbl423}">
+							<p:outputLabel value="#{item.cataNumber}" />
+						</p:column>
+						<p:column width="60">
+							<p:commandButton id="btnEditCatalogo"
+								action="#{cataContr.seleccionarCatalogoAEditar(item)}"
+								icon="fa fa-pencil" title="#{txt.btn15}" process="@this"
+								partialSubmit="true" async="true" global="false"
+								update=":frm:pnlCatalogo" onclick="PF('dlgEnProc').show()"
+								oncomplete="PF('dlgEnProc').hide()" />
+
+							
+						</p:column>
+					</p:dataTable>
+				</h:panelGrid>
+			</h:panelGrid>
+			<sigma_components:controlLogeo idPagina="SIGMA_ADM_FF"/>
+			
+			<sigma_components:dlgConfirmacion/>
+			
+		</center>
+	</ui:define>
+	</ui:composition>
+	</body>
+</html>

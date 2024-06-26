@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sigma_components="http://java.sun.com/jsf/composite/sigma_components">
+<body>       
+	<!-- Lo que escribamos aquí NO aquí se va a renderizar. -->
+	Esto seguro que no lo ves.
+	
+	<ui:composition template="/resources/plantilla_sigma1.xhtml">
+		<ui:define name="contenido">
+			<center>
+			<h:panelGrid columns="1">
+				<center>
+				<p:panel>
+				<h:panelGrid rendered="#{ses.tieneRolSIGMA}" style="margin:0 auto;">
+				<p:commandLink action="#{ses.llenarYMostrarMenu('SIGMA')}"
+					process="@this" partialSubmit="true" async="true" global="false" 
+					onclick="PF('dlgEnProc').show()"
+						oncomplete="PF('dlgEnProc').hide()">
+					<p:graphicImage  value="/resources/images/sigma/SIGMA.png"
+                           style="max-width:299px;"/>
+                           </p:commandLink>
+				</h:panelGrid>
+				<h:panelGrid rendered="#{ses.tieneRolSIS}" style="margin:0 auto;">
+				<p:commandLink action="#{ses.llenarYMostrarMenu('SIS')}"
+					process="@this" partialSubmit="true" async="true" global="false"
+					onclick="PF('dlgEnProc').show()"
+						oncomplete="PF('dlgEnProc').hide()">
+					<p:graphicImage  value="/resources/images/sigma/SIS.png"
+                           style="max-width:299px;"/>
+                           </p:commandLink>
+				</h:panelGrid>
+				<h:panelGrid rendered="#{ses.accesoAMenu('SIGMA_ASIG_USUARIOS')}" style="margin:0 auto;">
+				<p:commandLink action="#{ses.redireccionarAPagina('admin','asignacion_usuarios')}"
+					process="@this" partialSubmit="true" async="true" global="false"
+					onclick="PF('dlgEnProc').show()"
+						oncomplete="PF('dlgEnProc').hide()">
+					<p:graphicImage  value="/resources/images/sigma/ASIG_ROLES.png"
+                           style="max-width:299px;"/>
+                           </p:commandLink>
+				</h:panelGrid>
+				</p:panel>
+				</center>
+               <sigma_components:controlLogeoSimple/>
+			</h:panelGrid>
+		</center>
+</ui:define>
+</ui:composition>
+</body>
+	
+</html>

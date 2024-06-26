@@ -1,0 +1,228 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sigma_components="http://java.sun.com/jsf/composite/sigma_components">
+<h:head>
+	<link
+		href="${facesContext.externalContext.requestContextPath}/css/sigma.css"
+		rel="stylesheet" type="text/css" />
+	<h:outputStylesheet name="suia-layout.css" library="css" />
+</h:head>
+<h:body>
+	<h:form id="frm">
+		<ui:include src="/resources/status_gif.xhtml" />
+		<ui:include src="/resources/cabecera_sigma.xhtml" />
+		<p:growl id="msgs" showDetail="true" />
+
+		<center>
+
+			<h:panelGrid width="840">
+				<h:panelGrid columns="1">
+					<p:menubar model="#{ses.menuModel}" style="width:820px;">
+
+					</p:menubar>
+					<p:toolbar>
+						<f:facet name="left">
+							<h:outputText styleClass="fa fa-user" />
+							<p:outputLabel
+								value="  #{txt.lbl418}: #{ses.usuarioLogeado.userName}" />
+
+						</f:facet>
+						<f:facet name="right">
+
+							<p:commandLink action="#{ses.cerrarSesion()}" process="@this"
+								partialSubmit="true" async="true" global="false">
+								<i class="fa fa-power-off"></i>
+								<span>#{txt.btn65}</span>
+							</p:commandLink>
+						</f:facet>
+					</p:toolbar>
+				</h:panelGrid>
+				<center>
+					<h:panelGrid style="text-align:center;margin:0 auto;">
+						<p:outputLabel value="Asignación de Roles a Usuarios"
+							style="font-weight:bold;" />
+					</h:panelGrid>
+				</center>
+				
+				<h:panelGrid id="pnlCriteriosBusqueda" columns="2">
+				<h:panelGrid>
+				<h:panelGrid columns="3">
+					<p:outputLabel value="Elija el parámetro de búsqueda" />
+					<p:selectOneMenu value="#{asig.tipoBusqueda}">
+						<f:selectItem itemLabel="Cédula" itemValue="C" />
+						<f:selectItem itemLabel="RUC" itemValue="R" />
+						<p:ajax event="change" process="@this" async="true" global="false"
+							update="frm:pnlCriteriosBusqueda" partialSubmit="true" />
+					</p:selectOneMenu>
+				</h:panelGrid>
+				<h:panelGrid  columns="5">
+					<p:outputLabel value="Cédula *"
+						rendered="#{asig.tipoBusqueda=='C'}" />
+					<p:outputLabel value="RUC *" rendered="#{asig.tipoBusqueda=='R'}" />
+					<p:inputText id="peopPin" value="#{asig.peopPinBusqueda}"
+						maxlength="13" size="13"/>
+					<p:commandButton value="Buscar"
+						action="#{asig.listarUsuariosPorPeopPin}" process="@this,peopPin"
+						async="true" global="false" partialSubmit="true"
+						onstart="PF('dlgEnProc').show()"
+						oncomplete="PF('dlgEnProc').hide()"
+						update="lstUsuariosBusq,peopPin,msgs,lstUsuariosVinculados" />
+					<p:commandButton icon="fa fa-file" action="#{asig.inicializar}"
+						process="@this" async="true" global="false" partialSubmit="true"
+						onstart="PF('dlgEnProc').show()"
+						oncomplete="PF('dlgEnProc').hide()"
+						update="lstUsuariosBusq,peopPin,lstUsuariosVinculados" />
+					
+				</h:panelGrid>
+				</h:panelGrid>
+				<h:panelGrid>
+				<h:panelGrid id="pnlRolProy" columns="3">
+				<p:outputLabel value="*Rol a Enlazar:"  style="font-size:12px !important;display:block;width:60px;"/>
+					<p:selectOneMenu id="rolAsig" value="#{asig.roleParaEnlazar}"
+					style="font-size:12px !important;">
+						<f:selectItem itemLabel="Socio Implementador"
+							itemValue="REDD+_SOCIO_IMPLEMENTADOR" />
+						<f:selectItem itemLabel="Socio Estratégico"
+							itemValue="SIS_socio_estrategico" />
+						<p:ajax process="@this" partialSubmit="true" listener="#{asig.validarTipoAsignacion}"
+										update=":frm:pnlSocioEstrategico"></p:ajax>
+					</p:selectOneMenu>
+					<p:message for="rolAsig"/>
+					
+					<p:outputLabel value="*Asignación a:"  style="font-size:12px !important;"/>
+					<p:selectOneRadio id="tipAsig"
+									value="#{asig.tipoAsignacion}" 
+									style="font-size:11px !important;">
+									<f:selectItem itemLabel="Todos los proyectos" itemValue="SOC" />
+									<f:selectItem itemLabel="Proyecto Específico" itemValue="PROY" />
+									<p:ajax process="@this" partialSubmit="true"
+										update=":frm:pnlCriteriosBusqueda"
+										listener="#{asig.validarTipoAsignacion}"></p:ajax>
+								</p:selectOneRadio>
+					<p:message for="tipAsig"/>
+					<p:outputLabel value="Proyecto:" rendered="#{asig.tipoAsignacion=='PROY'}"
+					 style="font-size:12px !important;"/>
+					<p:selectOneMenu id="idProy" value="#{asig.idProySeleccionado}"
+					rendered="#{asig.tipoAsignacion=='PROY'}"
+					 style="font-size:10px !important;">
+					<f:selectItems value="#{asig.listaProyectos}" var="pr" itemLabel="#{pr.projShortName}" itemValue="#{pr.projId}"/>
+					<p:ajax process="@this" partialSubmit="true"
+										update=":frm:pnlSocioEstrategico"
+										listener="#{asig.listarSociosEstrategicosDeProyectoSeleccionado}"></p:ajax>
+					</p:selectOneMenu>
+					<p:message for="idProy" rendered="#{asig.tipoAsignacion=='PROY'}"/>
+					<f:verbatim/>
+					<h:panelGrid id="pnlSocioEstrategico" columns="3">
+					<p:outputLabel value="*Socio Estrategico:" rendered="#{asig.roleParaEnlazar=='SIS_socio_estrategico'}"
+					style="font-size:10px !important;"/>
+					<p:selectOneMenu id="rucSocioEst" value="#{asig.rucSocioEst}"
+					rendered="#{asig.roleParaEnlazar=='SIS_socio_estrategico'}"
+					 style="font-size:10px !important;">
+					 <f:selectItems value="#{asig.listaSociosEstrategicosDeProyecto}" var="se" itemLabel="#{se.partAcronym}" itemValue="#{se.partIdNumber}"/>
+					 </p:selectOneMenu>
+					 <p:message for="rucSocioEst"/>
+					</h:panelGrid>
+				
+					
+				</h:panelGrid>
+				<h:panelGrid style="margin:0 auto;">
+					<p:commandButton value="Asignar Rol"
+								action="#{asig.asignarRolAUsuarioYEnlazarSocio()}"
+								process="@this,:frm:pnlRolProy" async="true" global="false"
+								partialSubmit="true" onstart="PF('dlgEnProc').show()"
+								oncomplete="PF('dlgEnProc').hide()"
+								update="frm:msgs,:frm:lstUsuariosVinculados,:frm:pnlRolProy">
+								<p:confirm header="#{txt.lbl030}"
+									message="¿Está seguro de asignar el rol y enlazar con el socio y/o proyecto seleccionado?"
+									icon="pi pi-exclamation-triangle" />
+					</p:commandButton>
+				</h:panelGrid>
+				</h:panelGrid>
+				</h:panelGrid>
+				
+				<p:panel>
+					<h:panelGrid columns="3" styleClass="fondoColorSigma">
+						<p:outputLabel value="Datos del usuario" />
+						<h:panelGrid width="667"></h:panelGrid>
+
+					</h:panelGrid>
+					<p:dataTable id="lstUsuariosBusq"
+						value="#{asig.listaUsuariosBusqueda}" var="user" emptyMessage="">
+						<p:column headerText="Tipo de documento" width="120">
+							<p:outputLabel value="#{user.peopId.peopPin.length()==10?'Cédula':user.peopId.peopPin.length()==13?'Ruc':'Pasaporte'}" />
+						</p:column>
+						<p:column headerText="Nro. documento" width="120">
+							<p:outputLabel value="#{user.peopId.peopPin}" />
+						</p:column>
+						<p:column headerText="Apellidos y nombres" width="150">
+							<p:outputLabel value="#{user.peopId.peopName}" />
+						</p:column>
+						<p:column headerText="Título académico">
+							<p:outputLabel value="#{user.peopId.peopTitle}" />
+						</p:column>
+					</p:dataTable>
+				</p:panel>
+				<p:panel>
+					<h:panelGrid columns="3" styleClass="fondoColorSigma">
+						<p:outputLabel value="Roles del Usuario" />
+						<h:panelGrid width="670"></h:panelGrid>
+
+					</h:panelGrid>
+					<p:dataTable id="lstUsuariosVinculados"
+						value="#{asig.listaUsuariosRolDeRuc}" var="ru"
+						emptyMessage="">
+						<p:column headerText="Tipo de documento" width="120">
+							<p:outputLabel value="#{ru.user.peopId.peopPin.length()==10?'Cédula':user.peopId.peopPin.length()==13?'Ruc':'Pasaporte'}" />
+						</p:column>
+						<p:column headerText="Nro. documento" width="120">
+							<p:outputLabel value="#{ru.user.peopId.peopPin}" />
+						</p:column>
+						<p:column headerText="Apellidos y nombres" width="150  ">
+							<p:outputLabel value="#{ru.user.peopId.peopName}" />
+						</p:column>
+						<p:column headerText="Rol Asignado">
+							<p:outputLabel value="#{ru.role.roleName}" />
+						</p:column>
+						<p:column headerText="RUC Enlazado">
+							<p:outputLabel value="#{ru.rousDescription}" />
+						</p:column>
+						<p:column headerText="Acción" width="50">
+							<p:commandButton icon="fa fa-trash" title="#{txt.btn14}"
+								action="#{asig.eliminarAsignacion(ru)}" process="@this"
+								async="true" global="false" partialSubmit="true"
+								update=":frm:lstUsuariosVinculados,:frm:msgs">
+								<p:confirm header="#{txt.lbl030}"
+									message="¿Está seguro de eliminar esta asignación?"
+									icon="pi pi-exclamation-triangle" />
+							</p:commandButton>
+
+
+						</p:column>
+						
+					</p:dataTable>
+				</p:panel>
+
+
+
+
+
+
+				<h:panelGrid style="margin:0 auto;">
+					<p:commandButton id="btnVolverInicio" value="#{txt.btn24}"
+						icon="fa fa-home"
+						action="#{ses.redireccionarAPagina('','preinicio')}"
+						process="@this" />
+				</h:panelGrid>
+			</h:panelGrid>
+			<sigma_components:controlLogeo idPagina="SIGMA_ASIG_USUARIOS"/>
+			
+			<sigma_components:dlgConfirmacion/>
+			
+		</center>
+	</h:form>
+</h:body>
+</html>

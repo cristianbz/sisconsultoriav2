@@ -1,0 +1,377 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<link
+		href="${facesContext.externalContext.requestContextPath}/css/sigma.css"
+		rel="stylesheet" type="text/css" />
+	<script type="text/javascript"
+		src="${facesContext.externalContext.requestContextPath}/js/sigma.js" />
+
+	<link rel="stylesheet"
+		href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+		integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+		crossorigin="" />
+	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+		integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+		crossorigin=""></script>
+	<link rel="shortcut icon"
+		href="#{request.contextPath}/resources/images/favicon.ico" />
+	<title>GEOVISOR REDD+</title>
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+	<script type="text/javascript" src="#{request.contextPath}/js/geo.js" />
+
+
+</h:head>
+<h:body>
+	<h:form id="frm" enctype="multipart/form-data">
+		<div class="ui-fluid">
+			<p:growl id="msgs" showDetail="true" />
+			<ui:include src="/resources/status_gif.xhtml" />
+			<center>
+				<h:inputHidden id="data" value="#{geo.listDataGeoJson}" />
+				<h:inputHidden id="metadataNombreCapas"
+					value="#{geo.listMetadataNombreCapas}" />
+				<h:inputHidden id="metadataDescripcionFeatures"
+					value="#{geo.listMetadataDescripcionFeatures}" />
+				<p:panel>
+					<h:panelGrid id="pnlContenido">
+
+						<h:panelGrid columns="2" style="margin:0 auto;">
+							<p:graphicImage value="/resources/images/sigma/LOGO_GEOVISOR.png"
+								width="180px" />
+							<p:graphicImage value="/resources/images/sigma/banner_maate.png"
+								width="700px" />
+						</h:panelGrid>
+
+						<h:panelGrid columns="1" style="margin:0 auto;">
+
+							<h:panelGrid id="pnlGeoVisor" style="margin:0 auto;">
+								<h:panelGrid id="pnlCabecera" columns="1" style="margin:0 auto;">
+
+
+									<h:panelGrid rendered="#{geo.listaCapas.size()==0}"
+										style="margin:0 auto;">
+										<p:commandButton value="#{txt.btn57}"
+											action="#{geo.mostrarDialogoCapas()}" process="@this"
+											partialSubmit="true" global="false" async="true"
+											update="pnlDialogos"
+											style="width:200 !important;font-size:20px;"
+											icon="fa fa-plus" />
+									</h:panelGrid>
+									<h:panelGrid rendered="#{geo.listaCapas.size() gt 0}"
+										style="margin: 0 auto;" columns="2">
+										<p:commandButton value="#{txt.btn58}"
+											action="#{geo.mostrarDialogoCapas()}" process="@this"
+											partialSubmit="true" global="false" async="true"
+											update="pnlDialogos"
+											style="width:100 !important;font-size:16px;"
+											icon="fa fa-pencil" />
+
+
+										<p:dataGrid value="#{geo.listaCapas}" var="dc" columns="4"
+											layout="grid" rows="12" style="width:500px;">
+
+
+											<h:panelGrid columns="2" border="0"
+												style="padding:0 !important;line-height: 10px;width:100px;">
+												<h:panelGrid style="padding:0 !important;width:20px;">
+													<h:graphicImage value="/images/icons/#{dc.icono}.png"
+														width="15" rendered="#{dc.icono!=''}"/>
+													<h:panelGrid bgcolor="#{dc.color}" width="15"
+														style="height:15px;" />
+												</h:panelGrid>
+
+												<p:outputLabel
+													value="#{dc.fuente} &lt;br/&gt; #{dc.descripcionCapa}"
+													escape="false"
+													style="font-size:10px;display:block;width:80px;" />
+											</h:panelGrid>
+
+
+										</p:dataGrid>
+
+									</h:panelGrid>
+									<h:panelGrid columns="3">
+									<h:panelGrid width="700"/>
+									<p:commandButton value="WMS"
+											action="#{geo.prepararGeoServicioWMS()}" process="@this"
+											partialSubmit="true" global="false" async="true"
+											update="pnlDialogos" style="font-size:10px;"/>
+									<p:commandButton value="WFS"
+											action="#{geo.prepararGeoServicioWFS()}" process="@this"
+											partialSubmit="true" global="false" async="true"
+											update="pnlDialogos" style="font-size:10px;"/>
+											
+									</h:panelGrid>
+
+
+
+
+
+								</h:panelGrid>
+
+								<h:panelGrid id="pnlMapa" style="height: 650px;width:90vw;">
+
+									<div id="mapa1" style="height: 100%; width: 100%;"></div>
+
+								</h:panelGrid>
+
+							</h:panelGrid>
+
+
+						</h:panelGrid>
+
+					</h:panelGrid>
+					<p:graphicImage value="/resources/images/sigma/pie_maate.png"
+						width="100%" />
+
+					<h:panelGrid id="pnlDialogos">
+						<p:dialog widgetVar="dlgCapas" closable="true"
+							header="#{txt.lbl375}" modal="true" position="top">
+
+							<h:panelGrid id="pnlCapas">
+								<h:panelGrid id="pnlCriteriosCapas">
+									<h:panelGrid id="tipoBusqCapa" columns="2">
+										<p:outputLabel value="#{txt.lbl377}: "
+											style="color:#34495E;font-weight:bold;" />
+										<p:selectOneRadio value="#{geo.tipoBusqCapa}">
+											<f:selectItem itemLabel="#{txt.lbl378}" itemValue="PROY" />
+											<f:selectItem itemLabel="#{txt.lbl182}" itemValue="SALV" />
+											<f:selectItem itemLabel="#{txt.lbl379}" itemValue="BASE" />
+											<p:ajax process="@this" partialSubmit="true"
+												update=":frm:pnlCriteriosCapas"></p:ajax>
+										</p:selectOneRadio>
+									</h:panelGrid>
+									<h:panelGrid>
+										<p:selectOneMenu value="#{geo.capaProyecto}"
+											converter="#{projectGeographicalAreaConverter}"
+											panelStyle="width:35vw" effect="fade" var="c" filter="true"
+											filterMatchMode="contains" style="width:50vw;"
+											rendered="#{geo.tipoBusqCapa=='PROY'}">
+											<f:selectItem itemLabel="" itemValue="#{null}" />
+											<f:selectItems value="#{geo.listaTablasProyectos}"
+												var="capaPro" itemLabel="Capa" itemValue="#{capaPro}" />
+											<p:column>
+												<h:outputText value="#{c.projId.projShortName}" />
+											</p:column>
+											<p:column>
+												<p:graphicImage
+													value="/images/icons/#{c.cataId.cataText2}.png"
+													rendered="#{c.cataId.tipoEjeTem=='imagen'}" />
+												<h:panelGrid rendered="#{c.cataId.tipoEjeTem=='color'}"
+													bgcolor="#{c.cataId.cataText2}">
+												</h:panelGrid>
+											</p:column>
+											<p:column>
+												<h:outputText value="#{c.cataId.cataText1}" />
+											</p:column>
+											<p:column>
+												<h:outputText value="#{c.pgarGeoTableExtra}" />
+											</p:column>
+											<p:ajax event="change"
+												listener="#{geo.aniadirCapaProyecto()}" process="@this"
+												async="true" global="false" partialSubmit="true"
+												update=":frm:pnlListaCapas" onstart="PF('dlgEnProc').show()"
+												oncomplete="PF('dlgEnProc').hide()" />
+										</p:selectOneMenu>
+										<p:selectOneMenu value="#{geo.capaSalvaguarda}"
+											converter="#{salvaguardaConverter}" panelStyle="width:35vw"
+											effect="fade" var="c" style="width:90vw;"
+											rendered="#{geo.tipoBusqCapa=='SALV'}">
+											<f:selectItem itemLabel="" itemValue="#{null}" />
+											<f:selectItems value="#{geo.listaSalvaguardas}"
+												var="capaSalv" itemLabel="Capa" itemValue="#{capaSalv}" />
+											<p:column>
+												<h:outputText value="#{c.safeCode}" />
+											</p:column>
+											<p:column>
+											<h:graphicImage value="/images/icons/#{c.safeCodeLowerCase}.png"
+														width="15" />
+											</p:column>
+											<p:column>
+												<h:outputText value="#{c.safeTitle}" />
+											</p:column>
+											<p:column>
+												<h:outputText value="#{c.safeDescription}" />
+											</p:column>
+											<p:ajax event="change"
+												listener="#{geo.aniadirCapaSalvaguarda()}" process="@this"
+												async="true" global="false" partialSubmit="true"
+												update=":frm:pnlListaCapas,:frm:msgs"
+												onstart="PF('dlgEnProc').show()"
+												oncomplete="PF('dlgEnProc').hide()" />
+										</p:selectOneMenu>
+										<p:selectOneMenu value="#{geo.capaBase.cataId}"
+											panelStyle="width:35vw" effect="fade" style="width:90vw;"
+											rendered="#{geo.tipoBusqCapa=='BASE'}">
+											<f:selectItem itemLabel="" itemValue="#{null}" />
+											<f:selectItems value="#{app.lstCatCapasGeoBase}"
+												var="capaBase" itemLabel="#{capaBase.cataText1}"
+												itemValue="#{capaBase.cataId}" />
+											<p:ajax event="change" listener="#{geo.aniadirCapaBase()}"
+												process="@this" async="true" global="false"
+												partialSubmit="true" update=":frm:pnlListaCapas"
+												onstart="PF('dlgEnProc').show()"
+												oncomplete="PF('dlgEnProc').hide()" />
+										</p:selectOneMenu>
+									</h:panelGrid>
+
+								</h:panelGrid>
+								<h:panelGrid id="pnlListaCapas">
+									<p:dataTable value="#{geo.listaCapas}" var="capa"
+										emptyMessage="#{txt.msg142}" rowIndexVar="rowIndex"
+										scrollable="true" scrollHeight="300">
+										<p:column width="15%">
+											<f:facet name="header">
+												<p:outputLabel value="#{txt.lbl093}"
+													style="font-size:1.3vw;" />
+											</f:facet>
+											<p:outputLabel value="#{capa.categoria}"
+												style="font-size:1.3vw;" />
+										</p:column>
+										<p:column width="35%">
+											<p:outputLabel value="#{capa.descripcionCapa}" />
+										</p:column>
+										<p:column width="10%" style="text-align:center;">
+											<f:facet name="header">
+												<p:outputLabel value="#{txt.lbl387}" style="font-size:10px;" />
+											</f:facet>
+											<h:outputText value="#{capa.fuente}" />
+										</p:column>
+										<p:column width="10%" style="text-align:center;">
+											<f:facet name="header">
+												<p:outputLabel value="#{txt.lbl019}" style="font-size:10px;" />
+											</f:facet>
+											<h:outputText styleClass="ui-icon fa #{capa.tipo}" />
+										</p:column>
+										<p:column width="10%">
+											<f:facet name="header">
+												<p:outputLabel value="#{txt.lbl381}"
+													style="font-size:1.3vw;" />
+											</f:facet>
+											<p:outputLabel value="#{capa.numFeatures}"
+												style="font-size:1.3vw;" />
+										</p:column>
+										<p:column width="10%" style="text-align:center;">
+											<p:commandButton
+												action="#{geo.subirPosicionItemLista(rowIndex)}"
+												process="@this" async="true" global="false"
+												partialSubmit="true" icon="fa fa-arrow-up"
+												update=":frm:pnlListaCapas" title="#{txt.btn60}" />
+										</p:column>
+										<p:column width="10%" style="text-align:center;">
+											<p:commandButton
+												action="#{geo.eliminarCapaSeleccionada(rowIndex)}"
+												process="@this" async="true" global="false"
+												partialSubmit="true" icon="fa fa-trash"
+												update=":frm:pnlListaCapas" />
+										</p:column>
+									</p:dataTable>
+								</h:panelGrid>
+								<h:panelGrid style="margin:0 auto;">
+									<p:commandButton value="#{txt.btn59}" icon="fa fa-globe"
+										action="#{geo.visualizarCapasEnMapa()}" process="@this"
+										partialSubmit="true" global="false" async="true"
+										oncomplete="PF('dlgEnProc').hide();PF('dlgCapas').hide();cargarMapa();"
+										update=":frm:pnlCabecera,:frm:data,:frm:metadataNombreCapas,:frm:metadataDescripcionFeatures"
+										onclick="PF('dlgEnProc').show()" />
+								</h:panelGrid>
+							</h:panelGrid>
+
+						</p:dialog>
+					<p:dialog widgetVar="dlgGeoServicio" closable="true"
+							header="#{txt.lbl375}" modal="true" position="top">
+
+							<h:panelGrid id="pnlGeoServicio">
+								<h:panelGrid id="pnlDatosGeoServicio" columns="3">
+								<p:outputLabel value="Tipo de Servicio:"/>
+								<h:inputText id="tipGeoSer" value="#{geo.objetoDatosGeoServicio.tipoGeoServicio}"
+								readonly="true" />
+								<p:message for="tipGeoSer"/>
+								<p:outputLabel value="URL:"/>
+								<h:inputText id="urlGeoSer" value="#{geo.objetoDatosGeoServicio.owsrootUrl}"
+								 size="50"/>
+								<p:message for="urlGeoSer"/>
+								<p:outputLabel value="Versión:"/>
+								<h:inputText id="verGeoSer" value="#{geo.objetoDatosGeoServicio.version}"
+								size="50"/>
+								<p:message for="verGeoSer"/>
+								
+								<p:outputLabel value="Layer:" rendered="#{geo.objetoDatosGeoServicio.tipoGeoServicio=='WMS'}"/>
+								<h:inputText id="layerGeoSer" value="#{geo.objetoDatosGeoServicio.layers}"
+								rendered="#{geo.objetoDatosGeoServicio.tipoGeoServicio=='WMS'}"
+								readonly="false" size="50"/>
+								<p:message for="layerGeoSer" rendered="#{geo.objetoDatosGeoServicio.tipoGeoServicio=='WMS'}"/>
+								
+								<p:outputLabel value="Format:" rendered="#{geo.objetoDatosGeoServicio.tipoGeoServicio=='WMS'}"/>
+								<h:inputText id="formatGeoSer" value="#{geo.objetoDatosGeoServicio.format}"
+								rendered="#{geo.objetoDatosGeoServicio.tipoGeoServicio=='WMS'}"
+								readonly="true" size="50"/>
+								<p:message for="formatGeoSer" rendered="#{geo.objetoDatosGeoServicio.tipoGeoServicio=='WMS'}"/>
+								
+								<p:outputLabel value="Transparent:" rendered="#{geo.objetoDatosGeoServicio.tipoGeoServicio=='WMS'}"/>
+								<h:inputText id="transGeoSer" value="#{geo.objetoDatosGeoServicio.transparent}"
+								rendered="#{geo.objetoDatosGeoServicio.tipoGeoServicio=='WMS'}"
+								readonly="true" size="50"/>
+								<p:message for="transGeoSer" rendered="#{geo.objetoDatosGeoServicio.tipoGeoServicio=='WMS'}"/>
+								
+								<p:outputLabel value="Attribution:" rendered="#{geo.objetoDatosGeoServicio.tipoGeoServicio=='WMS'}"/>
+								<h:inputText id="attGeoSer" value="#{geo.objetoDatosGeoServicio.attribution}"
+								rendered="#{geo.objetoDatosGeoServicio.tipoGeoServicio=='WMS'}"
+								readonly="false" size="50"/>
+								<p:message for="attGeoSer" rendered="#{geo.objetoDatosGeoServicio.tipoGeoServicio=='WMS'}"/>
+								
+								<p:outputLabel value="Request:" rendered="#{geo.objetoDatosGeoServicio.tipoGeoServicio=='WFS'}"/>
+								<h:inputText id="reqGeoSer" value="#{geo.objetoDatosGeoServicio.request}"
+								rendered="#{geo.objetoDatosGeoServicio.tipoGeoServicio=='WFS'}"
+								readonly="true" size="50"/>
+								<p:message for="reqGeoSer" rendered="#{geo.objetoDatosGeoServicio.tipoGeoServicio=='WFS'}"/>
+								
+								<p:outputLabel value="TypeName (Layer):" rendered="#{geo.objetoDatosGeoServicio.tipoGeoServicio=='WFS'}"/>
+								<h:inputText id="typGeoSer" value="#{geo.objetoDatosGeoServicio.typeName}"
+								rendered="#{geo.objetoDatosGeoServicio.tipoGeoServicio=='WFS'}"
+								readonly="false" size="50"/>
+								<p:message for="typGeoSer" rendered="#{geo.objetoDatosGeoServicio.tipoGeoServicio=='WFS'}"/>
+								
+								<p:outputLabel value="OutputFormat:" rendered="#{geo.objetoDatosGeoServicio.tipoGeoServicio=='WFS'}"/>
+								<h:inputText id="outGeoSer" value="#{geo.objetoDatosGeoServicio.outputFormat}"
+								rendered="#{geo.objetoDatosGeoServicio.tipoGeoServicio=='WFS'}"
+								readonly="true" size="50"/>
+								<p:message for="outGeoSer" rendered="#{geo.objetoDatosGeoServicio.tipoGeoServicio=='WFS'}"/>
+								
+								<p:outputLabel value="Atributo a mostrar en mapa" rendered="#{geo.objetoDatosGeoServicio.tipoGeoServicio=='WFS'}"/>
+								<h:inputText id="colGeoSer" value="#{geo.objetoDatosGeoServicio.nameColumnDesc}"
+								rendered="#{geo.objetoDatosGeoServicio.tipoGeoServicio=='WFS'}"
+								readonly="false" size="50"/>
+								<p:message for="colGeoSer" rendered="#{geo.objetoDatosGeoServicio.tipoGeoServicio=='WFS'}"/>
+								
+								<p:outputLabel value="Nombre en el Mapa:"/>
+								<h:inputText id="nomCapGeoSer" value="#{geo.objetoDatosGeoServicio.nombreCapa}"
+								size="50"/>
+								<p:message for="nomCapGeoSer"/>
+								</h:panelGrid>
+								<h:panelGrid style="margin:0 auto;">
+									<p:commandButton value="Añadir al mapa" icon="fa fa-globe"
+										action="#{geo.procesarCapaGeoServicio()}" process="@this,pnlGeoServicio"
+										partialSubmit="true" global="false" async="true"
+										oncomplete="PF('dlgEnProc').hide();"
+										onclick="PF('dlgEnProc').show()" />
+								</h:panelGrid>
+								</h:panelGrid>
+								</p:dialog>
+					</h:panelGrid>
+
+
+
+				</p:panel>
+			</center>
+		</div>
+	</h:form>
+</h:body>
+</html>

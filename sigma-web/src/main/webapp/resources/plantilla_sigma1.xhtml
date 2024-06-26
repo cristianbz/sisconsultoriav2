@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+ 
+<h:head>
+	<h:outputStylesheet name="suia-layout.css" library="css" />
+	<h:outputStylesheet name="suia-styles.css" library="css" />
+	<h:outputStylesheet name="suia-pf-custom.css" library="css" />
+	<h:outputStylesheet name="login.css" library="css" />
+	<script type="text/javascript"
+		src="#{request.contextPath}/resources/js/util.js"></script>
+		<script
+		src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.5.0"></script>
+		<script type="text/javascript"
+		src="${facesContext.externalContext.requestContextPath}/js/sigma.js" />
+		<script type="text/javascript"
+		src="#{request.contextPath}/resources/js/calendario/calendar_es.js"></script>
+		
+	<link rel="shortcut icon"
+		href="#{request.contextPath}/resources/images/favicon.ico" />
+	<link
+		href="${facesContext.externalContext.requestContextPath}/css/sigma.css"
+		rel="stylesheet" type="text/css" />
+	<title>SIGMA REDD+</title>
+</h:head>
+<h:body>
+	<!-- Menús, headers y todo lo que vaya antes del contenido -->
+	<div>
+	<div class="header-left-part"></div>
+		<div id="header" class="containerHeader">
+			<div class="header-right-part"></div>
+			<div class="clear"></div>
+			<div class="header-right-part-bar"></div>
+			<div class="clear"></div>
+		</div>
+		
+		<h:form id="frm" enctype="multipart/form-data">
+		<p:growl id="msgs" showDetail="true" />
+		<p:remoteCommand name="rcCerrarSesion" actionListener="#{ses.cerrarSesion}" 
+								process="@this" partialSubmit="true" async="true" global="false" />
+	<center>
+	<h:panelGrid columns="1" rendered="#{ses.usuarioLogeado!=null}">
+				<p:menubar  model="#{ses.menuModel}" style="width:1022px !important;" >
+				</p:menubar>
+				<p:toolbar>
+				<f:facet name="left">
+				<h:outputText styleClass="fa fa-user"/>
+				<p:commandLink action="#{ses.redireccionarAPagina('admin','datos_usuario')}"
+                                process="@this" partialSubmit="true"
+                                async="true" global="false">
+                     <span>#{txt.lbl418}: #{ses.usuarioLogeado.userName}</span>  
+                </p:commandLink>
+				</f:facet>
+				<f:facet name="right">
+				<p:commandLink action="#{ses.cerrarSesion()}"
+                                process="@this" partialSubmit="true"
+                                async="true" global="false">
+                     <i class="fa fa-power-off"></i>
+                     <span>#{txt.btn65}</span>  
+                </p:commandLink>
+				</f:facet>
+				</p:toolbar>
+			</h:panelGrid>
+			</center>
+	<ui:insert name="contenido">
+		Contenido por defecto para que no quede en blanco...    
+	</ui:insert>
+	
+	<!-- Footer y otros componentes que vayan después del contenido -->
+	 <p:dialog header="#{txt.lbl049}" widgetVar="dlgEnProc" 
+                  draggable="false" 
+                  modal="true" resizable="false" closable="false" responsive="true"
+                  style="font-size: 10px;">  
+            <p:graphicImage rendered="true" id="img_validando" value="/images/loading3.gif"
+                            width="100"/>
+     </p:dialog>
+     <p:dialog header="Procesando" widgetVar="dlgEnProc2" onShow="dlgEnProc2Function()" onHide="dlgEnProc2StopFunction()"
+                  draggable="false"
+                  modal="true" resizable="false" closable="false" responsive="true"
+                  style="font-size: 10px;">  
+            <p:graphicImage rendered="true" id="img_validando2" value="/images/loading3.gif"
+                            width="100"/>
+        </p:dialog>
+     <!-- Luego del contenido y el footer se cierra el form -->
+	</h:form>
+	</div>
+	
+</h:body>
+</html>

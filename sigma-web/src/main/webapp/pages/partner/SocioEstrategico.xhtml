@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:sigma_components="http://java.sun.com/jsf/composite/sigma_components">
+
+<body>       
+	<!-- Lo que escribamos aquí NO aquí se va a renderizar. -->
+	Esto seguro que no lo ves.
+	
+	<ui:composition template="/resources/plantilla_sigma1.xhtml">
+		<ui:define name="contenido">
+		<center>
+			<h:panelGrid width="1022">
+				<h:panelGrid columns="3" styleClass="fondoColorSigma">
+					<h:outputText value=" #{txt.lbl074}" style="font-weight:bold !important;" />
+					<h:panelGrid width="768"></h:panelGrid>
+					<p:commandButton id="btnNuevo" value="#{txt.btn19}"
+						action="#{soci.prepararNuevoSocioEst()}" icon="fa fa-plus"
+						process="@this" partialSubmit="true" async="true" global="false"
+						update=":frm:pnlSocioEst" style="font-size:12px;"
+						onclick="PF('dlgEnProc').show()"
+						oncomplete="PF('dlgEnProc').hide()" />
+				</h:panelGrid>
+				<br />
+				<h:panelGrid id="pnlSocioEst" columns="3" style="margin:0 auto;">
+					<p:outputLabel value="*#{txt.lbl050}: " for="partIdNumber"
+						styleClass="etiquetaFormulario"
+						style="height:40px;line-height:40px;width:200px;" />
+						<h:panelGrid columns="2">
+						<p:inputText id="partIdNumber" size="30"
+						value="#{soci.socioEstrategicoActual.partIdNumber}" maxlength="13"
+						autocomplete="one-time-code" style="font-size:16px !important;"
+						onkeypress="if( (event.which &lt; 48 || event.which &gt; 57) ) return false;"/>
+						<p:commandButton id="btnBusqSRI" action="#{soci.obtenerDatosSocioEstrategicoDesdeSri()}"
+							process="@this,partIdNumber" partialSubmit="true" async="true" global="false"
+							icon="fa fa-search" title="#{txt.btn18}"
+							onclick="PF('dlgEnProc').show()"
+								oncomplete="PF('dlgEnProc').hide()"
+								update="partName,partConPer,partConPerCar,partConPerEmail,partConPerTelf,msgs"/>
+						</h:panelGrid>
+						<p:message for="partIdNumber" />
+						
+					<p:outputLabel value="*#{txt.lbl018}: " for="partName"
+						styleClass="etiquetaFormulario"
+						style="height:40px;line-height:40px;width:200px;" />
+					<p:inputText id="partName"
+						value="#{soci.socioEstrategicoActual.partName}" maxlength="200"
+						size="50" />
+					<p:message for="partName" />
+
+					<p:outputLabel value="*#{txt.lbl052}: " for="partConPer"
+						styleClass="etiquetaFormulario"
+						style="height:40px;line-height:40px;width:200px;" />
+					<p:inputText id="partConPer"
+						value="#{soci.socioEstrategicoActual.partContactPerson}"
+						maxlength="50" size="50" />
+					<p:message for="partConPer" />
+
+					<p:outputLabel value="#{txt.lbl053}: " for="partConPerCar"
+						styleClass="etiquetaFormulario"
+						style="height:40px;line-height:20px;width:200px;" />
+					<p:inputText id="partConPerCar"
+						value="#{soci.socioEstrategicoActual.partContactPersonPosition}"
+						maxlength="100" size="50" />
+					<p:message for="partConPerCar" />
+
+					<p:outputLabel value="#{txt.lbl054}: " for="partConPerEmail"
+						styleClass="etiquetaFormulario"
+						style="height:40px;line-height:40px;width:200px;" />
+					<p:inputText id="partConPerEmail"
+						value="#{soci.socioEstrategicoActual.partContactPersonEmail}"
+						maxlength="100" size="50" />
+					<p:message for="partConPerEmail" />
+
+					<p:outputLabel value="*#{txt.lbl055}: " for="partConPerTelf"
+						styleClass="etiquetaFormulario"
+						style="height:40px;line-height:40px;width:200px;" />
+					<p:inputText id="partConPerTelf"
+						value="#{soci.socioEstrategicoActual.partPhones}" maxlength="20"
+						size="30" />
+					<p:message for="partConPerTelf" />
+					
+					<p:outputLabel value="*#{txt.lbl339}: " for="partSigla"
+						styleClass="etiquetaFormulario"
+						style="height:40px;line-height:40px;width:200px;" />
+					<p:inputText id="partSigla"
+						value="#{soci.socioEstrategicoActual.partAcronym}" maxlength="20"
+						size="30" />
+					<p:message for="partSigla" />
+
+				</h:panelGrid>
+				<h:panelGrid style="margin:0 auto;">
+					<p:commandButton value="#{txt.btn02}" icon="fa fa-save"
+						action="#{soci.guardarSocioEstrategico()}" partialSubmit="true"
+						process="@this,pnlSocioEst" async="true" global="false"
+						update="pnlSocioEst,pnlListaSocEst,msgs"
+						onclick="PF('dlgEnProc').show()"
+						oncomplete="PF('dlgEnProc').hide()" />
+				</h:panelGrid>
+				<h:panelGrid id="pnlListaSocEst" width="1022">
+					<p:dataTable id="lstSocEst" value="#{soci.listaSociosEstrategicos}"
+						var="socio" emptyMessage="#{txt.lbl047}"
+						paginator="true" rows="15" styleClass="alineadoCentroTd">
+						<p:column width="150" headerText="#{txt.lbl060}">
+							<p:outputLabel value="#{socio.partIdNumber}" />
+						</p:column>
+						<p:column  headerText="#{txt.lbl018}">
+							<p:outputLabel value="#{socio.partName}" />
+						</p:column>
+						<p:column  headerText="#{txt.lbl339}" width="150">
+							<p:outputLabel value="#{socio.partAcronym}" />
+						</p:column>
+						<p:column width="70" headerText="#{txt.lbl024}">
+							<p:commandButton id="btnEditSocEst"
+								action="#{soci.seleccionarSocioEstAEditar(socio)}"
+								icon="fa fa-pencil" title="#{txt.btn15}" process="@this"
+								partialSubmit="true" async="true" global="false"
+								update=":frm:pnlSocioEst" onclick="PF('dlgEnProc').show()"
+								oncomplete="PF('dlgEnProc').hide()" />
+								<p:commandButton icon="fa fa-trash"
+								action="#{soci.eliminarSocioEstrategico(socio)}" process="@this"
+								async="true" global="false" partialSubmit="true"
+								title="#{txt.btn14}"
+								update=":frm:pnlListaSocEst,:frm:msgs"
+								onclick="PF('dlgEnProc').show()"
+								oncomplete="PF('dlgEnProc').hide()">
+								<p:confirm header="#{txt.lbl030}" message="#{txt.lbl075}"
+									icon="pi pi-exclamation-triangle" />
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
+				</h:panelGrid>
+			</h:panelGrid>
+			<sigma_components:controlLogeo idPagina="SIGMA_ADM_SOCEST"/>
+			
+			<sigma_components:dlgConfirmacion/>
+		</center>
+	</ui:define>
+	</ui:composition>
+	</body>
+</html>

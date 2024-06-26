@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes"
+	xmlns:val="http://java.sun.com/jsf/composite/componentes">
+<ui:composition template="/WEB-INF/templates/templateprincipal.xhtml">
+
+	<ui:define name="contenido">
+
+		<body>
+			<f:event listener="#{loginController.validarSesion()}"
+				type="preRenderView" />
+			<h:form prependId="true" id="form">
+				<p:growl id="growl" life="3000" showDetail="true" />
+				
+				<div class="ui-fluid p-formgrid p-grid">
+					
+					<div class="p-field p-col-12 p-md-12" style="max-width:1005px;margin:0 auto;padding:0;">
+						<div class="ui-fluid p-formgrid p-grid">
+							<div class="p-field p-col-12 p-md-11"
+								style="background: #00AAC3; color: #FFFFFF; display: block; text-align: left;">
+								<h:outputText value="#{titulos['registroGenero']}" style="font-size:18px;font-weight:bold;"/>
+							</div>
+							<div class="p-field p-col-12 p-md-1">															
+									<comp:ayuda texto="#{tooltip['desplazamientoTabs']}" />																	
+							</div>
+						</div>
+						<comp:buscaProyectos id="buscaProyectos"
+							componenteBuscaProyectos="#{registroDeGeneroController.componenteBuscarProyectos}" />
+						<br />
+					</div>
+					
+				</div>
+
+
+			</h:form>
+		</body>
+	</ui:define>
+</ui:composition>
+</html>

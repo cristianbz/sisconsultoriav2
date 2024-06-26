@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sigma_components="http://java.sun.com/jsf/composite/sigma_components">
+ 
+<body>       
+	<!-- Lo que escribamos aquí NO aquí se va a renderizar. -->
+	Esto seguro que no lo ves.
+	
+	<ui:composition template="/resources/plantilla_sigma1.xhtml">
+		<ui:define name="contenido">
+			<sigma_components:controlLogeoSimple/>
+		</ui:define>
+	</ui:composition>
+	
+	<!-- Ni TAMPOCO esto. -->
+	Y esto tampoco.
+</body>
+</html>

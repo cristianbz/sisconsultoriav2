@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<script
+		src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.5.0"></script>
+	<link
+		href="${facesContext.externalContext.requestContextPath}/css/sigma.css"
+		rel="stylesheet" type="text/css" />
+	<script type="text/javascript"
+		src="${facesContext.externalContext.requestContextPath}/js/sigma.js" />
+</h:head>
+<h:body>
+	<h:form id="frm" enctype="multipart/form-data">
+		<ui:include src="/resources/status_gif.xhtml" />
+		<p:growl id="msgs" showDetail="true" />
+		<center>
+
+			<h:panelGrid styleClass="fondoColorSigma" width="840">
+				<p:outputLabel value="Consulta de Acciones Por Provincia"
+					style="font-size:18px;font-weight:bold;" />
+			</h:panelGrid>
+			<h:panelGrid id="pnlTotal" style="font-size:12px;">
+
+				<h:panelGrid columns="3">
+					<p:outputLabel value="Provincia" />
+					<h:selectOneMenu id="codProv" value="#{consulta.codProvincia}">
+						<f:selectItems value="#{app.lstGeoLocProvincias}" var="prov"
+							itemLabel="#{prov[0]}" itemValue="#{prov[1]}" />
+					</h:selectOneMenu>
+					<p:commandButton value="Consultar"
+						action="#{consulta.consultarAccionesRegistradasPorProvincia()}"
+						process="@this,codProv" partialSubmit="true" async="true"
+						global="false" update="pnlAcciones" />
+				</h:panelGrid>
+				<h:panelGrid id="pnlAcciones" width="1000">
+					<p:dataTable id="lstAcciones"
+						value="#{consulta.listaAccionesRegistradas}" var="indicador">
+						<f:facet name="header">
+									#{txt.lbl307}
+									</f:facet>
+						<p:column width="150" headerText="Proyecto">
+							<p:outputLabel
+								value="#{indicador.pracParentId.psobId.projId.projCode}" />
+							<br />
+							<p:outputLabel
+								value="#{indicador.pracParentId.psobId.projId.projTitle}" />
+							<br />
+							<p:outputLabel
+								value="#{indicador.pracParentId.psobId.projId.partId.partAcronym}" />
+						</p:column>
+						<p:column width="400" groupRow="true" headerText="#{txt.lbl024}"
+							filterBy="#{indicador.pracParentId.psobId.psobDescription}"
+							filterMatchMode="contains">
+
+							<h:panelGrid styleClass="panelGridSinBorde">
+								<p:outputLabel
+									value="#{indicador.pracParentId.psobId.geloId.geloName} - "
+									style="font-size:10px;font-weight:bold;"
+									rendered="#{indicador.pracParentId.psobId.geloId!=null}" />
+								<p:outputLabel
+									value="#{indicador.pracParentId.psobId.psobDescription}"
+									style="font-size:10px;font-weight:bold;" />
+								<p:outputLabel
+									value="#{indicador.pracParentId.pracCode} #{indicador.pracParentId.pracDescription}" />
+								<p:outputLabel
+									value="#{indicador.pracParentId.partId.partAcronym}"
+									rendered="#{indicador.pracParentId.partId!=null}"
+									style="font-weight:bold;" />
+
+
+							</h:panelGrid>
+						</p:column>
+						<p:column width="400" headerText="#{txt.lbl097}">
+
+							<h:panelGrid styleClass="panelGridSinBorde">
+								<p:outputLabel value="#{indicador.pracDescription}" />
+
+								<p:outputLabel value="#{txt.lbl360}:"
+									style="font-size:10px;font-weight:bold;" />
+								<p:outputLabel
+									value="#{indicador.pracGoal} (#{indicador.pracGoalValue})" />
+
+								<p:fieldset legend="#{txt.lbl367}" toggleable="true"
+									toggleSpeed="500" collapsed="true"
+									rendered="#{(indicador.listaCompatibilidadPA.size() gt 0) or (indicador.listaCompatibilidadIndicadoresPA.size() gt 0)}">
+									<p:dataList value="#{indicador.listaCompatibilidadPA}" var="c"
+										emptyMessage="">
+										<p:outputLabel value="#{c[0]}: " style="font-size:10px;" />
+										<p:outputLabel value="#{c[1]}: " style="font-size:10px;" />
+									</p:dataList>
+									<p:dataList
+										value="#{indicador.listaCompatibilidadIndicadoresPA}" var="i"
+										emptyMessage="">
+										<p:outputLabel value="#{i[0]}: " style="font-size:10px;" />
+										<p:outputLabel value="#{i[1]}: " style="font-size:10px;" />
+									</p:dataList>
+								</p:fieldset>
+							</h:panelGrid>
+
+
+						</p:column>
+
+
+					</p:dataTable>
+				</h:panelGrid>
+				<h:panelGrid style="margin:0 auto;">
+
+					<p:commandButton value="#{txt.btn21}" type="button"
+						icon="fa fa-print">
+						<p:printer target="pnlAcciones" />
+					</p:commandButton>
+					<br />
+					<p:commandButton id="btnVolverInicio" value="#{txt.btn24}"
+						icon="fa fa-home"
+						action="#{ses.redireccionarAPagina('','inicio')}" process="@this" />
+				</h:panelGrid>
+
+			</h:panelGrid>
+		</center>
+	</h:form>
+</h:body>
+</html>

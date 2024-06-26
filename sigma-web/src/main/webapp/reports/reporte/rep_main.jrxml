@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rep_main" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="84387b5d-4626-4090-a7a8-f1e8e5024028">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="POSTGRESQL LOCALHOST"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="param_trac_id" class="java.lang.Integer"/>
+	<parameter name="img1_path" class="java.lang.String"/>
+	<parameter name="img2_path" class="java.lang.String"/>
+	<parameter name="img3_path" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT acpl.acpl_name, part.part_name,
+proj.proj_register_date, 
+       proj.proj_type, proj.proj_code, proj.proj_registration_date, proj.proj_start_date, 
+       proj.proj_title, proj.proj_term_from, proj.proj_term_to,
+        proj.proj_direct_beneficiaries_number, proj.proj_direct_beneficiaries, 
+       proj.proj_indirect_beneficiaries_number, proj.proj_indirect_beneficiaries, 
+        proj.proj_general_purpose, proj.proj_is_financier, 
+       proj.proj_has_relationship_other, proj2.proj_title as proj_padre, proj.proj_implementer_project,
+       t.trac_year, cata_text1 as periodo
+FROM sigma.tracings t, sigma.catalogs c, sigma.projects as proj, 
+sigma.partners as part,
+sigma.action_plans as acpl
+left join sigma.projects as proj2
+on proj_parent_id=proj2.proj_id
+WHERE 
+proj.proj_status=true and 
+part.part_status=true and
+acpl.acpl_status=true and 
+proj.part_id=part.part_id and
+proj.acpl_id=acpl.acpl_id and
+proj.proj_id = t.proj_id and
+c.cata_id=t.cata_id and t.trac_id= $P{param_trac_id}]]>
+	</queryString>
+	<field name="acpl_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="acpl_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="action_plans"/>
+	</field>
+	<field name="part_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="part_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="partners"/>
+	</field>
+	<field name="proj_register_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="proj_register_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="projects"/>
+	</field>
+	<field name="proj_type" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="proj_type"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="projects"/>
+	</field>
+	<field name="proj_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="proj_code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="projects"/>
+	</field>
+	<field name="proj_registration_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.label" value="proj_registration_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="projects"/>
+	</field>
+	<field name="proj_start_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.label" value="proj_start_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="projects"/>
+	</field>
+	<field name="proj_title" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="proj_title"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="projects"/>
+	</field>
+	<field name="proj_term_from" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="proj_term_from"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="projects"/>
+	</field>
+	<field name="proj_term_to" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="proj_term_to"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="projects"/>
+	</field>
+	<field name="proj_direct_beneficiaries_number" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="proj_direct_beneficiaries_number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="projects"/>
+	</field>
+	<field name="proj_direct_beneficiaries" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="proj_direct_beneficiaries"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="projects"/>
+	</field>
+	<field name="proj_indirect_beneficiaries_number" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="proj_indirect_beneficiaries_number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="projects"/>
+	</field>
+	<field name="proj_indirect_beneficiaries" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="proj_indirect_beneficiaries"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="projects"/>
+	</field>
+	<field name="proj_general_purpose" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="proj_general_purpose"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="projects"/>
+	</field>
+	<field name="proj_is_financier" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.label" value="proj_is_financier"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="projects"/>
+	</field>
+	<field name="proj_has_relationship_other" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.label" value="proj_has_relationship_other"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="projects"/>
+	</field>
+	<field name="proj_padre" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="proj_padre"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="projects"/>
+	</field>
+	<field name="proj_implementer_project" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="proj_implementer_project"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="projects"/>
+	</field>
+	<field name="trac_year" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="trac_year"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tracings"/>
+	</field>
+	<field name="periodo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="periodo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="catalogs"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="330" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField>
+				<reportElement x="0" y="102" width="555" height="36" uuid="d0aacbf8-9bbf-406d-8855-f05460294a7f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Justified"/>
+				<textFieldExpression><![CDATA[($F{proj_type} .equals("PDI")?"Plan de Implementación":($F{proj_type} .equals("PRG")?"Plan de Implementación":($F{proj_type} .equals("PRY")?"Proyecto":"NADA")))+": "+$F{proj_title}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="85" width="555" height="14" uuid="a964fa56-9c6b-4a47-8871-0457379ae092">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{part_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="390" y="70" width="150" height="14" uuid="8524bb7b-ac6a-4d22-b6db-05b53403f883">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{proj_code}]]></textFieldExpression>
+			</textField>
+			<textField pattern="yyyy/MM/dd">
+				<reportElement x="380" y="162" width="150" height="14" uuid="8af94361-10a4-4218-813b-f93e8d3cb622">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{trac_year}+ " "+$F{periodo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="180" width="555" height="70" uuid="1b5045cf-1d57-43ae-b343-1eb94ad8dc8d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Justified">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Objetivo General: "+$F{proj_general_purpose}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="255" width="555" height="30" uuid="ba589dda-aac8-4026-851c-c67c06df9af0">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Justified"/>
+				<textFieldExpression><![CDATA["Beneficiarios Directos: "+$F{proj_direct_beneficiaries_number}+", ("+$F{proj_direct_beneficiaries}+")"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="298" width="555" height="30" uuid="6b65c654-52c1-498e-84b6-ba0dd2a06e43">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Justified"/>
+				<textFieldExpression><![CDATA["Beneficiarios Indirectos: "+($F{proj_indirect_beneficiaries_number}!=null?$F{proj_indirect_beneficiaries_number}:"")+ ", ("+$F{proj_indirect_beneficiaries}+")"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="380" y="24" width="170" height="25" backcolor="#00AAC3" uuid="9db106cd-a6d5-4163-96a0-44f018f61cce">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[SIGMA REDD+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="380" y="50" width="170" height="19" backcolor="#00AAC3" uuid="75811536-2746-4893-928a-b669104c293c">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Formulario de Seguimiento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="162" width="100" height="15" backcolor="#00AAC3" uuid="c6603a41-068d-48a1-961a-5c7414293d9d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Plazo de Ejecución:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="114" y="162" width="130" height="15" uuid="bf404b78-95e3-4fa5-ad85-061c29445004">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{proj_term_from}+" al "+$F{proj_term_to}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="275" y="162" width="100" height="15" backcolor="#00AAC3" uuid="fd377346-6dba-4d78-a1b2-7c9723bbf1a1">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Periodo de Reporte:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="140" width="100" height="15" uuid="b680df7d-c018-413a-a800-a23511d55d33">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<printWhenExpression><![CDATA[$F{proj_implementer_project}!=null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[A través de:    ]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="112" y="140" width="342" height="15" uuid="f127bc22-b66e-46a4-9866-d20c309c2d7f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{proj_implementer_project}]]></textFieldExpression>
+			</textField>
+			<image hAlign="Center" vAlign="Middle">
+				<reportElement x="0" y="1" width="150" height="70" uuid="69994d01-fd92-4774-9c98-6fdd40e772c2">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{img1_path}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="16" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[$V{PAGE_NUMBER}>1]]></printWhenExpression>
+			<staticText>
+				<reportElement x="330" y="0" width="210" height="15" uuid="ae432c8c-b353-4966-bbfd-9efae8e3db7d">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Formulario de Seguimiento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="6" y="0" width="100" height="15" backcolor="#00AAC3" uuid="70864207-ceb8-4cca-b515-b5d65653bc8d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[S I G M A]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="13" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="55" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<subreport>
+				<reportElement x="0" y="0" width="555" height="50" uuid="57a47eb5-f08f-4b8e-b8c0-38d99a1cc02e">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<subreportParameter name="param_trac_id">
+					<subreportParameterExpression><![CDATA[$P{param_trac_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["subr_ejec_pres.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="85" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<image>
+				<reportElement x="-20" y="0" width="395" height="70" uuid="2808610c-3285-4b56-85e3-62423ee8f9f6">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{img2_path}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="240" y="70" width="30" height="14" uuid="bf0fafc1-41fb-4318-acb0-5a4fffc78e97">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="280" y="70" width="50" height="14" uuid="7dff40d9-3e6d-46c2-9ce2-2942e58b2bd7">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[" de " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<image hAlign="Center" vAlign="Middle">
+				<reportElement x="440" y="0" width="115" height="70" uuid="478380fe-be3f-47b7-b7f8-0b14d9ad8fd6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{img3_path}]]></imageExpression>
+			</image>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</summary>
+</jasperReport>
